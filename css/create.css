@@ -1,0 +1,77 @@
+
+h1{
+    text-align: center;
+    margin-top: 30px;
+
+    /* background-color: darkcyan; */
+
+}
+
+.content{
+    margin-top: 75px;
+
+}
+.top_fractionContainer,
+.bottom_fractionContainer{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    margin-top: 20px;
+    margin-bottom: 10px;
+   
+}
+
+
+#leftNumerator,
+#rightNumerator,
+#leftDenominator,
+#rightDenominator {
+    margin-right: 30px;
+    margin-left: 30px;
+}
+
+input[type="text"] {
+    /* background-color: rgb(109, 109, 109); */
+    text-align: center;
+    font-family: sans-serif, Arial;
+    font-size: 40px;
+
+    height: 100px;
+    width: 50px;
+  }
+
+
+.signContainer{
+    text-align: center;
+}
+
+#operationSign{
+    text-align: center;
+    font-family: sans-serif, Arial;
+    font-size: 40px;
+    align-items: center;
+
+}
+
+
+.submitContainer{
+    text-align: center;
+    margin-top: 35px;
+}
+
+.submitButton {
+    display: inline-block;
+    font-family: sans-serif, Arial;
+    border-width: thick;
+    font-size: large;
+    border-style: outset;
+    padding: 20px 20px 20px 20px;
+    background-color: white;
+}
+
+.submitButton:hover {
+    background-color: rgb(172, 172, 172);
+
+}
+

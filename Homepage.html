@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <meta charset="utf-8">
+  <link rel="stylesheet" href="css/home.css">
+
+  <script>
+
+  
+
+    function submitCheck() {
+      
+      if (document.getElementById("Create").checked) {
+
+        if(document.getElementById("Addition").checked){
+          document.getElementById("homeForm1").action = "Addition/create.html";
+
+        }else if (document.getElementById("Multiplication").checked){
+          document.getElementById("homeForm1").action = "Multiplication/create.html";
+
+        }else if (document.getElementById("Division").checked){
+          document.getElementById("homeForm1").action = "Division/create.html";
+
+        }else if (document.getElementById("Subtraction").checked){
+          document.getElementById("homeForm1").action = "Subtraction/create.html";
+
+        }
+
+      } else if (document.getElementById("Random").checked) {
+       
+        
+        if(document.getElementById("Addition").checked){
+          document.getElementById("homeForm1").action = "Addition/workspace.html";
+
+        }else if (document.getElementById("Multiplication").checked){
+          document.getElementById("homeForm1").action = "Multiplication/workspace.html";
+
+        }else if (document.getElementById("Division").checked){
+          document.getElementById("homeForm1").action = "Division/workspace.html";
+
+          
+        }else if (document.getElementById("Subtraction").checked){
+          document.getElementById("homeForm1").action = "Subtraction/workspace.html";
+
+        }
+      }
+      document.getElementById("homeForm1").submit(); // submit form 
+
+
+    }
+
+
+
+  </script>
+
+  <title>Fraction Visualizer</title>
+</head>
+<div class="content">
+
+  <h1> Welcome to the Fraction Visualizer!</h1>
+
+  <body>
+
+    <form method="get" id="homeForm1" >
+
+      <div class="operationsContainer_top">
+        <input type="radio" id="Addition" name="operationChoice" value="Addition" />
+        <label for="Addition">+</label>
+
+        <input type="radio" id="Subtraction" name="operationChoice" value="Subtraction" />
+        <label for="Subtraction"> - </label>
+
+        <input type="radio" id="Division" name="operationChoice" value="Division" />
+        <label for="Division">÷</label>
+
+        <input type="radio" id="Multiplication" name="operationChoice" value="Multiplication" />
+        <label for="Multiplication">X</label>
+      </div>
+
+
+      <div class="typeContainer">
+        <input type="radio" id="Random" name="problemChoice" value="Random" />
+        <label for="Random">Random</label>
+
+        <input type="radio" id="Create" name="problemChoice" value="Create" />
+        <label for="Create">Create your own</label>
+      </div>
+
+      <div class="submitContainer">
+        <button type="submit" class="submitButton" onclick="submitCheck()">Start</button>
+      </div>
+
+      <!-- <input type="hidden" id="leftNumerator" name="leftNum" value="" />
+      <input type="hidden" id="leftDenominator" name="leftDenom" value="" />
+      <input type="hidden" id="rightNumerator" name="rightNum" value="" />
+      <input type="hidden" id="rightDenominator" name="rightDenom" value="" /> -->
+
+    </form>
+</body>
+  
+</div>
+
+
+</html>

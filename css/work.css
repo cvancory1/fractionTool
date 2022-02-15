@@ -1,0 +1,179 @@
+.content{
+    margin-left: 100px;
+    margin-right: 100px;
+    margin-top: 100px;
+    margin-bottom: 100px;
+    /* background-color: pink; */
+
+
+}
+
+
+ h1 {
+    font-size: medium;
+    font-size: xx-large;
+    color: black;
+    text-align: center;
+
+  }
+  .problemContainer{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-top: 25px;
+    margin-bottom: 10px;
+    margin-left: 10px;
+    margin-right: 10px;
+    /* background-color: green; */
+
+}  
+.toolbar{
+    margin-left: 100px;
+    margin-right: 100px;
+    /* background-color: red; */
+}
+
+
+ 
+#rightNum,
+#rightDenom{
+    margin-left: 25px;
+    margin-right: 25px;
+    font-family: sans-serif, Arial;
+    font-size: 30px;
+
+
+} 
+
+#operationSign,
+#answerNum,
+#answerDenom,
+#leftNum,
+#leftDenom{
+    
+    margin-left: 25px;
+    margin-right: 25px;
+    font-family: sans-serif, Arial;
+    font-size: 30px;
+
+}
+
+#leftNum,
+#rightNum{
+   border-bottom: black solid 2px;
+
+}
+#bar{
+    font-size: 20px;
+    background-color: yellow;
+    align-items: center;
+    text-align: right;
+} 
+
+
+
+
+input[type="text"] {
+    height: 40px;
+    width: 40px;
+    margin-top: 10px;
+    margin-bottom: 10px;
+    text-align: center;
+
+}
+
+.submitContainer{
+    text-align: center;
+}
+
+.submitButton {
+    display: inline-block;
+    background-color: #ddd;
+    padding: 10px 20px;
+    font-family: sans-serif, Arial;
+    font-size: 16px;
+    border: 2px solid #444;
+    border-radius: 4px;
+
+}
+
+.submitButton:hover {
+    color: rgb(45, 149, 172);   
+}
+
+#checkImg,
+input[type = "image"] {
+    width: 50px;
+    height: 50px;
+    padding: 10px 10px 10px 10px;
+    margin-right: 10px;
+    margin-left: 10px;
+
+}
+
+.buttonLabel{
+    background-color: rgb(146, 145, 145);
+    padding-right: 60px;
+    padding-left: 60px;
+    font-family: sans-serif, Arial;
+    font-size: 20px;
+    width: 135px;
+
+}
+
+
+
+.buttonContainer{
+    /* align-items: center; */
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: pink;
+  
+
+}
+  
+#vertcutImg,
+#horizCutimg,
+#palletImg,
+#moveImg,
+#answToolImg,
+#resetImg{
+    border: 1px solid pink;
+
+}
+
+/* on hover grey border appears  */
+#vertcutImg:hover,
+#horizCutimg:hover,
+#palletImg:hover,
+#moveImg:hover,
+#answToolImg:hover,
+#resetImg:hover{
+    background: #e1e1e1;
+    border: 1px solid #d0d0d0;
+
+}
+
+#vertcutImg:checked {
+    border-color: green;
+    background: green;
+  
+
+}
+
+.canvasContainer{
+    /* background-color: yellow; */
+
+}
+
+#checkImg_visual{
+    /* background-color: green; */
+     margin-left: 1000px;
+     margin-top: 10px;
+    
+}
+
+.selected {
+    background-color: red;
+}

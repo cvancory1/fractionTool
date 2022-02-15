@@ -1,0 +1,111 @@
+
+
+  
+.content{
+  margin-top: 50px;
+  margin-bottom: 50px;
+  margin-left: 50px;
+  margin-left: 50px;
+  /* background-color: fuchsia; */
+
+}
+h1 {
+  font-family: sans-serif, Arial;
+  color: black;
+  text-align: center;
+
+}
+
+input[type="radio"] {
+  display: none;
+  
+}
+ 
+.operationsContainer_top{
+  margin-bottom: 120px;
+  margin-top: 100px;
+  text-align: center;
+
+}
+
+#Subtraction + label,
+#Addition + label
+{
+  /* background-color: green; */
+  margin-left: 30px;
+  margin-right: 45px;
+  font-size: 100px;
+
+}
+
+#Division + label,
+#Multiplication + label{
+  /* background-color: pink; */
+  margin-left: 50px;
+  margin-right: 50px;
+  font-size: 100px;
+
+}
+
+#Random + label,
+#Create + label{
+  margin-right: 60px;
+  margin-left: 20px;
+}
+
+
+
+input[type="radio"] + label {
+
+  font-family: sans-serif, Arial;
+  border-width: thick;
+  border-style: outset;
+  padding: 20px 50px 20px 50px;
+  
+
+}
+
+
+
+input[type="radio"] + label:hover {
+  background-color: rgb(172, 172, 172);
+
+}
+
+input[type="radio"]:checked + label {
+  
+   background-color: rgb(172, 172, 172);
+
+}
+
+
+
+
+
+.typeContainer{
+    text-align: center;
+    margin-top: 100px;
+    margin-right: 10px;
+    margin-left: 95px;
+    margin-bottom: 25px;
+}
+
+.submitContainer{
+    text-align: center;
+    margin-top: 50px;
+}
+
+.submitButton {
+    display: inline-block;
+    font-family: sans-serif, Arial;
+    border-width: thick;
+    font-size: large;
+    border-style: outset;
+    padding: 20px 50px 20px 50px;
+    background-color: white;
+
+}
+
+.submitButton:hover {
+    background-color: rgb(172, 172, 172);
+}

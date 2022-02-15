@@ -1,0 +1,194 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+
+
+    <!-- Load the Paper.js library -->
+    <script type="text/javascript" src="../paper.js"></script>
+    
+    <!-- Define inlined PaperScript associate it with canvas -->
+    <script type="text/javascript">
+
+        var MAXNUM = 6;
+
+      
+        // generate num and denom for the problem
+        function randNumerator() {
+            return Math.floor(Math.random() * MAXNUM) + 1;  // between 1-6
+        }
+     
+        function randDenom() {
+            return Math.floor(Math.random() * MAXNUM) +2;    // between 2-6
+        }
+     
+
+        
+        window.onload = function () {
+            // looks at URL and store 
+            const queryString = window.location.search;
+            const urlParams = new URLSearchParams(queryString);
+            var choice = urlParams.get('problemChoice');
+
+            console.log("choice = "+ choice);
+
+
+             //user created their own problem 
+            if(choice == "Create"){
+                 // parse the url string 
+                leftNum = urlParams.get('leftNum');
+                leftDenom = urlParams.get('leftDenom');
+                rightNum = urlParams.get('rightNum');
+                rightDenom = urlParams.get('rightDenom');
+
+               
+            // generate numbers for the user
+            }else if (choice == "Random"){
+                var rightNum = randNumerator();
+                var rightDenom = randDenom();
+                var leftNum = randNumerator();
+                var leftDenom = randDenom();
+
+                //  ensures the fraction != 1 and is a proper fraction
+                while (rightNum == rightDenom || rightNum > rightDenom) {
+                  rightNum = randNumerator();
+                }
+
+                while (leftNum == leftDenom || leftNum > leftDenom) {
+                  leftNum = randNumerator();
+                }
+
+                var solution = (rightNum / rightDenom) + (leftNum / leftDenom);
+                
+                if(solution > 1 ){
+                    alert("Still in development restart - solution > 1" );
+                }
+
+            }
+
+            // puts fraction numbers onto the page
+            document.getElementById("leftNum").innerHTML = leftNum;
+            document.getElementById("leftDenom").innerHTML = leftDenom;
+            document.getElementById("rightNum").innerHTML = rightNum;
+            document.getElementById("rightDenom").innerHTML = rightDenom;
+           
+        }
+          
+
+        function checkAnswer() {
+            const queryString = window.location.search;
+            const urlParams = new URLSearchParams(queryString);
+
+            leftNum = urlParams.get('leftNum');
+            leftDenom = urlParams.get('leftDenom');
+            rightNum = urlParams.get('rightNum');
+            rightDenom = urlParams.get('rightDenom');
+
+            // if correct, will display in the console correct 
+            var userNumerator = document.getElementById("answerNum").value;
+            var userDenominator = document.getElementById("answerDenom").value;
+
+            var userAnswer = userNumerator / userDenominator;
+            var solution = (rightNum * leftNum ) / (rightDenom * leftDenom);
+
+
+            // console.log("userNumerator= "+userNumerator + " userDenominator= "+userDenominator);
+            // console.log("userAnswer= " + userAnswer);
+            // console.log("solution= " + solution);
+          
+            // Checks the users input 
+            if (userAnswer == solution) {
+                console.log("YAY correct ");
+
+                // display image to indicate user is correct 
+                document.getElementById('checkImg').style.display='inline-block';
+                document.getElementById('numeric_answToolimg').style.display='none';
+            } else {
+                alert("Try again - fraction is not correct");
+
+            }
+        }
+
+
+
+    </script>
+
+
+
+    <!-- paper.js code Ryan and Will -->
+    <script type="text/paperscript" canvas="workcanvas">
+       
+
+    </script>
+
+    <link rel="stylesheet" href="../css/work.css">
+
+</head>
+
+
+<body>
+
+    <div class="content" >
+
+        <h1> Division</h1>
+
+        <div class="problemContainer">
+
+            <div class="top_fractionContainer">
+
+                <span id="leftNum"></span><br>
+                <span id="leftDenom"></span>
+            </div>
+
+            <div class="signContainer">
+                <span id=operationSign>÷</span>
+            </div>
+
+            <div class="bottom_fractionContainer">
+                <span id="rightNum"></span><br>
+                <span id="rightDenom"></span>
+
+            </div>
+
+            <div class="answerContainer">
+                <input type="text" id="answerNum" name="answerNum"><br>
+                <input type="text" id="answerDenom" name="answerDenom" />
+
+            </div>
+
+            <div class="submitContainer">
+                <img id="checkImg" src="../imgs/greencheck.png" style="display:none;"/>
+                <input type="image" id ="numeric_answToolimg" onclick="checkAnswer()" src="../imgs/blackcheck.png" title="Check Answer" style="display:inline-block;" />
+                
+            </div>
+
+        </div>
+        
+
+        <div  class="toolbar">
+            
+
+            <div class="buttonContainer" >
+               
+                <input  type="image" id ="vertcutImg" src="../imgs/cut-with-scissors2.png" title="Vertical Cut"/>
+                <input type="image" id ="horizCutimg" src="../imgs/cut-with-scissors.png" title="Horizontal Cut"/>
+                <input type="image" id ="palletImg" src="../imgs/color-palette.png" title="Color"/>
+                <input type="image" id ="moveImg" src="../imgs/pointer.png" title="Move"/>
+                <input type="image" id ="answToolImg" src="../imgs/blackcheck.png" title="Check Answer"/>
+                <input type="image" id ="resetImg" src="../imgs/circular-arrow.png" title="Reset Problem"/>  
+                
+            </div>
+        
+        </div>
+       
+        <img id="checkImg_visual" src="../imgs/greencheck.png" style="display:none;"/>
+        
+        <div class="canvasContainer">
+            <canvas id="workcanvas" width="1000" height="900"></canvas>
+        </div>
+    </div>
+
+</body>
+
+<!-- <div>Icons made by <a href="https://www.freepik.com" title="Freepik">Freepik</a> from <a href="https://www.flaticon.com/" title="Flaticon">www.flaticon.com</a></div> -->
+</html>
