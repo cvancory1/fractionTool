@@ -10,17 +10,23 @@
     <!-- Define inlined PaperScript associate it with canvas -->
     <script type="text/javascript">
 
-        var MAXNUM = 6;
         function randNumerator() {
-            return Math.floor(Math.random() * MAXNUM) + 1;  // between 1-6
+            var MAXNUM = 6;
+            return (Math.floor)(Math.random() * MAXNUM )+ 1;  // between 1-6
         }
 
         
         function randDenom() {
-            return Math.floor(Math.random() * MAXNUM) +2;// between 2-6
+            MAXNUM = 5;
+            return Math.floor(Math.random() * MAXNUM + 2 );// between 2-6
         }
      
 
+        var rightNum = randNumerator();
+        var rightDenom = randDenom();
+        var leftNum = randNumerator();
+        var leftDenom = randDenom();
+        
         window.onload = function () {
             // looks at URL and store 
             const queryString = window.location.search;
@@ -40,10 +46,6 @@
 
                
             }else if (choice == "Random"){
-                var rightNum = randNumerator();
-                var rightDenom = randDenom();
-                var leftNum = randNumerator();
-                var leftDenom = randDenom();
 
                 //  ensures the fraction != 1 and is a proper fraction
                 while (rightNum == rightDenom || rightNum > rightDenom) {
@@ -56,9 +58,6 @@
 
                 var solution = (rightNum / rightDenom) + (leftNum / leftDenom);
                 
-                if(solution > 1 ){
-                    alert("Still in development restart - solution > 1" );
-                }
 
             }
 
@@ -72,27 +71,25 @@
           
 
        
-
+        // checks the numeric answer check with user's input 
         function checkAnswer() {
             const queryString = window.location.search;
             const urlParams = new URLSearchParams(queryString);
+            var choice = urlParams.get('problemChoice');
 
-            leftNum = urlParams.get('leftNum');
-            leftDenom = urlParams.get('leftDenom');
-            rightNum = urlParams.get('rightNum');
-            rightDenom = urlParams.get('rightDenom');
+            if(choice == "Create"){
+                leftNum = urlParams.get('leftNum');
+                leftDenom = urlParams.get('leftDenom');
+                rightNum = urlParams.get('rightNum');
+                rightDenom = urlParams.get('rightDenom');
+            }
 
             // if correct, will display in the console correct 
             var userNumerator = document.getElementById("answerNum").value;
             var userDenominator = document.getElementById("answerDenom").value;
            
             var userAnswer = userNumerator / userDenominator;
-            var solution = ((rightNum * leftDenom) + (leftNum * rightDenom)) / (rightDenom * leftDenom);
-
-
-            console.log("userNumerator= "+userNumerator + " userDenominator= "+userDenominator);
-            console.log("userAnswer= " + userAnswer);
-            console.log("solution= " + solution);
+            var solution = ((leftNum * rightDenom) + (rightNum * leftDenom)) / (rightDenom * leftDenom);
            
 
             // Checks the users input 
@@ -103,6 +100,8 @@
             } else {
 
                 alert("Try again - fraction is not correct");
+                console.log("solotion=" + solution + "useranswer = " + userAnswer)
+
 
             }
         }
@@ -112,10 +111,10 @@
     </script>
 
 
-
+        <!-- paper.js code Ryan and Will -->
     <script type="text/paperscript" canvas="workcanvas">
-
-
+        document.body.style.backgroundColor = "#c9f4fe";
+       
         // get url string and parse
         queryString = window.location.search;
         console.log(queryString);
@@ -242,39 +241,40 @@
         
         function moveActive(event){
             console.log("moveActive");
-            if(this.fillColor != 'grey' && isMovable == true){
+            if(this.fillColor != 'grey' && isMovable == true && this.fillColor != 'grey'){
                 //console.log(event.delta);
                 this.position += event.delta
             }
         };
         
         function endMove(event){
-            console.log("endMove");
-            //console.log(this.exportJSON(this));
             if(isMovable){
-                console.log("Here0");
-                console.log(answerSquare.children.length);
+                hits = [];
                 for(var i = 0; i < answerSquare.data.fillNumX * answerSquare.data.fillNumY; i++){
                     if(answerSquare.children[answerSquare.data.offset+i].bounds.contains(event.point) && (Math.trunc(answerSquare.children[answerSquare.data.offset+i].bounds.width) == Math.trunc(this.bounds.width) && Math.trunc(answerSquare.children[answerSquare.data.offset+i].bounds.height) == Math.trunc(this.bounds.height) || Math.trunc(answerSquare.children[answerSquare.data.offset+i].bounds.height) == Math.trunc(this.bounds.width) && Math.trunc(answerSquare.children[answerSquare.data.offset+i].bounds.width) == Math.trunc(this.bounds.height)) && answerSquare.children[answerSquare.data.offset+i].fillColor != 'aquamarine'){
-                        console.log("Here1");
-                        console.log(answerSquare.children.length);
-                        answerSquare.children[answerSquare.data.offset+i].fillColor = 'aquamarine';
-                        console.log("Here2");
-                        console.log(answerSquare.children.length);
+                        hits.push(answerSquare.data.offset+i);
+        
+                        //answerSquare.children[answerSquare.data.offset+i].fillColor = 'grey';
                         this.fillColor = 'grey';
                         this.position = origPos;
-
-
                     }
                     else{
                         this.position = origPos;
                     }
                 }
                 
+                if(hits.length > 0){
+                    answerSquare.children[hits[0]].fillColor = 'grey';
+                }
+                
                 for(var i = 0; i < groupArray.length; i++){
-                    if(groupArray[i].children.length < groupArray[i].data.offset + groupArray[i].data.fillNumX * groupArray[i].data.fillNumY + (groupArray[i].data.totalCuts * 2)){
+                    //console.log(groupArray[i].children.length);
+                    //console.log(groupArray[i].data.offset + groupArray[i].data.fillNumX * groupArray[i].data.fillNumX + groupArray[i].data.totalCuts * 2);
+                    if(groupArray[i].children.length < groupArray[i].data.offset + groupArray[i].data.fillNumX * groupArray[i].data.fillNumX + groupArray[i].data.totalCuts * 2){
+                        //console.log(project.activeLayer.children.length);
+                        //console.log(project.activeLayer.children[0].exportJSON(this));
                         var activeTemp = project.activeLayer.lastChild;
-                        groupArray[i].insertChild(groupArray[i].data.offset,activeTemp);
+                        groupArray[i].insertChild(1,activeTemp);
                     }
                     
                 }
@@ -738,11 +738,10 @@
         
         // Horizontal Toggle Button
         var horizCutTool = document.getElementById("horizCutimg");
-
         
         //Horizontal Cut toggle
         horizCutTool.addEventListener("click",function(){
-
+       
             if(!horizCutFlag){
                 for(var i = 0; i < groupArray.length; i++){
                     hideHorizCutLines(groupArray[i]);
@@ -763,14 +762,34 @@
         
         //Color Toggle Button
         var paintTool = document.getElementById("palletImg");
+       
+
+        var colorBlot1 = document.getElementById("colorBlot1");
+        var colorBlot2 = document.getElementById("colorBlot2");
+        var colorBlot3 = document.getElementById("colorBlot3");
+
+        // make 4 colors dont use naitive red blue or green
+        // do a show hide for the div ( and put all blobs into the div so then just show hide div )
+        colorBlot1.addEventListener("click",function(){
+            paintColor = "yellow"; // TODO need to change to red blob
+        })
+
+        colorBlot2.addEventListener("click",function(){
+            paintColor = "purple"; // TODO need to change to red blob
+        })
+
+        colorBlot3.addEventListener("click",function(){
+            paintColor = "pink"; // TODO need to change to red blob
+        })
 
         
         //Palette Set Up
         var paletteGroup = new Group();
+
         
         //Show Palette
         paintTool.addEventListener("click",function(){
-
+       
             if(!paintFlag){
                 for(var i = 0; i < groupArray.length; i++){
                     hideHorizCutLines(groupArray[i]);
@@ -781,46 +800,13 @@
                 horizCutFlag = false;
                 isMovable = false;
                 
-                //create Palette
-                var totalX = 50;
-                var totalY = 125;
-                for (var i = 0; i < 3; i++) {
-                    var temp = new Path.Rectangle(new Point(totalX, totalY), 50, 50);
-                    
-                    paletteGroup.addChild(temp);
-                    
-                    totalX += 75;
-                }
-                
-                temp.onMouseDown = function(event){
-                        paintColor = temp.fillColor;
-                        //console.log(temp.fillColor);
-                    }
-                
-                paletteGroup.strokeColor = 'black';
-                paletteGroup.strokeWidth = 4;
-                
-                paletteGroup.children[0].fillColor = 'red';
-                paletteGroup.children[0].onMouseDown = function(event){
-                    paintColor = paletteGroup.children[0].fillColor;
-                    //console.log(paletteGroup.children[0].fillColor);
-                }
-                
-                paletteGroup.children[1].fillColor = 'blue';
-                paletteGroup.children[1].onMouseDown = function(event){
-                    paintColor = paletteGroup.children[1].fillColor;
-                    //console.log(paletteGroup.children[1].fillColor);
-                }
-                
-                paletteGroup.children[2].fillColor = 'green';
-                paletteGroup.children[2].onMouseDown = function(event){
-                    paintColor = paletteGroup.children[2].fillColor;
-                    //console.log(paletteGroup.children[2].fillColor);
-                }
+                // put the change visible property to true 
                 
             } else {
+
                 paintFlag = false;
-                paletteGroup.removeChildren()
+                // put the change visible property to false 
+
                 paintColor = 'white'
             }
         })
@@ -831,7 +817,7 @@
         
         //Move toggle
         moveTool.addEventListener("mousedown",function(){
-
+       
             if(!isMovable){
                 for(var i = 0; i < groupArray.length; i++){
                     hideHorizCutLines(groupArray[i]);
@@ -867,8 +853,9 @@
             if(answ.toFixed(4) == userAnsw.toFixed(4)){
                 console.log(true);
                 document.getElementById('checkImg_visual').style.display='inline-block';
-
-
+                alert("Correct");
+                
+       
             } else {
                 console.log(false);
                 alert("Try again - reset the problem to start over");
@@ -907,6 +894,8 @@
     <div class="content" >
 
         <h1> <span id="Operaton"></span>Addition</h1>
+        <a href="../Homepage.html"> <img  src= "../imgs/home.png" > </a>
+
 
         <div class="problemContainer">
 
@@ -917,13 +906,17 @@
             </div>
 
             <div class="signContainer">
-                <span id=operationSign>+</span>
+                <span id=operationSign> &#43;</span>
             </div>
 
             <div class="bottom_fractionContainer">
                 <span id="rightNum"></span><br>
                 <span id="rightDenom"></span>
 
+            </div>
+            <div>
+                <span id= equalsign> &#61;</span>
+                
             </div>
 
             <div class="answerContainer">
@@ -945,7 +938,6 @@
             
 
             <div class="buttonContainer" >
-               
                 <input  type="image" id ="vertcutImg" src="../imgs/cut-with-scissors2.png" title="Vertical Cut"/>
                 <input type="image" id ="horizCutimg" src="../imgs/cut-with-scissors.png" title="Horizontal Cut"/>
                 <input type="image" id ="palletImg" src="../imgs/color-palette.png" title="Color"/>
@@ -954,7 +946,15 @@
                 <input type="image" id ="resetImg" src="../imgs/circular-arrow.png" title="Reset Problem"/>  
                 
             </div>
-        
+
+            <div class="paletteContainer">
+                <input  type="image" id ="color-palette" src="../imgs/palette.png" />
+                <input  type="image" id ="colorBlot1" src="../imgs/colorBlot1.png" title="colorBlot1"/>
+                <input  type="image" id ="colorBlot2" src="../imgs/colorBlot2.png" title="colorBlot2"/>
+                <input  type="image" id ="colorBlot3" src="../imgs/colorBlot3.png" title="colorBlot3"/>
+
+            </div>
+           
         </div>
        
         <img id="checkImg_visual" src="../imgs/greencheck.png" style="display:none;"/>

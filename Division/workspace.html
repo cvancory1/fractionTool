@@ -23,6 +23,10 @@
         }
      
 
+        var rightNum = randNumerator();
+        var rightDenom = randDenom();
+        var leftNum = randNumerator();
+        var leftDenom = randDenom();
         
         window.onload = function () {
             // looks at URL and store 
@@ -44,10 +48,6 @@
                
             // generate numbers for the user
             }else if (choice == "Random"){
-                var rightNum = randNumerator();
-                var rightDenom = randDenom();
-                var leftNum = randNumerator();
-                var leftDenom = randDenom();
 
                 //  ensures the fraction != 1 and is a proper fraction
                 while (rightNum == rightDenom || rightNum > rightDenom) {
@@ -58,12 +58,7 @@
                   leftNum = randNumerator();
                 }
 
-                var solution = (rightNum / rightDenom) + (leftNum / leftDenom);
-                
-                if(solution > 1 ){
-                    alert("Still in development restart - solution > 1" );
-                }
-
+                var solution = (rightNum / rightDenom) / (leftNum / leftDenom);
             }
 
             // puts fraction numbers onto the page
@@ -78,23 +73,26 @@
         function checkAnswer() {
             const queryString = window.location.search;
             const urlParams = new URLSearchParams(queryString);
+            var choice = urlParams.get('problemChoice');
 
-            leftNum = urlParams.get('leftNum');
-            leftDenom = urlParams.get('leftDenom');
-            rightNum = urlParams.get('rightNum');
-            rightDenom = urlParams.get('rightDenom');
+            if(choice == "Create"){
+                leftNum = urlParams.get('leftNum');
+                leftDenom = urlParams.get('leftDenom');
+                rightNum = urlParams.get('rightNum');
+                rightDenom = urlParams.get('rightDenom');
+            }
 
             // if correct, will display in the console correct 
             var userNumerator = document.getElementById("answerNum").value;
             var userDenominator = document.getElementById("answerDenom").value;
 
             var userAnswer = userNumerator / userDenominator;
-            var solution = (rightNum * leftNum ) / (rightDenom * leftDenom);
+            var solution = (leftNum /leftDenom ) / (rightNum / rightDenom )
 
 
-            // console.log("userNumerator= "+userNumerator + " userDenominator= "+userDenominator);
-            // console.log("userAnswer= " + userAnswer);
-            // console.log("solution= " + solution);
+            console.log("userNumerator= "+userNumerator + " userDenominator= "+userDenominator);
+            console.log("userAnswer= " + userAnswer);
+            console.log("solution= " + solution);
           
             // Checks the users input 
             if (userAnswer == solution) {
@@ -117,6 +115,8 @@
 
     <!-- paper.js code Ryan and Will -->
     <script type="text/paperscript" canvas="workcanvas">
+        document.body.style.backgroundColor = "#366677";
+
        
 
     </script>
@@ -131,6 +131,8 @@
     <div class="content" >
 
         <h1> Division</h1>
+        <a href="../Homepage.html"> <img  src= "../imgs/home.png" > </a>
+
 
         <div class="problemContainer">
 
@@ -141,7 +143,9 @@
             </div>
 
             <div class="signContainer">
-                <span id=operationSign>÷</span>
+                <!-- &#247; is the code for the division sign  -->
+                <span id=operationSign>&#247;</span> 
+
             </div>
 
             <div class="bottom_fractionContainer">
@@ -149,6 +153,11 @@
                 <span id="rightDenom"></span>
 
             </div>
+
+            <div class="signContainer">
+                <span id = equalsign>&#61;</span>
+             </div>
+        
 
             <div class="answerContainer">
                 <input type="text" id="answerNum" name="answerNum"><br>
@@ -178,6 +187,7 @@
                 <input type="image" id ="resetImg" src="../imgs/circular-arrow.png" title="Reset Problem"/>  
                 
             </div>
+
         
         </div>
        

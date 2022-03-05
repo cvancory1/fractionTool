@@ -18,6 +18,12 @@
     var rightN = parseInt(rightN);
     var rightD = parseInt(rightD);
 
+    if (isNaN(leftN)|| isNaN(leftD) ||  isNaN(rightN) ||  isNaN(rightD) ){
+      alert("You must enter in a number ");
+      e.preventDefault();// stop 
+
+    }
+
 
     if (leftN / leftD == 1) {
       alert("The left fraction equals 1. Please enter in a fraction that does not equal 1. ");
@@ -51,8 +57,8 @@
     // we havent implemented for more than one answer square 
     var solution = ((rightN * leftD) + (leftN * rightD)) / (rightD * leftD);
     if(solution > 1){
-        alert(solution);
-        alert("feature is still in development- currently no answers >1 have been added.");
+        // alert(solution);
+        // alert("feature is still in development- currently no answers >1 have been added.");
         e.preventDefault(); // stop 
     }
    
@@ -79,7 +85,8 @@
       </div>
 
       <div class="signContainer">
-        <span id = operationSign>÷</span>
+        <!-- &#247; is the code for the division sign  -->
+        <span id = operationSign>&#247;</span>
      </div>
 
       
@@ -97,11 +104,7 @@
   </div>
   <input type="hidden" id = "problemChoice" name="problemChoice" value= "Create"/>
 
-
-
   </form>
-
-
 
 </body>
 

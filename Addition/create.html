@@ -19,6 +19,12 @@
     var rightD = parseInt(rightD);
 
 
+    if (isNaN(leftN)|| isNaN(leftD) ||  isNaN(rightN) ||  isNaN(rightD) ){
+      alert("You must enter in a number ");
+      e.preventDefault();// stop 
+
+    }
+
     if (leftN / leftD == 1) {
       alert("The left fraction equals 1. Please enter in a fraction that does not equal 1. ");
       e.preventDefault();// stop 
@@ -74,12 +80,14 @@
 
 
       <div class="top_fractionContainer">
-        <input type="text" id="leftNumerator" name="leftNum" /><br />
+        <span>
+          <input type="text" id="leftNumerator" name="leftNum" /><br />
+        </span>
         <input type="text" id="rightNumerator" name="rightNum" /><br />
       </div>
 
       <div class="signContainer">
-        <span id = operationSign>+</span>
+        <span id = operationSign>&#43;</span>
      </div>
 
       

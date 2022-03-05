@@ -16,6 +16,12 @@
     var rightN = parseInt(rightN);
     var rightD = parseInt(rightD);
 
+    if (isNaN(leftN)|| isNaN(leftD) ||  isNaN(rightN) ||  isNaN(rightD) ){
+      alert("You must enter in a number ");
+      e.preventDefault();// stop 
+
+    }
+
 
     if (leftN / leftD == 1) {
       alert("The left fraction equals 1. Please enter in a fraction that does not equal 1. ");
@@ -45,15 +51,6 @@
 
     }
 
-
-    // we havent implemented for more than one answer square 
-    var solution = ((rightN * leftD) + (leftN * rightD)) / (rightD * leftD);
-    if(solution > 1){
-        alert(solution);
-        alert("feature is still in development- currently no answers >1 have been added.");
-        e.preventDefault(); // stop 
-    }
-   
     
   }
 </script>
@@ -77,7 +74,7 @@
       </div>
 
       <div class="signContainer">
-        <span id = operationSign>X</span>
+        <span id = operationSign>&#215;</span>
      </div>
 
       

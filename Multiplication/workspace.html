@@ -24,6 +24,11 @@
      
 
         
+        var rightNum = randNumerator();
+        var rightDenom = randDenom();
+        var leftNum = randNumerator();
+        var leftDenom = randDenom();
+
         window.onload = function () {
             // looks at URL and store 
             const queryString = window.location.search;
@@ -44,10 +49,7 @@
                
             // generate numbers for the user
             }else if (choice == "Random"){
-                var rightNum = randNumerator();
-                var rightDenom = randDenom();
-                var leftNum = randNumerator();
-                var leftDenom = randDenom();
+                
 
                 //  ensures the fraction != 1 and is a proper fraction
                 while (rightNum == rightDenom || rightNum > rightDenom) {
@@ -58,12 +60,8 @@
                   leftNum = randNumerator();
                 }
 
-                var solution = (rightNum / rightDenom) + (leftNum / leftDenom);
-                
-                if(solution > 1 ){
-                    alert("Still in development restart - solution > 1" );
-                }
-
+                var solution = (rightNum / rightDenom) * (leftNum / leftDenom);
+              
             }
 
             // puts fraction numbers onto the page
@@ -78,27 +76,28 @@
         function checkAnswer() {
             const queryString = window.location.search;
             const urlParams = new URLSearchParams(queryString);
+            var choice = urlParams.get('problemChoice');
 
-            leftNum = urlParams.get('leftNum');
-            leftDenom = urlParams.get('leftDenom');
-            rightNum = urlParams.get('rightNum');
-            rightDenom = urlParams.get('rightDenom');
+            if(choice == "Create"){
+                leftNum = urlParams.get('leftNum');
+                leftDenom = urlParams.get('leftDenom');
+                rightNum = urlParams.get('rightNum');
+                rightDenom = urlParams.get('rightDenom');
+            }
 
             // if correct, will display in the console correct 
             var userNumerator = document.getElementById("answerNum").value;
             var userDenominator = document.getElementById("answerDenom").value;
 
             var userAnswer = userNumerator / userDenominator;
-            var solution = (rightNum * leftNum ) / (rightDenom * leftDenom);
-
-
-            // console.log("userNumerator= "+userNumerator + " userDenominator= "+userDenominator);
-            // console.log("userAnswer= " + userAnswer);
-            // console.log("solution= " + solution);
+            var solution = (leftNum * rightNum ) / ( leftDenom * rightDenom)
+      
           
             // Checks the users input 
             if (userAnswer == solution) {
                 console.log("YAY correct ");
+                alert("Correct");
+
 
                 // display image to indicate user is correct 
                 document.getElementById('checkImg').style.display='inline-block';
@@ -117,7 +116,9 @@
 
     <!-- paper.js code Ryan and Will -->
     <script type="text/paperscript" canvas="workcanvas">
-        document.body.style.backgroundColor = "#ffd991";
+
+        document.body.style.backgroundColor = "#81cbab";
+
 
         // get url string and parse
         queryString = window.location.search;
@@ -786,6 +787,8 @@
     <div class="content" >
 
         <h1> Multiplication</h1>
+        <a href="../Homepage.html"> <img  src= "../imgs/home.png" > </a>
+
 
         <div class="problemContainer">
 
@@ -796,7 +799,7 @@
             </div>
 
             <div class="signContainer">
-                <span id=operationSign>X</span>
+                <span id=operationSign>&#215;</span>
             </div>
 
             <div class="bottom_fractionContainer">
@@ -804,6 +807,11 @@
                 <span id="rightDenom"></span>
 
             </div>
+
+            <div class="signContainer">
+                <span id = equalsign>&#61;</span>
+             </div>
+        
 
             <div class="answerContainer">
                 <input type="text" id="answerNum" name="answerNum"><br>
@@ -828,7 +836,7 @@
                 <input  type="image" id ="vertcutImg" src="../imgs/cut-with-scissors2.png" title="Vertical Cut"/>
                 <input type="image" id ="horizCutimg" src="../imgs/cut-with-scissors.png" title="Horizontal Cut"/>
                 <input type="image" id ="palletImg" src="../imgs/color-palette.png" title="Color"/>
-                <input type="image" id ="moveImg" src="../imgs/pointer.png" title="Move"/>
+                <!-- <input type="image" id ="moveImg" src="../imgs/pointer.png" title="Move"/> -->
                 <input type="image" id ="answToolImg" src="../imgs/blackcheck.png" title="Check Answer"/>
                 <input type="image" id ="resetImg" src="../imgs/circular-arrow.png" title="Reset Problem"/>  
                 

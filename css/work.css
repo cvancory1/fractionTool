@@ -5,7 +5,6 @@
     margin-bottom: 100px;
     /* background-color: pink; */
 
-
 }
 
 
@@ -45,6 +44,7 @@
 
 } 
 
+#equalsign,
 #operationSign,
 #answerNum,
 #answerDenom,
@@ -176,4 +176,15 @@ input[type = "image"] {
 
 .selected {
     background-color: red;
+}
+
+.paletteContainer{
+    height: 100;
+    width: 200px;
+    
+}
+
+.img{
+    max-width: 100%;
+    max-height: 100%;
 }
