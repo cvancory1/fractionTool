@@ -605,11 +605,27 @@ function removeSquares(group){
     group.removeChildren(group.data.offset, group.data.fillNumX * group.data.fillNumY + 1);
 };
 
+
+
+
+var activeButton = null;
+
+function updateSelectedClass(){
+    verticalcut.classList.remove('selected');
+    horizCutTool.classList.remove('selected');
+    moveTool.classList.remove('selected');
+    eraseTool.classList.remove('selected');
+
+    activeButton.classList.add('selected');
+}
+
 // Vertical Toggle Button
 var verticalcut = document.getElementById("vertcutImg");
 
 //Vertical Cut toggle
 verticalcut.addEventListener("click",function(){
+    activeButton = this;
+
     if(!vertCutFlag){
         for(var i = 0; i < groupArray.length; i++){
             hideHorizCutLines(groupArray[i]);
@@ -627,6 +643,7 @@ verticalcut.addEventListener("click",function(){
         hideVertCutLines(unitSquare);
         vertCutFlag = false;
     }
+    updateSelectedClass();
 })
 
 // Horizontal Toggle Button
@@ -634,6 +651,7 @@ var horizCutTool = document.getElementById("horizCutimg");
 
 //Horizontal Cut toggle
 horizCutTool.addEventListener("click",function(){
+    activeButton = this;
     if(!horizCutFlag){
         for(var i = 0; i < groupArray.length; i++){
             hideHorizCutLines(groupArray[i]);
@@ -651,6 +669,8 @@ horizCutTool.addEventListener("click",function(){
         hideHorizCutLines(unitSquare);
         horizCutFlag = false;
     }
+    updateSelectedClass();
+
 })
 
 
@@ -673,6 +693,9 @@ colorBlot1.addEventListener("click",function(){
     horizCutFlag = false;
     isMovable = false;
     eraseFlag = false;
+    activeButton = null;
+    updateSelectedClass();
+
     
 })
 
@@ -687,6 +710,9 @@ colorBlot2.addEventListener("click",function(){
     horizCutFlag = false;
     isMovable = false;
     eraseFlag = false;
+    activeButton = null;
+    updateSelectedClass();
+
     
 })
 
@@ -701,6 +727,9 @@ colorBlot3.addEventListener("click",function(){
     horizCutFlag = false;
     isMovable = false;
     eraseFlag = false;
+    activeButton = null;
+    updateSelectedClass();
+
 })
 
 colorBlot4.addEventListener("click",function(){
@@ -714,75 +743,21 @@ colorBlot4.addEventListener("click",function(){
     horizCutFlag = false;
     isMovable = false;
     eraseFlag = false;
+    activeButton = null;
+    updateSelectedClass();
+
     
 })
 
 
-//Palette Set Up
-// var paletteGroup = new Group();
 
-//Show Palette
-// paintTool.addEventListener("click",function(){  
-//     if(!paintFlag){
-//         for(var i = 0; i < groupArray.length; i++){
-//             hideHorizCutLines(groupArray[i]);
-//             hideVertCutLines(groupArray[i]);
-//         }
-//         paintFlag = true;
-//         vertCutFlag = false;
-//         horizCutFlag = false;
-//         isMovable = false;
-//         eraseFlag = false;
-        
-//         //create Palette
-//         var totalX = 50;
-//         var totalY = 125;
-//         for (var i = 0; i < 3; i++) {
-//             var temp = new Path.Rectangle(new Point(totalX, totalY), 50, 50);
-            
-//             paletteGroup.addChild(temp);
-            
-//             totalX += 75;
-//         }
-        
-//         temp.onMouseDown = function(event){
-//                 paintColor = temp.fillColor;
-//                 //console.log(temp.fillColor);
-//             }
-        
-//         paletteGroup.strokeColor = 'black';
-//         paletteGroup.strokeWidth = 4;
-        
-//         paletteGroup.children[0].fillColor = 'red';
-//         paletteGroup.children[0].onMouseDown = function(event){
-//             paintColor = paletteGroup.children[0].fillColor;
-//             //console.log(paletteGroup.children[0].fillColor);
-//         }
-        
-//         paletteGroup.children[1].fillColor = 'blue';
-//         paletteGroup.children[1].onMouseDown = function(event){
-//             paintColor = paletteGroup.children[1].fillColor;
-//             //console.log(paletteGroup.children[1].fillColor);
-//         }
-        
-//         paletteGroup.children[2].fillColor = 'green';
-//         paletteGroup.children[2].onMouseDown = function(event){
-//             paintColor = paletteGroup.children[2].fillColor;
-//             //console.log(paletteGroup.children[2].fillColor);
-//         }
-        
-//     } else {
-//         paintFlag = false;
-//         paletteGroup.removeChildren()
-//         paintColor = 'white'
-//     }
-// })
 
 // Move Toggle Button
 var moveTool = document.getElementById("moveImg")
 
 //Horizontal Cut toggle
 moveTool.addEventListener("mousedown",function(){
+    activeButton = this;
     if(!isMovable){
         for(var i = 0; i < groupArray.length; i++){
             hideHorizCutLines(groupArray[i]);
@@ -798,6 +773,8 @@ moveTool.addEventListener("mousedown",function(){
     } else {
         isMovable = false;
     }
+    updateSelectedClass();
+
 })
 
 // Answer Check Button
@@ -832,6 +809,7 @@ var eraseTool = document.getElementById("eraseImg");
 
 //Erase Function
 eraseTool.addEventListener("click",function(){
+    activeButton = this;
     if(!eraseFlag){
         for(var i = 0; i < groupArray.length; i++){
             hideHorizCutLines(groupArray[i]);
@@ -847,6 +825,8 @@ eraseTool.addEventListener("click",function(){
     } else {
         eraseFlag = false;
     }
+    updateSelectedClass();
+
 })
 
 var resetTool = document.getElementById("resetImg");
