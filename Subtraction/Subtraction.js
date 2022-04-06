@@ -1,15 +1,20 @@
-document.body.style.backgroundColor = "#ffccbb";
-
+document.body.style.backgroundColor = "#e5ccc9";
+        
 // get url string and parse
 queryString = window.location.search;
 console.log(queryString);
 
 // gets the fraction numbers
 urlParams = new URLSearchParams(queryString);
+
+// sets problem input
 num1 = urlParams.get('leftNum');
 denom1 = urlParams.get('leftDenom');
 num2 = urlParams.get('rightNum');
 denom2 = urlParams.get('rightDenom');
+
+console.log(num1 + num2 + denom1 +denom2)
+
 
 //Global Variable Definition
 var vertCutFlag = false;
@@ -51,12 +56,12 @@ answerSquare.data.offset = 1;
 answerSquare.data.isCuttableHoriz = true;
 answerSquare.data.isCuttableVert = true;
 
-    groupArray = [unitSquare, answerSquare];
+ groupArray = [unitSquare, answerSquare];
 
 var origPos;
 
 function doOverlap(l1,  r1,  l2,  r2) {
-    
+ 
     // To check if either rectangle is actually a line
     // For example : l1 ={-1,0} r1={1,1} l2={0,-1} r2={0,1}
 
@@ -120,8 +125,8 @@ function moveActive(event){
 
 function endMove(event){
     if(isMovable){
-        if(this.data.movingSquare){
-                hits = [];
+        if(this.data.movingSquare && this.fillColor != 'white' && this.fillColor != 'grey'){
+             hits = [];
             var ogIndex;
             for(var i = 0; i < answerSquare.data.fillNumX * answerSquare.data.fillNumY; i++){
                 if(answerSquare.children[answerSquare.data.offset+i].bounds.contains(event.point) && (Math.trunc(answerSquare.children[answerSquare.data.offset+i].bounds.width) == Math.trunc(this.bounds.width) && Math.trunc(answerSquare.children[answerSquare.data.offset+i].bounds.height) == Math.trunc(this.bounds.height) || Math.trunc(answerSquare.children[answerSquare.data.offset+i].bounds.height) == Math.trunc(this.bounds.width) && Math.trunc(answerSquare.children[answerSquare.data.offset+i].bounds.width) == Math.trunc(this.bounds.height)) && answerSquare.children[answerSquare.data.offset+i].fillColor != 'grey'){
@@ -131,7 +136,6 @@ function endMove(event){
                     this.position = origPos;
                 }
                 else{
-                    console.log("Here")
                     this.position = origPos;
                 }
             }
@@ -141,8 +145,8 @@ function endMove(event){
             }
             
             for(var i = 0; i < groupArray.length; i++){
-                    groupArray[i].data.isCuttableHoriz = false;
-                    groupArray[i].data.isCuttableVert = false;
+            		groupArray[i].data.isCuttableHoriz = false;
+            		groupArray[i].data.isCuttableVert = false;
             }
         }
         this.data.movingSquare = false;
@@ -208,6 +212,7 @@ function addVertLines(group){
                         prevGroup.removeChildren();
                         hideVertCutLines(group);
                     }
+                    group.data.isCuttableVert = false;
                 }
             };
             group.addChild(line);
@@ -266,6 +271,7 @@ function addHorizLines(group){
                         prevGroup.removeChildren();
                         hideHorizCutLines(group);
                     }
+                    group.data.isCuttableHoriz = false;
                 }
             };
             group.addChild(line);
@@ -322,12 +328,12 @@ function horizCutSelect(event, group){
 };
 
 function showHorizCutLines(event, group) {
-    if(!group.data.isCuttableHoriz){
-        alert("Erase Before Cutting!")
-        horizCutFlag = false;
-    }
-    else if(horizCutFlag){
-        if(group != undefined){
+    if(group != undefined){
+        if(!group.data.isCuttableHoriz){
+            console.log("Erase Before Cutting!")
+            horizCutFlag = false;
+        }
+        else if(horizCutFlag){
             //console.log(event.point.x);
             hideHorizCutLines(group);
             if(event.point.y > (group.data.HEIGHT/3)+group.data.CENTER_Y && event.point.y < 2*(group.data.HEIGHT/3)+group.data.CENTER_Y){
@@ -409,12 +415,12 @@ function vertCutSelect(event, group){
 };
 
 function showVertCutLines(event, group) {
-    if(!group.data.isCuttableVert){
-        alert("Erase Before Cutting!")
-        vertCutFlag = false;
-    }
-    else if(vertCutFlag){
-        if(group != undefined){
+    if(group != undefined){
+        if(!group.data.isCuttableVert){
+            console.log("Erase Before Cutting!")
+            vertCutFlag = false;
+        }
+        else if(vertCutFlag){
             //console.log(event.point.x);
             hideVertCutLines(group);
             if(event.point.x > (group.data.WIDTH/3)+group.data.CENTER_X && event.point.x < 2*(group.data.WIDTH/3)+group.data.CENTER_X){
@@ -450,6 +456,7 @@ function showVertCutLines(event, group) {
 function eraseFunc(event, group){
     if(eraseFlag){
         if(group != undefined){
+            paintColor = 'white';
             group.data.fillNumX = 1;
             group.data.fillNumY = 1;
             group.data.isCuttableVert = true;
@@ -589,7 +596,6 @@ var verticalcut = document.getElementById("vertcutImg");
 
 //Vertical Cut toggle
 verticalcut.addEventListener("click",function(){
-
     if(!vertCutFlag){
         for(var i = 0; i < groupArray.length; i++){
             hideHorizCutLines(groupArray[i]);
@@ -612,10 +618,8 @@ verticalcut.addEventListener("click",function(){
 // Horizontal Toggle Button
 var horizCutTool = document.getElementById("horizCutimg");
 
-
 //Horizontal Cut toggle
 horizCutTool.addEventListener("click",function(){
-
     if(!horizCutFlag){
         for(var i = 0; i < groupArray.length; i++){
             hideHorizCutLines(groupArray[i]);
@@ -636,16 +640,13 @@ horizCutTool.addEventListener("click",function(){
 })
 
 //Color Toggle Button
-    var paintTool = document.getElementById("palletImg");
+var paintTool = document.getElementById("palletImg");
 
-// Color pallete
-
+          
 var colorBlot1 = document.getElementById("colorBlot1");
 var colorBlot2 = document.getElementById("colorBlot2");
 var colorBlot3 = document.getElementById("colorBlot3");
 
-// make 4 colors dont use naitive red blue or green
-// do a show hide for the div ( and put all blobs into the div so then just show hide div )
 
 colorBlot1.addEventListener("click",function(){
     paintColor = "#FCFF00"; // yellow 
@@ -702,10 +703,11 @@ colorBlot4.addEventListener("click",function(){
     
 })
 
+//Palette Set Up
+// var paletteGroup = new Group();
 
-//Show Palette toggle - PREVIOUS VERSION
-// paintTool.addEventListener("click",function(){
-
+//Show Palette
+// paintTool.addEventListener("click",function(){  
 //     if(!paintFlag){
 //         for(var i = 0; i < groupArray.length; i++){
 //             hideHorizCutLines(groupArray[i]);
@@ -716,11 +718,48 @@ colorBlot4.addEventListener("click",function(){
 //         horizCutFlag = false;
 //         isMovable = false;
 //         eraseFlag = false;
-    
+        
+//         //create Palette
+//         var totalX = 50;
+//         var totalY = 125;
+//         for (var i = 0; i < 3; i++) {
+//             var temp = new Path.Rectangle(new Point(totalX, totalY), 50, 50);
+            
+//             paletteGroup.addChild(temp);
+            
+//             totalX += 75;
+//         }
+        
+//         temp.onMouseDown = function(event){
+//                 paintColor = temp.fillColor;
+//                 //console.log(temp.fillColor);
+//             }
+        
+//         paletteGroup.strokeColor = 'black';
+//         paletteGroup.strokeWidth = 4;
+        
+//         paletteGroup.children[0].fillColor = 'red';
+//         paletteGroup.children[0].onMouseDown = function(event){
+//             paintColor = paletteGroup.children[0].fillColor;
+//             //console.log(paletteGroup.children[0].fillColor);
+//         }
+        
+//         paletteGroup.children[1].fillColor = 'blue';
+//         paletteGroup.children[1].onMouseDown = function(event){
+//             paintColor = paletteGroup.children[1].fillColor;
+//             //console.log(paletteGroup.children[1].fillColor);
+//         }
+        
+//         paletteGroup.children[2].fillColor = 'green';
+//         paletteGroup.children[2].onMouseDown = function(event){
+//             paintColor = paletteGroup.children[2].fillColor;
+//             //console.log(paletteGroup.children[2].fillColor);
+//         }
+        
 //     } else {
 //         paintFlag = false;
-//         //paletteGroup.removeChildren()
-//        paintColor = 'white'
+//         paletteGroup.removeChildren()
+//         paintColor = 'white'
 //     }
 // })
 
@@ -729,7 +768,6 @@ var moveTool = document.getElementById("moveImg");
 
 //Move Function
 moveTool.addEventListener("mousedown",function(){
-
     if(!isMovable){
         for(var i = 0; i < groupArray.length; i++){
             hideHorizCutLines(groupArray[i]);
@@ -753,7 +791,6 @@ var answTool = document.getElementById("answToolImg");
 
 //Answer Check Function
 answTool.addEventListener("click",function(){
-
     var counter = 0;
     var answ = (num1 / denom1) - (num2 / denom2);
     console.log('answ');
@@ -774,17 +811,14 @@ answTool.addEventListener("click",function(){
     } else {
         console.log(false);
         alert("Try again - reset the problem to start over");
-
     }
 })
 
 // Erase Button
 var eraseTool = document.getElementById("eraseImg");
 
-
 //Erase Function
 eraseTool.addEventListener("click",function(){
-
     if(!eraseFlag){
         for(var i = 0; i < groupArray.length; i++){
             hideHorizCutLines(groupArray[i]);
@@ -802,13 +836,10 @@ eraseTool.addEventListener("click",function(){
     }
 })
 
-// Reset toggle button 
 var resetTool = document.getElementById("resetImg");
 resetTool.addEventListener("click",function(){
-    location.reload();
+location.reload();
 })
-
-
 
 addBackdrop(unitSquare);
 addBackdrop(answerSquare);
@@ -823,3 +854,4 @@ addVertLines(answerSquare);
 
 addHorizLines(unitSquare);
 addHorizLines(answerSquare);
+
