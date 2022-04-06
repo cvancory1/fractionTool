@@ -6,68 +6,65 @@
 
     <!-- Load the Paper.js library -->
     <script type="text/javascript" src="../paper.js"></script>
-    
-    <!-- Define inlined PaperScript associate it with canvas -->
+
+    <!-- Define inligned PaperScript associate it with canvas -->
     <script type="text/javascript">
 
-        var MAXNUM = 6;
-
-      
-        // generate num and denom for the problem
         function randNumerator() {
-            return Math.floor(Math.random() * MAXNUM) + 1;  // between 1-6
+            var MAXNUM = 6;
+            return (Math.floor)(Math.random() * MAXNUM )+ 1;  // between 1-6
         }
-     
-        function randDenom() {
-            return Math.floor(Math.random() * MAXNUM) +2;    // between 2-6
-        }
-     
 
         
+        function randDenom() {
+            MAXNUM = 5;
+            return Math.floor(Math.random() * MAXNUM + 2 );// between 2-6
+        }
+     
+
         var rightNum = randNumerator();
         var rightDenom = randDenom();
         var leftNum = randNumerator();
         var leftDenom = randDenom();
-
+        
         window.onload = function () {
             // looks at URL and store 
             const queryString = window.location.search;
-            console.log(queryString);
-            // var choice = urlParams.get('problemChoice');
-            // console.log("choice = "+ choice);
-
             const urlParams = new URLSearchParams(queryString);
-            leftNum = urlParams.get('leftNum');
-            leftDenom = urlParams.get('leftDenom');
-            rightNum = urlParams.get('rightNum');
-            rightDenom = urlParams.get('rightDenom');
+            var choice = urlParams.get('problemChoice');
+
+            console.log("choice = "+ choice);
 
 
              //user created their own problem 
-            // if(choice == "Create"){
-            //      // parse the url string 
-            //     const urlParams = new URLSearchParams(queryString);
-            //     leftNum = urlParams.get('leftNum');
-            //     leftDenom = urlParams.get('leftDenom');
-            //     rightNum = urlParams.get('rightNum');
-            //     rightDenom = urlParams.get('rightDenom');
+            if(choice == "Create"){
+                 // parse the url string 
+                leftNum = urlParams.get('leftNum');
+                leftDenom = urlParams.get('leftDenom');
+                rightNum = urlParams.get('rightNum');
+                rightDenom = urlParams.get('rightDenom');
 
                
-            // // generate numbers for the user
-            // }else if (choice == "Random"){
+            }else if (choice == "Random"){
+
+                //  ensures the fraction != 1 and is a proper fraction
+                // while (rightNum == rightDenom || rightNum > rightDenom) {
+                //   rightNum = randNumerator();
+                // }
+
+                // while (leftNum == leftDenom || leftNum > leftDenom) {
+                //   leftNum = randNumerator();
+                // }
+
+                while ((rightNum == rightDenom || rightNum > rightDenom) || (leftNum == leftDenom || leftNum > leftDenom)) {
+                  rightNum = randNumerator();
+                  leftNum = randNumerator();
+                }
+
+                var solution = (rightNum / rightDenom) + (leftNum / leftDenom);
                 
 
-            //     //  ensures the fraction != 1 and is a proper fraction
-            //     while ((rightNum == rightDenom || rightNum > rightDenom)  || (leftNum == leftDenom || leftNum > leftDenom)){
-            //       rightNum = randNumerator();
-            //       leftNum = randNumerator();
-
-            //     }
-
-
-            //     var solution = (rightNum / rightDenom) * (leftNum / leftDenom);
-              
-            // }
+            }
 
             // puts fraction numbers onto the page
             document.getElementById("leftNum").innerHTML = leftNum;
@@ -78,6 +75,8 @@
         }
           
 
+       
+        // checks the numeric answer check with user's input 
         function checkAnswer() {
             const queryString = window.location.search;
             const urlParams = new URLSearchParams(queryString);
@@ -89,31 +88,24 @@
                 rightNum = urlParams.get('rightNum');
                 rightDenom = urlParams.get('rightDenom');
             }
-            
-            // gather user input 
-            var userWholeNumber = document.getElementById("answerWholeNum").value;
+
+            // if correct, will display in the console correct 
             var userNumerator = document.getElementById("answerNum").value;
             var userDenominator = document.getElementById("answerDenom").value;
+           
+            var userAnswer = userNumerator / userDenominator;
+            var solution = ((leftNum * rightDenom) + (rightNum * leftDenom)) / (rightDenom * leftDenom);
+           
 
-            // cast to an int
-            userWholeNumber = userWholeNumber/1
-
-            // Calc before comparing 
-            var userAnswer =  (userWholeNumber + (userNumerator / userDenominator));
-            var solution = (leftNum * rightNum ) / ( leftDenom * rightDenom)
-      
-          
-            // Compare user input with solution
+            // Checks the users input 
             if (userAnswer == solution) {
-                alert("Correct!");
                 console.log("YAY correct ");
-
-                // display image to indicate user is correct 
                 document.getElementById('checkImg').style.display='inline-block';
                 document.getElementById('numeric_answToolimg').style.display='none';
             } else {
+
                 alert("Try again - fraction is not correct");
-                console.log("solution=" + solution + " useranswer = " + userAnswer)
+                console.log("solotion=" + solution + "useranswer = " + userAnswer)
 
 
             }
@@ -124,115 +116,199 @@
     </script>
 
 
-
-    <!-- paper.js code Ryan and Will -->
+        <!-- paper.js code Ryan and Will -->
     <script type="text/paperscript" canvas="workcanvas">
-
-        document.body.style.backgroundColor = "#81cbab";
-
-
-
-        //Global Variable Definition
-        var vertCutFlag = false;
-        var horizCutFlag = false;
-        var paintFlag = false;
-        var isMovable = false;
-        var paintColor = 'white';
-
-        var prevGroup = new Group();
-
+        document.body.style.backgroundColor = "#c9f4fe";
+       
         // get url string and parse
         queryString = window.location.search;
         console.log(queryString);
-
+        
         // gets the fraction numbers
         urlParams = new URLSearchParams(queryString);
         num1 = urlParams.get('leftNum');
         denom1 = urlParams.get('leftDenom');
         num2 = urlParams.get('rightNum');
         denom2 = urlParams.get('rightDenom');
-
+        
+        
+        
+        //Global Variable Definition
+        var vertCutFlag = false;
+        var horizCutFlag = false;
+        var paintFlag = false;
+        var isMovable = false;
+        var paintColor = 'white';
+        
+        var prevGroup = new Group();
+        
+        
         //unitSquare variable definition
         var unitSquare = new Group();
         unitSquare.data.type = "work";
         unitSquare.data.MAX_CUTS = 6;
-        unitSquare.data.WIDTH = 400;
-        unitSquare.data.HEIGHT = 400;
+        unitSquare.data.WIDTH = 300;
+        unitSquare.data.HEIGHT = 300;
         unitSquare.data.CENTER_X = 100;
         unitSquare.data.CENTER_Y = 200;
         unitSquare.data.fillNumX = 1;
         unitSquare.data.fillNumY = 1;
         unitSquare.data.totalCuts = (unitSquare.data.MAX_CUTS - 1) * unitSquare.data.MAX_CUTS / 2;
         unitSquare.data.offset = 1;
-
-
-        groupArray = [unitSquare];
-
-        var origPos;
-
-        var lineGroup = new Group()
-        function doOverlap(l1,  r1,  l2,  r2) {
         
+        //otherSquare variable definition
+        var otherSquare = new Group();
+        otherSquare.data.type = "work";
+        otherSquare.data.MAX_CUTS = 6;
+        otherSquare.data.WIDTH = 300;
+        otherSquare.data.HEIGHT = 300;
+        otherSquare.data.CENTER_X = 100;
+        otherSquare.data.CENTER_Y = 550;
+        otherSquare.data.fillNumX = 1;
+        otherSquare.data.fillNumY = 1;
+        otherSquare.data.totalCuts = (unitSquare.data.MAX_CUTS - 1) * unitSquare.data.MAX_CUTS / 2;
+        otherSquare.data.offset = 1;
+        
+        //answerSquare variable definition
+        var answerSquare = new Group();
+        answerSquare.data.type = "answ";
+        answerSquare.data.MAX_CUTS = 6;
+        answerSquare.data.WIDTH = 300;
+        answerSquare.data.HEIGHT = 300;
+        answerSquare.data.CENTER_X = 600;
+        answerSquare.data.CENTER_Y = 400;
+        answerSquare.data.fillNumX = 1;
+        answerSquare.data.fillNumY = 1;
+        answerSquare.data.totalCuts = (unitSquare.data.MAX_CUTS - 1) * unitSquare.data.MAX_CUTS / 2;
+        answerSquare.data.offset = 1;
+        
+        groupArray = [unitSquare, otherSquare, answerSquare];
+        
+        var origPos;
+        
+        function doOverlap(l1,  r1,  l2,  r2) {
+            console.log("doOverlap");
+         
             // To check if either rectangle is actually a line
             // For example : l1 ={-1,0} r1={1,1} l2={0,-1} r2={0,1}
-
+        
             if (l1.x == r1.x || l1.y == r1.y ||
             l2.x == r2.x || l2.y == r2.y) {
                 // the line cannot have positive overlap
                 return false;
             }
-
+        
             // If one rectangle is on left side of other
             if (l1.x >= r2.x || l2.x >= r1.x) {
                 return false;
             }
-
+        
             // If one rectangle is above other
             if (r1.y >= l2.y || r2.y >= l1.y) {
                 return false;
             }
-
+        
             return true;
         };
-
+        
         function savePrev(group){
+            console.log("savePrev");
             for(var i = 0; i < group.data.fillNumX * group.data.fillNumY; i++){
                 //add if to filter out white
                 var temp = group.children[group.data.offset+i].clone();
                 prevGroup.addChild(temp);    
             }
         };
-
-        function bringToFront(event){
-            if(isMovable){
-                var hitResult = project.hitTest(event.point);
-            
-                origPos = this.position;
         
+        function bringToFront(event){
+            console.log("bringToFront");
+            if(isMovable){
+                /*for(var i = 0; i < unitSquare.children.length; i++){
+                    console.log(unitSquare.children[i].exportJSON(this));
+                }*/
+                var hitResult = project.hitTest(event.point);
+                //console.log(origPos);
+                origPos = this.position;
+                //console.log(origPos);
+                //Adding something to the active layer removes it from its origonal group
+                //console.log(project.activeLayer.children[0].exportJSON(this));
+                //console.log(hitResult.item.exportJSON(this));
+                //console.log(project.activeLayer.children.length);
                 project.activeLayer.addChild(hitResult.item);
-            
+                //console.log(project.activeLayer.children[0].exportJSON(this));
+                //console.log(project.activeLayer.children.length);
+                //console.log(project.activeLayer.lastChild.exportJSON(this));
+                /*for(var i = 0; i < unitSquare.children.length; i++){
+                    console.log(unitSquare.children[i].exportJSON(this));
+                }*/
             }
         };
+        
+        function moveActive(event){
+            console.log("moveActive");
+            if(this.fillColor != 'grey' && isMovable == true && this.fillColor != 'grey'){
+                //console.log(event.delta);
+                this.position += event.delta
+            }
+        };
+        
+        function endMove(event){
+            if(isMovable){
+                hits = [];
+                for(var i = 0; i < answerSquare.data.fillNumX * answerSquare.data.fillNumY; i++){
+                    if(answerSquare.children[answerSquare.data.offset+i].bounds.contains(event.point) && (Math.trunc(answerSquare.children[answerSquare.data.offset+i].bounds.width) == Math.trunc(this.bounds.width) && Math.trunc(answerSquare.children[answerSquare.data.offset+i].bounds.height) == Math.trunc(this.bounds.height) || Math.trunc(answerSquare.children[answerSquare.data.offset+i].bounds.height) == Math.trunc(this.bounds.width) && Math.trunc(answerSquare.children[answerSquare.data.offset+i].bounds.width) == Math.trunc(this.bounds.height)) && answerSquare.children[answerSquare.data.offset+i].fillColor != 'aquamarine'){
+                        hits.push(answerSquare.data.offset+i);
+        
+                        //answerSquare.children[answerSquare.data.offset+i].fillColor = 'grey';
+                        this.fillColor = 'grey';
+                        this.position = origPos;
+                    }
+                    else{
+                        this.position = origPos;
+                    }
+                }
+                
+                if(hits.length > 0){
+                    answerSquare.children[hits[0]].fillColor = 'grey';
+                }
+                
+                for(var i = 0; i < groupArray.length; i++){
+                    //console.log(groupArray[i].children.length);
+                    //console.log(groupArray[i].data.offset + groupArray[i].data.fillNumX * groupArray[i].data.fillNumX + groupArray[i].data.totalCuts * 2);
+                    if(groupArray[i].children.length < groupArray[i].data.offset + groupArray[i].data.fillNumX * groupArray[i].data.fillNumX + groupArray[i].data.totalCuts * 2){
+                        //console.log(project.activeLayer.children.length);
+                        //console.log(project.activeLayer.children[0].exportJSON(this));
+                        var activeTemp = project.activeLayer.lastChild;
+                        groupArray[i].insertChild(1,activeTemp);
+                    }
+                    
+                }
+            }
+        };
+        
         function addBackdrop(group){
+            console.log("addBackdrop");
             var backdrop = new Path.Rectangle(new Point(group.data.CENTER_X, group.data.CENTER_Y), group.data.WIDTH, group.data.HEIGHT);
             backdrop.strokeColor = 'black';
             backdrop.strokeWidth = 4;
             backdrop.fillColor = 'grey';
             group.addChild(backdrop);
         };
-
+        
         //add all vertical division lines as children
         function addVertLines(group){
+            console.log("addVertLines");
             for(var i=2; i<=group.data.MAX_CUTS; i++){
                 for(var j=1; j < i; j++){
                     var line = new Path.Line({
                         from: [j*(group.data.WIDTH/i)+group.data.CENTER_X, group.data.CENTER_Y], 
                         to: [j*(group.data.WIDTH/i)+group.data.CENTER_X, group.data.HEIGHT + group.data.CENTER_Y],
-                        strokeColor: 'gold',
+                        strokeColor: 'blue',
                         strokeWidth: 10,
                         visible: false
                     });
                     line.onClick = function(event){
+                        console.log("vertLineOnClick");
                         var group;
                         for(var i = 0; i < groupArray.length; i++){
                             if(event.point.x >= groupArray[i].data.CENTER_X && event.point.x <= groupArray[i].data.CENTER_X + groupArray[i].data.WIDTH && event.point.y >= groupArray[i].data.CENTER_Y && event.point.y <= groupArray[i].data.CENTER_Y + groupArray[i].data.HEIGHT){
@@ -278,19 +354,21 @@
                 }
             }
         };
-
+        
         //add all horizontal division lines as children
         function addHorizLines(group){
+            console.log("addHorizLines");
             for(var i=2; i<=group.data.MAX_CUTS; i++){
                 for(var j=1; j < i; j++){
                     var line = new Path.Line({
                         from: [group.data.CENTER_X, j*(group.data.HEIGHT/i)+group.data.CENTER_Y], 
                         to: [group.data.WIDTH + group.data.CENTER_X, j*(group.data.HEIGHT/i)+group.data.CENTER_Y],
-                        strokeColor: 'gold',
+                        strokeColor: 'green',
                         strokeWidth: 10,
                         visible: false
                     });
                     line.onClick = function(event){
+                        console.log("horizLineOnClick");
                         var group;
                         for(var i = 0; i < groupArray.length; i++){
                             if(event.point.x >= groupArray[i].data.CENTER_X && event.point.x <= groupArray[i].data.CENTER_X + groupArray[i].data.WIDTH && event.point.y >= groupArray[i].data.CENTER_Y && event.point.y <= groupArray[i].data.CENTER_Y + groupArray[i].data.HEIGHT){
@@ -336,8 +414,9 @@
                 }
             }
         };
-
+        
         function hideHorizCutLines(group){
+            console.log("hideHorizCutLines");
             if(horizCutFlag){
                 if(group != undefined){
                     for(var i=(group.data.fillNumX*group.data.fillNumY)+group.data.totalCuts; i<group.children.length; i++){
@@ -346,8 +425,9 @@
                 }
             }
         };
-
+        
         function horizCutSelect(event, group){
+            console.log("horizCutSelect");
             if(horizCutFlag){
                 savePrev(group);
                 if(event.point.y > (group.data.HEIGHT/3)+group.data.CENTER_Y && event.point.y < 2*(group.data.HEIGHT/3)+group.data.CENTER_Y){
@@ -383,8 +463,9 @@
                 }
             }
         };
-
+        
         function showHorizCutLines(event, group) {
+            console.log("showHorizCutLines");
             if(horizCutFlag){
                 if(group != undefined){
                     //console.log(event.point.x);
@@ -418,8 +499,9 @@
                 }
             }
         };
-
+        
         function hideVertCutLines(group){
+            console.log("hideVertCutLines");
             if(vertCutFlag){
                 if(group != undefined){
                     for(var i=1+(group.data.fillNumX*group.data.fillNumY); i<group.data.totalCuts+1+(group.data.fillNumX*group.data.fillNumY); i++){
@@ -428,8 +510,9 @@
                 }
             }
         }
-
+        
         function vertCutSelect(event, group){
+            console.log("vertCutSelect");
             if(vertCutFlag){
                 savePrev(group);
                 if(event.point.x > (group.data.WIDTH/3)+group.data.CENTER_X && event.point.x < 2*(group.data.WIDTH/3)+group.data.CENTER_X){
@@ -465,8 +548,9 @@
                 }
             }
         };
-
+        
         function showVertCutLines(event, group) {
+            console.log("showVertCutLines");
             if(vertCutFlag){
                 if(group != undefined){
                     //console.log(event.point.x);
@@ -500,8 +584,9 @@
                 }
             }
         };
-
+        
         function cutSelect(event, group){
+            console.log("cutSelect");
             if(vertCutFlag){
                 vertCutSelect(event, group);
             }
@@ -519,9 +604,10 @@
                 }
             }
         };
-
+        
         //done
         function showCutLines(event, group){
+            console.log("showCutLines");
             if(vertCutFlag){
                 showVertCutLines(event, group);
             }
@@ -530,8 +616,9 @@
                 showHorizCutLines(event, group);
             }
         };
-
+        
         function addSquares(group){
+            console.log("addSquares");
             var local_Center_X = group.data.CENTER_X;
             for(var i = 0; i < group.data.fillNumX; i++){
                 var local_Center_Y = group.data.CENTER_Y;
@@ -550,6 +637,7 @@
                     }
                     
                     temp.onClick = function(event){
+                        console.log("squareOnClick");
                         var group;
                         for(var i = 0; i < groupArray.length; i++){
                             if(event.point.x >= groupArray[i].data.CENTER_X && event.point.x <= groupArray[i].data.CENTER_X + groupArray[i].data.WIDTH && event.point.y >= groupArray[i].data.CENTER_Y && event.point.y <= groupArray[i].data.CENTER_Y + groupArray[i].data.HEIGHT){
@@ -564,29 +652,17 @@
                             horizCutSelect(event, group);
                         }
                         
-                        if (Diagonal.strokeColor == 'gold'){
-                            if(this.fillColor == '#feffff'){
-                                this.fillColor = '#fffeff'
+                        if (paintFlag){
+                            if(this.fillColor == paintColor){
+                                this.fillColor = 'white'
                             }
-                            else if(this.fillColor == 'white'){
-                                this.fillColor = '#fffffe'
+                            else{
+                                this.fillColor = paintColor;
                             }
-                            linesUpdate()
-                            //diagonalDraw(this)
-                        }
-                        if(revDiagonal.strokeColor == 'gold'){
-                            if(this.fillColor == '#fffffe'){
-                                this.fillColor = '#fffeff'
-                            }
-                            else if(this.fillColor == 'white'){
-                                this.fillColor = '#feffff'  
-                            }
-                            linesUpdate()
-                            //revDiagonalDraw(this)
                         }
                     };
-                    
                     temp.onMouseMove = function(event){
+                        console.log("squareMouseMove");
                         var group;
                         for(var i = 0; i < groupArray.length; i++){
                             if(event.point.x >= groupArray[i].data.CENTER_X && event.point.x <= groupArray[i].data.CENTER_X + groupArray[i].data.WIDTH && event.point.y >= groupArray[i].data.CENTER_Y && event.point.y <= groupArray[i].data.CENTER_Y + groupArray[i].data.HEIGHT){
@@ -610,9 +686,9 @@
                     };
                     
                     if(group.data.type != "answ"){
-                        //temp.onMouseDown = bringToFront;
-                        //temp.onMouseDrag = moveActive;
-                    // temp.onMouseUp = endMove;
+                        temp.onMouseDown = bringToFront;
+                        temp.onMouseDrag = moveActive;
+                        temp.onMouseUp = endMove;
                     }
                     
                     group.insertChild(1,temp);
@@ -624,18 +700,27 @@
             hideHorizCutLines(group);
             vertCutFlag = false;
             horizCutFlag = false;
-            linesUpdate()
         };
-
-
-
+        
         function removeSquares(group){
+            console.log("removeSquares");
             group.removeChildren(group.data.offset, group.data.fillNumX * group.data.fillNumY + 1);
         };
-
+        
+        
+        
+          
+        // Reset toggle button 
+        var resetTool = document.getElementById("resetImg");
+        resetTool.addEventListener("click",function(){
+            location.reload();
+        })
+        
+        
+        
         // Vertical Toggle Button
         var verticalcut = document.getElementById("vertcutImg");
-
+        
         //Vertical Cut toggle
         verticalcut.addEventListener("click",function(){
             if(!vertCutFlag){
@@ -647,7 +732,7 @@
                 horizCutFlag = false;
                 paintFlag = false;
                 isMovable = false;
-                //paletteGroup.removeChildren();
+                paletteGroup.removeChildren();
                 paintColor = 'white';
             } else {
                 //hide any other groups with vert lines here
@@ -655,12 +740,13 @@
                 vertCutFlag = false;
             }
         })
-
+        
         // Horizontal Toggle Button
         var horizCutTool = document.getElementById("horizCutimg");
-
+        
         //Horizontal Cut toggle
         horizCutTool.addEventListener("click",function(){
+       
             if(!horizCutFlag){
                 for(var i = 0; i < groupArray.length; i++){
                     hideHorizCutLines(groupArray[i]);
@@ -670,7 +756,7 @@
                 vertCutFlag = false;
                 paintFlag = false;
                 isMovable = false;
-                //paletteGroup.removeChildren();
+                paletteGroup.removeChildren();
                 paintColor = 'white';
             } else {
                 //hide any other groups with horiz lines here
@@ -678,213 +764,154 @@
                 horizCutFlag = false;
             }
         })
+        
+        //Color Toggle Button
+        var paintTool = document.getElementById("palletImg");
 
+        var colorBlot1 = document.getElementById("colorBlot1");
+        var colorBlot2 = document.getElementById("colorBlot2");
+        var colorBlot3 = document.getElementById("colorBlot3");
 
+        // make 4 colors dont use naitive red blue or green
+        // do a show hide for the div ( and put all blobs into the div so then just show hide div )
+        colorBlot1.addEventListener("click",function(){
+            paintColor = "#FCFF00"; // yellow 
+        })
 
+        colorBlot2.addEventListener("click",function(){
+            paintColor = "#71F479"; // green
+        })
 
+        colorBlot3.addEventListener("click",function(){
+            paintColor = "#EE9CFF"; //pink
+        })
 
+        colorBlot4.addEventListener("click",function(){
+            paintColor = "#FF474C"; // red 
+            if(!paintFlag){
+                for(var i = 0; i < groupArray.length; i++){
+                    hideHorizCutLines(groupArray[i]);
+                    hideVertCutLines(groupArray[i]);
+                }
+                paintFlag = true;
+                vertCutFlag = false;
+                horizCutFlag = false;
+                isMovable = false;
+                
+                // put the change visible property to true 
+                
+            } else {
+
+                paintFlag = false;
+                // put the change visible property to false 
+
+                paintColor = 'white'
+            }
+        })
+
+        //document.getElementById("colorpicker").addEventListener("change", function(){
+        //    paintColor = event.target.value;
+        //});
+
+        
+        //Palette Set Up
+        var paletteGroup = new Group();
+
+        
+        //Show Palette
+        paintTool.addEventListener("click",function(){
+       
+            if(!paintFlag){
+                for(var i = 0; i < groupArray.length; i++){
+                    hideHorizCutLines(groupArray[i]);
+                    hideVertCutLines(groupArray[i]);
+                }
+                paintFlag = true;
+                vertCutFlag = false;
+                horizCutFlag = false;
+                isMovable = false;
+                
+                // put the change visible property to true 
+                
+            } else {
+
+                paintFlag = false;
+                // put the change visible property to false 
+
+                paintColor = 'white'
+            }
+        })
+        
+        // Move Toggle Button
+        var moveTool = document.getElementById("moveImg");
+        
+        
+        //Move toggle
+        moveTool.addEventListener("mousedown",function(){
+       
+            if(!isMovable){
+                for(var i = 0; i < groupArray.length; i++){
+                    hideHorizCutLines(groupArray[i]);
+                    hideVertCutLines(groupArray[i]);
+                }
+                isMovable = true;
+                horizCutFlag = false;
+                vertCutFlag = false;
+                paintFlag = false;
+                paletteGroup.removeChildren();
+                paintColor = 'white';
+            } else {
+                isMovable = false;
+            }
+        })
+        
         // Answer Check Button
         var answTool = document.getElementById("answToolImg");
-
-
+       
+        
         //Answer Check Function
         answTool.addEventListener("click",function(){
             var counter = 0;
             var answ = (num1 / denom1) + (num2 / denom2);
             
             for(var i = 0 + answerSquare.data.offset; i <= answerSquare.data.fillNumX * answerSquare.data.fillNumY; i++){
-                if(answerSquare.children[i].fillColor == '#fffeff'){
+                if(answerSquare.children[i].fillColor == 'aquamarine'){
                     counter++;
                 }
             }
             userAnsw = counter / (answerSquare.data.fillNumX * answerSquare.data.fillNumY);
-            if(answ.toFixed(6) == userAnsw.toFixed(6)){
+            //precision broken
+            if(answ.toFixed(4) == userAnsw.toFixed(4)){
                 console.log(true);
+                document.getElementById('checkImg_visual').style.display='inline-block';
+                alert("Correct");
+                
+       
             } else {
                 console.log(false);
+                alert("Try again - reset the problem to start over");
             }
         })
-
+        
         addBackdrop(unitSquare);
-
-
+        addBackdrop(otherSquare);
+        addBackdrop(answerSquare);
+        
         addSquares(unitSquare);
         prevGroup.removeChildren();
-
-
-
+        addSquares(otherSquare);
+        prevGroup.removeChildren();
+        addSquares(answerSquare);
+        prevGroup.removeChildren();
+        
         addVertLines(unitSquare);
-
-
+        addVertLines(otherSquare);
+        addVertLines(answerSquare);
+        
         addHorizLines(unitSquare);
-
-
-
-        var checkAns = new Path.Rectangle(new Point(625, 25), 50, 50)
-        checkAns.strokeColor = 'black'
-        checkAns.fillColor = 'cyan'
-        checkAns.strokeWidth = 4
-
-        checkAns.onClick = function(event){
-            var answ = (num1 / denom1) * (num2 / denom2);
-            //var count = 0
-            var ansCount = 0
-            console.log(unitSquare.children.length)
-            for(var i = 0; i < unitSquare.children.length; i++){
-                if(unitSquare.children[i].fillColor == '#fffeff'){
-                    ansCount++
-                }
-                
-            }
-            console.log(ansCount)
-            var userAnsw = ansCount / (unitSquare.data.fillNumX * unitSquare.data.fillNumY);
-            if(userAnsw == answ){
-                console.log(true)
-            }
-            else{
-                console.log(false)
-            }
-            
-        }
-
-
-
-
-        //CROSSHATCH IMPLEMENTATION
-
-        var isDiag = false
-        //var test = new Path.Rectangle(new Point( 300, 300), 400, 400)
-        //test.strokeColor = 'black'
-        //test.fillColor = 'white'
-        function diagonalDraw(object){
-            var color
-            if(object.fillColor == '#fffeff'){
-                color = 'purple'
-            }
-            else{
-                color = 'red'
-            }
-            if(isDiag == false){
-                var vertemp = object.bounds.width / 5;
-                var hortemp = object.bounds.height / 5;
-                var myPath = new Path();
-                myPath.strokeColor = color
-                myPath.strokeWidth = 4
-                myPath.add(new Point(object.bounds.x + object.bounds.width , object.bounds.y ));
-                myPath.add(new Point(object.bounds.x , object.bounds.y + object.bounds.height ));
-                lineGroup.addChild(myPath)
-                for(var i = 0; i < 5; i++){
-                    
-                    var myPath = new Path()
-                    myPath.strokeColor = color
-                    myPath.strokeWidth = 4
-                    myPath.add(new Point(object.bounds.x + object.bounds.width - (i * vertemp), object.bounds.y ));
-                    myPath.add(new Point(object.bounds.x , object.bounds.y + object.bounds.height - (i * hortemp) ));
-                    lineGroup.addChild(myPath)
-                }
-                
-                for(var j = 0; j < 5; j++){
-                    var myPath = new Path()
-                    myPath.strokeColor = color
-                    myPath.strokeWidth = 4
-                    myPath.add(new Point(object.bounds.x + object.bounds.width , object.bounds.y + (j * hortemp) ));
-                    myPath.add(new Point(object.bounds.x + (j * vertemp) , object.bounds.y + object.bounds.height ));
-                    lineGroup.addChild(myPath)
-                }
-                
-            //isDiag = true
-            }
-            
-        }
-
-        function revDiagonalDraw(object){
-            var color
-            if(object.fillColor == '#fffeff'){
-                color = 'purple'
-            }
-            else{
-                color = 'blue'
-            }
-            var vertemp = object.bounds.width / 5;
-            var hortemp = object.bounds.height / 5;
-            var myPath = new Path();
-            myPath.strokeColor = color
-            myPath.strokeWidth = 4
-            myPath.add(new Point(object.bounds.x , object.bounds.y ));
-            myPath.add(new Point(object.bounds.x + object.bounds.width , object.bounds.y + object.bounds.height ));
-            lineGroup.addChild(myPath)
-            for(var i = 0; i < 5; i++){
-                var myPath = new Path()
-                myPath.strokeColor = color
-                myPath.strokeWidth = 4
-                myPath.add(new Point(object.bounds.x + object.bounds.width - (i * vertemp), object.bounds.y ));
-                myPath.add(new Point(object.bounds.x + object.bounds.width  , object.bounds.y +  (i * hortemp) ));
-                lineGroup.addChild(myPath)
-            }
-            for(var i = 0; i < 5; i++){
-                var myPath = new Path()
-                myPath.strokeColor = color
-                myPath.strokeWidth = 4
-                myPath.add(new Point(object.bounds.x , object.bounds.y + object.bounds.height - (i * hortemp)));
-                myPath.add(new Point(object.bounds.x + (i * vertemp), object.bounds.y + object.bounds.height ));
-                lineGroup.addChild(myPath)
-            }
-        }
-
-        var isMovable = false
-        var Diagonal = new Path.Rectangle(new Point(325, 25), 50, 50);
-        Diagonal.strokeColor = 'black';
-        Diagonal.strokeWidth = 4;
-        Diagonal.fillColor = 'brown';
-
-        Diagonal.onClick = function(event){
-            
-            isMovable = !isMovable
-            if(isMovable){
-                Diagonal.strokeColor = 'gold'
-            }
-            else{
-                Diagonal.strokeColor = 'black'
-            }
-        }
-
-        var revDiagonal = new Path.Rectangle(new Point(425, 25), 50, 50);
-        revDiagonal.strokeColor = 'black';
-        revDiagonal.strokeWidth = 4;
-        revDiagonal.fillColor = 'purple';
-
-
-        revDiagonal.onClick = function(event){
-            isMovable = !isMovable
-            if(isMovable){
-                revDiagonal.strokeColor = 'gold'
-            }
-            else{
-                revDiagonal.strokeColor = 'black'
-            }
-        }
-
-
-        function linesUpdate(){
-            lineGroup.removeChildren()
-            for(var i = 0; i < unitSquare.children.length; i++){
-                if(unitSquare.children[i].fillColor == '#fffffe'){
-                    diagonalDraw(unitSquare.children[i])
-                }
-                else if(unitSquare.children[i].fillColor == '#feffff'){
-                    revDiagonalDraw(unitSquare.children[i])
-                }
-                else if(unitSquare.children[i].fillColor == '#fffeff'){
-                    diagonalDraw(unitSquare.children[i])
-                    revDiagonalDraw(unitSquare.children[i])
-                }
-            }
-        }
-
-        var resetTool = document.getElementById("resetImg");
-        resetTool.addEventListener("click",function(){
-        location.reload();
-        })
+        addHorizLines(otherSquare);
+        addHorizLines(answerSquare);
+        
 
     </script>
 
@@ -897,7 +924,7 @@
 
     <div class="content" >
 
-        <h1> Multiplication</h1>
+        <h1> <span id="Operaton"></span>Addition</h1>
         <a href="../Homepage.html"> <img  src= "../imgs/home.png" > </a>
 
 
@@ -910,7 +937,7 @@
             </div>
 
             <div class="signContainer">
-                <span id=operationSign>&#215;</span>
+                <span id=operationSign> &#43;</span>
             </div>
 
             <div class="bottom_fractionContainer">
@@ -918,15 +945,10 @@
                 <span id="rightDenom"></span>
 
             </div>
-
-            <div class="signContainer">
-                <span id = equalsign>&#61;</span>
-             </div>
-
-            <div class="answerContainerWhole">
-                <input type="text" id="answerWholeNum" name="answerWholeNum"><br>
+            <div>
+                <span id= equalsign> &#61;</span>
+                
             </div>
-        
 
             <div class="answerContainer">
                 <input type="text" id="answerNum" name="answerNum"><br>
@@ -936,7 +958,7 @@
 
             <div class="submitContainer">
                 <img id="checkImg" src="../imgs/greencheck.png" style="display:none;"/>
-                <input type="image" id ="numeric_answToolimg" onclick="checkAnswer()" src="../imgs/blackcheck.png" title="Numeric Visual Answer Check" style="display:inline-block;" />
+                <input type="image" id ="numeric_answToolimg" onclick="return checkAnswer()" src="../imgs/blackcheck.png" title="Check Answer" style="display:inline-block;" />
                 
             </div>
 
@@ -947,26 +969,33 @@
             
 
             <div class="buttonContainer" >
-               
                 <input  type="image" id ="vertcutImg" src="../imgs/cut-with-scissors2.png" title="Vertical Cut"/>
                 <input type="image" id ="horizCutimg" src="../imgs/cut-with-scissors.png" title="Horizontal Cut"/>
-                <!-- <input type="image" id ="palletImg" src="../imgs/color-palette.png" title="Color"/> -->
-                <!-- <input type="image" id ="moveImg" src="../imgs/pointer.png" title="Move"/> -->
-                <input type="image" id ="answToolImg" src="../imgs/blackcheck.png" title="Visual Answer Check"/>
+                <input type="image" id ="palletImg" src="../imgs/color-palette.png" title="Color"/>
+                <input type="image" id ="moveImg" src="../imgs/pointer.png" title="Move"/>
+                <input type="image" id ="answToolImg" src="../imgs/blackcheck.png" title="Check Answer"/>
                 <input type="image" id ="resetImg" src="../imgs/circular-arrow.png" title="Reset Problem"/>  
-                <input type="image" id ="eraseImg" src="../imgs/eraser.svg" title="=Erase Problem"/>  
-
                 
             </div>
 
-        
+            <div class="paletteContainer">
+                <!-- <input  type="image" id ="color-palette" src="../imgs/palette.png" /> -->
+                <input  type="image" id ="colorBlot1" src="../imgs/Blots/yellowblot.png" title="colorBlot1"/>
+                <input  type="image" id ="colorBlot2" src="../imgs/Blots/greenbot.png" title="colorBlot2"/>
+                <input  type="image" id ="colorBlot3" src="../imgs/Blots/pinkblot.png" title="colorBlot3"/>
+                <input  type="image" id ="colorBlot4" src="../imgs/Blots/orangeblot.png" title="colorBlot4"/>
+                
+            </div>
+           
         </div>
        
         <img id="checkImg_visual" src="../imgs/greencheck.png" style="display:none;"/>
+        <!-- <img id="checkImg_visual" src="imgs/greencheck.png" /> -->
         
-        <div class="canvasContainer" id ="multplicationCanvas">
+        <div class="canvasContainer">
             <canvas id="workcanvas" width="1000" height="900"></canvas>
         </div>
+
     </div>
 
 </body>

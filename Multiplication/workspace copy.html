@@ -89,32 +89,26 @@
                 rightNum = urlParams.get('rightNum');
                 rightDenom = urlParams.get('rightDenom');
             }
-            
-            // gather user input 
-            var userWholeNumber = document.getElementById("answerWholeNum").value;
+
+            // if correct, will display in the console correct 
             var userNumerator = document.getElementById("answerNum").value;
             var userDenominator = document.getElementById("answerDenom").value;
 
-            // cast to an int
-            userWholeNumber = userWholeNumber/1
-
-            // Calc before comparing 
-            var userAnswer =  (userWholeNumber + (userNumerator / userDenominator));
+            var userAnswer = userNumerator / userDenominator;
             var solution = (leftNum * rightNum ) / ( leftDenom * rightDenom)
       
           
-            // Compare user input with solution
+            // Checks the users input 
             if (userAnswer == solution) {
-                alert("Correct!");
                 console.log("YAY correct ");
+                alert("Correct");
+
 
                 // display image to indicate user is correct 
                 document.getElementById('checkImg').style.display='inline-block';
                 document.getElementById('numeric_answToolimg').style.display='none';
             } else {
                 alert("Try again - fraction is not correct");
-                console.log("solution=" + solution + " useranswer = " + userAnswer)
-
 
             }
         }
@@ -131,16 +125,6 @@
         document.body.style.backgroundColor = "#81cbab";
 
 
-
-        //Global Variable Definition
-        var vertCutFlag = false;
-        var horizCutFlag = false;
-        var paintFlag = false;
-        var isMovable = false;
-        var paintColor = 'white';
-
-        var prevGroup = new Group();
-
         // get url string and parse
         queryString = window.location.search;
         console.log(queryString);
@@ -152,12 +136,23 @@
         num2 = urlParams.get('rightNum');
         denom2 = urlParams.get('rightDenom');
 
+        console.log(num1 + num2 + denom1 +denom2)
+
+        //Global Variable Definition
+        var vertCutFlag = false;
+        var horizCutFlag = false;
+        var paintFlag = false;
+        var isMovable = false;
+        var paintColor = 'white';
+
+        var prevGroup = new Group();
+
         //unitSquare variable definition
         var unitSquare = new Group();
         unitSquare.data.type = "work";
         unitSquare.data.MAX_CUTS = 6;
-        unitSquare.data.WIDTH = 400;
-        unitSquare.data.HEIGHT = 400;
+        unitSquare.data.WIDTH = 300;
+        unitSquare.data.HEIGHT = 300;
         unitSquare.data.CENTER_X = 100;
         unitSquare.data.CENTER_Y = 200;
         unitSquare.data.fillNumX = 1;
@@ -170,7 +165,6 @@
 
         var origPos;
 
-        var lineGroup = new Group()
         function doOverlap(l1,  r1,  l2,  r2) {
         
             // To check if either rectangle is actually a line
@@ -565,24 +559,26 @@
                         }
                         
                         if (Diagonal.strokeColor == 'gold'){
-                            if(this.fillColor == '#feffff'){
-                                this.fillColor = '#fffeff'
+                            if(this.fillColor == 'red'){
+                                this.fillColor = 'purple'
                             }
-                            else if(this.fillColor == 'white'){
-                                this.fillColor = '#fffffe'
+                            else if(this.fillColor == 'purple' || this.fillColor == 'blue'){
+                                this.fillColor = 'white'
                             }
-                            linesUpdate()
-                            //diagonalDraw(this)
+                            else{
+                                this.fillColor = 'blue'
+                            }
                         }
                         if(revDiagonal.strokeColor == 'gold'){
-                            if(this.fillColor == '#fffffe'){
-                                this.fillColor = '#fffeff'
+                            if(this.fillColor == 'blue'){
+                                this.fillColor = 'purple'
                             }
-                            else if(this.fillColor == 'white'){
-                                this.fillColor = '#feffff'  
+                            else if(this.fillColor == 'purple' || this.fillColor == 'red'){
+                                this.fillColor = 'white'
                             }
-                            linesUpdate()
-                            //revDiagonalDraw(this)
+                            else{
+                                this.fillColor = 'red'
+                            }
                         }
                     };
                     
@@ -624,20 +620,35 @@
             hideHorizCutLines(group);
             vertCutFlag = false;
             horizCutFlag = false;
-            linesUpdate()
         };
-
-
 
         function removeSquares(group){
             group.removeChildren(group.data.offset, group.data.fillNumX * group.data.fillNumY + 1);
         };
 
+
+
+
+
+        var activeButton = null;
+
+        function updateSelectedClass(){
+            verticalcut.classList.remove('selected');
+            horizCutTool.classList.remove('selected');
+
+            activeButton.classList.add('selected');
+        }
+
+
+
         // Vertical Toggle Button
         var verticalcut = document.getElementById("vertcutImg");
+      
 
         //Vertical Cut toggle
         verticalcut.addEventListener("click",function(){
+            activeButton = this;
+
             if(!vertCutFlag){
                 for(var i = 0; i < groupArray.length; i++){
                     hideHorizCutLines(groupArray[i]);
@@ -654,6 +665,7 @@
                 hideVertCutLines(unitSquare);
                 vertCutFlag = false;
             }
+            updateSelectedClass();
         })
 
         // Horizontal Toggle Button
@@ -661,6 +673,8 @@
 
         //Horizontal Cut toggle
         horizCutTool.addEventListener("click",function(){
+            activeButton = this;
+            
             if(!horizCutFlag){
                 for(var i = 0; i < groupArray.length; i++){
                     hideHorizCutLines(groupArray[i]);
@@ -677,33 +691,10 @@
                 hideHorizCutLines(unitSquare);
                 horizCutFlag = false;
             }
+            updateSelectedClass();
         })
 
 
-
-
-
-        // Answer Check Button
-        var answTool = document.getElementById("answToolImg");
-
-
-        //Answer Check Function
-        answTool.addEventListener("click",function(){
-            var counter = 0;
-            var answ = (num1 / denom1) + (num2 / denom2);
-            
-            for(var i = 0 + answerSquare.data.offset; i <= answerSquare.data.fillNumX * answerSquare.data.fillNumY; i++){
-                if(answerSquare.children[i].fillColor == '#fffeff'){
-                    counter++;
-                }
-            }
-            userAnsw = counter / (answerSquare.data.fillNumX * answerSquare.data.fillNumY);
-            if(answ.toFixed(6) == userAnsw.toFixed(6)){
-                console.log(true);
-            } else {
-                console.log(false);
-            }
-        })
 
         addBackdrop(unitSquare);
 
@@ -714,123 +705,44 @@
 
 
         addVertLines(unitSquare);
-
-
         addHorizLines(unitSquare);
 
 
 
-        var checkAns = new Path.Rectangle(new Point(625, 25), 50, 50)
-        checkAns.strokeColor = 'black'
-        checkAns.fillColor = 'cyan'
-        checkAns.strokeWidth = 4
 
-        checkAns.onClick = function(event){
+
+         // Answer Check Button
+        var answTool = document.getElementById("answToolImg");
+
+        answTool.addEventListener("click",function(){
+            
             var answ = (num1 / denom1) * (num2 / denom2);
             //var count = 0
             var ansCount = 0
             console.log(unitSquare.children.length)
             for(var i = 0; i < unitSquare.children.length; i++){
-                if(unitSquare.children[i].fillColor == '#fffeff'){
+                if(unitSquare.children[i].fillColor == 'purple'){
                     ansCount++
                 }
-                
             }
-            console.log(ansCount)
             var userAnsw = ansCount / (unitSquare.data.fillNumX * unitSquare.data.fillNumY);
             if(userAnsw == answ){
-                console.log(true)
+                //console.log(correct);
+                alert("Correct!");
+                document.getElementById('checkImg_visual').style.display='inline-block';
+
+
             }
             else{
-                console.log(false)
+                //console.log("NOT CORRECT  ansCount = " +ansCount);
+                console.log("NOT CORRECT  answ = " + answ + " userAnsw= "+ userAnsw);
+                alert("Try again - fraction is not correct");
+
             }
-            
-        }
+        })
 
 
-
-
-        //CROSSHATCH IMPLEMENTATION
-
-        var isDiag = false
-        //var test = new Path.Rectangle(new Point( 300, 300), 400, 400)
-        //test.strokeColor = 'black'
-        //test.fillColor = 'white'
-        function diagonalDraw(object){
-            var color
-            if(object.fillColor == '#fffeff'){
-                color = 'purple'
-            }
-            else{
-                color = 'red'
-            }
-            if(isDiag == false){
-                var vertemp = object.bounds.width / 5;
-                var hortemp = object.bounds.height / 5;
-                var myPath = new Path();
-                myPath.strokeColor = color
-                myPath.strokeWidth = 4
-                myPath.add(new Point(object.bounds.x + object.bounds.width , object.bounds.y ));
-                myPath.add(new Point(object.bounds.x , object.bounds.y + object.bounds.height ));
-                lineGroup.addChild(myPath)
-                for(var i = 0; i < 5; i++){
-                    
-                    var myPath = new Path()
-                    myPath.strokeColor = color
-                    myPath.strokeWidth = 4
-                    myPath.add(new Point(object.bounds.x + object.bounds.width - (i * vertemp), object.bounds.y ));
-                    myPath.add(new Point(object.bounds.x , object.bounds.y + object.bounds.height - (i * hortemp) ));
-                    lineGroup.addChild(myPath)
-                }
-                
-                for(var j = 0; j < 5; j++){
-                    var myPath = new Path()
-                    myPath.strokeColor = color
-                    myPath.strokeWidth = 4
-                    myPath.add(new Point(object.bounds.x + object.bounds.width , object.bounds.y + (j * hortemp) ));
-                    myPath.add(new Point(object.bounds.x + (j * vertemp) , object.bounds.y + object.bounds.height ));
-                    lineGroup.addChild(myPath)
-                }
-                
-            //isDiag = true
-            }
-            
-        }
-
-        function revDiagonalDraw(object){
-            var color
-            if(object.fillColor == '#fffeff'){
-                color = 'purple'
-            }
-            else{
-                color = 'blue'
-            }
-            var vertemp = object.bounds.width / 5;
-            var hortemp = object.bounds.height / 5;
-            var myPath = new Path();
-            myPath.strokeColor = color
-            myPath.strokeWidth = 4
-            myPath.add(new Point(object.bounds.x , object.bounds.y ));
-            myPath.add(new Point(object.bounds.x + object.bounds.width , object.bounds.y + object.bounds.height ));
-            lineGroup.addChild(myPath)
-            for(var i = 0; i < 5; i++){
-                var myPath = new Path()
-                myPath.strokeColor = color
-                myPath.strokeWidth = 4
-                myPath.add(new Point(object.bounds.x + object.bounds.width - (i * vertemp), object.bounds.y ));
-                myPath.add(new Point(object.bounds.x + object.bounds.width  , object.bounds.y +  (i * hortemp) ));
-                lineGroup.addChild(myPath)
-            }
-            for(var i = 0; i < 5; i++){
-                var myPath = new Path()
-                myPath.strokeColor = color
-                myPath.strokeWidth = 4
-                myPath.add(new Point(object.bounds.x , object.bounds.y + object.bounds.height - (i * hortemp)));
-                myPath.add(new Point(object.bounds.x + (i * vertemp), object.bounds.y + object.bounds.height ));
-                lineGroup.addChild(myPath)
-            }
-        }
-
+        //TODO 
         var isMovable = false
         var Diagonal = new Path.Rectangle(new Point(325, 25), 50, 50);
         Diagonal.strokeColor = 'black';
@@ -863,27 +775,11 @@
                 revDiagonal.strokeColor = 'black'
             }
         }
-
-
-        function linesUpdate(){
-            lineGroup.removeChildren()
-            for(var i = 0; i < unitSquare.children.length; i++){
-                if(unitSquare.children[i].fillColor == '#fffffe'){
-                    diagonalDraw(unitSquare.children[i])
-                }
-                else if(unitSquare.children[i].fillColor == '#feffff'){
-                    revDiagonalDraw(unitSquare.children[i])
-                }
-                else if(unitSquare.children[i].fillColor == '#fffeff'){
-                    diagonalDraw(unitSquare.children[i])
-                    revDiagonalDraw(unitSquare.children[i])
-                }
-            }
-        }
-
+        
+        // Reset toggle button 
         var resetTool = document.getElementById("resetImg");
         resetTool.addEventListener("click",function(){
-        location.reload();
+            location.reload();
         })
 
     </script>
@@ -922,10 +818,6 @@
             <div class="signContainer">
                 <span id = equalsign>&#61;</span>
              </div>
-
-            <div class="answerContainerWhole">
-                <input type="text" id="answerWholeNum" name="answerWholeNum"><br>
-            </div>
         
 
             <div class="answerContainer">
@@ -936,7 +828,7 @@
 
             <div class="submitContainer">
                 <img id="checkImg" src="../imgs/greencheck.png" style="display:none;"/>
-                <input type="image" id ="numeric_answToolimg" onclick="checkAnswer()" src="../imgs/blackcheck.png" title="Numeric Visual Answer Check" style="display:inline-block;" />
+                <input type="image" id ="numeric_answToolimg" onclick="checkAnswer()" src="../imgs/blackcheck.png" title="Check Answer" style="display:inline-block;" />
                 
             </div>
 
@@ -950,21 +842,28 @@
                
                 <input  type="image" id ="vertcutImg" src="../imgs/cut-with-scissors2.png" title="Vertical Cut"/>
                 <input type="image" id ="horizCutimg" src="../imgs/cut-with-scissors.png" title="Horizontal Cut"/>
-                <!-- <input type="image" id ="palletImg" src="../imgs/color-palette.png" title="Color"/> -->
+                <input type="image" id ="palletImg" src="../imgs/color-palette.png" title="Color"/>
                 <!-- <input type="image" id ="moveImg" src="../imgs/pointer.png" title="Move"/> -->
-                <input type="image" id ="answToolImg" src="../imgs/blackcheck.png" title="Visual Answer Check"/>
+                <input type="image" id ="answToolImg" src="../imgs/blackcheck.png" title="Check Answer"/>
                 <input type="image" id ="resetImg" src="../imgs/circular-arrow.png" title="Reset Problem"/>  
                 <input type="image" id ="eraseImg" src="../imgs/eraser.svg" title="=Erase Problem"/>  
 
                 
             </div>
 
+            <div class="paletteContainer">
+                <input  type="image" id ="colorBlot1" src="../imgs/Blots/yellowblot.png" title="colorBlot1"/>
+                <input  type="image" id ="colorBlot2" src="../imgs/Blots/greenbot.png" title="colorBlot2"/>
+                <input  type="image" id ="colorBlot3" src="../imgs/Blots/pinkblot.png" title="colorBlot3"/>
+                <input  type="image" id ="colorBlot4" src="../imgs/Blots/orangeblot.png" title="colorBlot4"/>
+                
+            </div>
         
         </div>
        
         <img id="checkImg_visual" src="../imgs/greencheck.png" style="display:none;"/>
         
-        <div class="canvasContainer" id ="multplicationCanvas">
+        <div class="canvasContainer">
             <canvas id="workcanvas" width="1000" height="900"></canvas>
         </div>
     </div>

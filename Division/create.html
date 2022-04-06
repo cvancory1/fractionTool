@@ -45,23 +45,18 @@
     ) {
       if (rightD == 1 || leftD == 1) {
         alert("Denominator cannot be 1.");
+        e.preventDefault();// stop 
+
       } else {
         alert("Error enter a number from 1-6");
+        e.preventDefault();// stop 
+
 
       }
-      e.preventDefault();// stop 
 
-    }
+    } 
 
 
-    // we havent implemented for more than one answer square 
-    var solution = ((rightN * leftD) + (leftN * rightD)) / (rightD * leftD);
-    if(solution > 1){
-        // alert(solution);
-        // alert("feature is still in development- currently no answers >1 have been added.");
-        e.preventDefault(); // stop 
-    }
-   
     
   }
 </script>
@@ -71,7 +66,13 @@
   <link rel="stylesheet" href="../css/create.css">
 
 </head>
+<div class="homeButton_container">
+  <a id="homeButton" href="../Homepage.html"> <img src="../imgs/home.png"> </a>
+</div> 
+
 <h1>Division</h1>
+
+
 
 <body>
   <div class="content">

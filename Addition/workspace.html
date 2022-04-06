@@ -3,10 +3,9 @@
 
 <head>
 
-
     <!-- Load the Paper.js library -->
     <script type="text/javascript" src="../paper.js"></script>
-    
+
     <!-- Define inlined PaperScript associate it with canvas -->
     <script type="text/javascript">
 
@@ -22,44 +21,55 @@
         }
      
 
-        var rightNum = randNumerator();
-        var rightDenom = randDenom();
-        var leftNum = randNumerator();
-        var leftDenom = randDenom();
+        // var rightNum = randNumerator();
+        // var rightDenom = randDenom();
+        // var leftNum = randNumerator();
+        // var leftDenom = randDenom();
         
         window.onload = function () {
             // looks at URL and store 
             const queryString = window.location.search;
             const urlParams = new URLSearchParams(queryString);
-            var choice = urlParams.get('problemChoice');
+            // var choice = urlParams.get('problemChoice');
 
-            console.log("choice = "+ choice);
+            // console.log("choice = "+ choice);
 
 
              //user created their own problem 
-            if(choice == "Create"){
+            // if(choice == "Create"){
                  // parse the url string 
-                leftNum = urlParams.get('leftNum');
-                leftDenom = urlParams.get('leftDenom');
-                rightNum = urlParams.get('rightNum');
-                rightDenom = urlParams.get('rightDenom');
+            leftNum = urlParams.get('leftNum');
+            leftDenom = urlParams.get('leftDenom');
+            rightNum = urlParams.get('rightNum');
+            rightDenom = urlParams.get('rightDenom');
 
                
-            }else if (choice == "Random"){
+            // }else if (choice == "Random"){
 
                 //  ensures the fraction != 1 and is a proper fraction
-                while (rightNum == rightDenom || rightNum > rightDenom) {
-                  rightNum = randNumerator();
-                }
+                // while (rightNum == rightDenom || rightNum > rightDenom) {
+                //   rightNum = randNumerator();
+                // }
 
-                while (leftNum == leftDenom || leftNum > leftDenom) {
-                  leftNum = randNumerator();
-                }
+                // while (leftNum == leftDenom || leftNum > leftDenom) {
+                //   leftNum = randNumerator();
+                // }
 
-                var solution = (rightNum / rightDenom) + (leftNum / leftDenom);
+                // Prime loop to enter 
+                // var solution = 2
+
+                // // check if either fract == 1 or num >denom 
+                // while ((rightNum == rightDenom || rightNum > rightDenom) || (leftNum == leftDenom || leftNum > leftDenom) || (  solution > 1 )) {
+                //   rightNum = randNumerator();
+                //   leftNum = randNumerator();
+
+                //   solution = (rightNum / rightDenom) + (leftNum / leftDenom);
+                // //   console.log("final = " + solution)
+                    
+                // }
                 
 
-            }
+            // }
 
             // puts fraction numbers onto the page
             document.getElementById("leftNum").innerHTML = leftNum;
@@ -70,7 +80,6 @@
         }
           
 
-       
         // checks the numeric answer check with user's input 
         function checkAnswer() {
             const queryString = window.location.search;
@@ -84,15 +93,19 @@
                 rightDenom = urlParams.get('rightDenom');
             }
 
-            // if correct, will display in the console correct 
+            // gather user input 
+            var userWholeNumber = document.getElementById("answerWholeNum").value;
             var userNumerator = document.getElementById("answerNum").value;
             var userDenominator = document.getElementById("answerDenom").value;
            
-            var userAnswer = userNumerator / userDenominator;
-            var solution = ((leftNum * rightDenom) + (rightNum * leftDenom)) / (rightDenom * leftDenom);
-           
+            // cast to an int
+            userWholeNumber = userWholeNumber/1
 
-            // Checks the users input 
+            // Calc before comparing 
+            var userAnswer =  (userWholeNumber + (userNumerator / userDenominator));
+            var solution = ((leftNum * rightDenom) + (rightNum * leftDenom)) / (rightDenom * leftDenom);
+            
+            // Compare user input with solution
             if (userAnswer == solution) {
                 console.log("YAY correct ");
                 document.getElementById('checkImg').style.display='inline-block';
@@ -100,12 +113,11 @@
             } else {
 
                 alert("Try again - fraction is not correct");
-                console.log("solotion=" + solution + "useranswer = " + userAnswer)
+                console.log("solution=" + solution + " useranswer = " + userAnswer)
 
 
             }
         }
-
 
 
     </script>
@@ -113,684 +125,670 @@
 
         <!-- paper.js code Ryan and Will -->
     <script type="text/paperscript" canvas="workcanvas">
-        document.body.style.backgroundColor = "#c9f4fe";
-       
-        // get url string and parse
-        queryString = window.location.search;
-        console.log(queryString);
+            document.body.style.backgroundColor = "#c9f4fe";
         
-        // gets the fraction numbers
-        urlParams = new URLSearchParams(queryString);
-        num1 = urlParams.get('leftNum');
-        denom1 = urlParams.get('leftDenom');
-        num2 = urlParams.get('rightNum');
-        denom2 = urlParams.get('rightDenom');
-        
-        
-        
-        //Global Variable Definition
-        var vertCutFlag = false;
-        var horizCutFlag = false;
-        var paintFlag = false;
-        var isMovable = false;
-        var paintColor = 'white';
-        
-        var prevGroup = new Group();
-        
-        
-        //unitSquare variable definition
-        var unitSquare = new Group();
-        unitSquare.data.type = "work";
-        unitSquare.data.MAX_CUTS = 6;
-        unitSquare.data.WIDTH = 300;
-        unitSquare.data.HEIGHT = 300;
-        unitSquare.data.CENTER_X = 100;
-        unitSquare.data.CENTER_Y = 200;
-        unitSquare.data.fillNumX = 1;
-        unitSquare.data.fillNumY = 1;
-        unitSquare.data.totalCuts = (unitSquare.data.MAX_CUTS - 1) * unitSquare.data.MAX_CUTS / 2;
-        unitSquare.data.offset = 1;
-        
-        //otherSquare variable definition
-        var otherSquare = new Group();
-        otherSquare.data.type = "work";
-        otherSquare.data.MAX_CUTS = 6;
-        otherSquare.data.WIDTH = 300;
-        otherSquare.data.HEIGHT = 300;
-        otherSquare.data.CENTER_X = 100;
-        otherSquare.data.CENTER_Y = 550;
-        otherSquare.data.fillNumX = 1;
-        otherSquare.data.fillNumY = 1;
-        otherSquare.data.totalCuts = (unitSquare.data.MAX_CUTS - 1) * unitSquare.data.MAX_CUTS / 2;
-        otherSquare.data.offset = 1;
-        
-        //answerSquare variable definition
-        var answerSquare = new Group();
-        answerSquare.data.type = "answ";
-        answerSquare.data.MAX_CUTS = 6;
-        answerSquare.data.WIDTH = 300;
-        answerSquare.data.HEIGHT = 300;
-        answerSquare.data.CENTER_X = 600;
-        answerSquare.data.CENTER_Y = 400;
-        answerSquare.data.fillNumX = 1;
-        answerSquare.data.fillNumY = 1;
-        answerSquare.data.totalCuts = (unitSquare.data.MAX_CUTS - 1) * unitSquare.data.MAX_CUTS / 2;
-        answerSquare.data.offset = 1;
-        
-        groupArray = [unitSquare, otherSquare, answerSquare];
-        
-        var origPos;
-        
-        function doOverlap(l1,  r1,  l2,  r2) {
-            console.log("doOverlap");
-         
-            // To check if either rectangle is actually a line
-            // For example : l1 ={-1,0} r1={1,1} l2={0,-1} r2={0,1}
-        
-            if (l1.x == r1.x || l1.y == r1.y ||
-            l2.x == r2.x || l2.y == r2.y) {
-                // the line cannot have positive overlap
-                return false;
-            }
-        
-            // If one rectangle is on left side of other
-            if (l1.x >= r2.x || l2.x >= r1.x) {
-                return false;
-            }
-        
-            // If one rectangle is above other
-            if (r1.y >= l2.y || r2.y >= l1.y) {
-                return false;
-            }
-        
-            return true;
-        };
-        
-        function savePrev(group){
-            console.log("savePrev");
-            for(var i = 0; i < group.data.fillNumX * group.data.fillNumY; i++){
-                //add if to filter out white
-                var temp = group.children[group.data.offset+i].clone();
-                prevGroup.addChild(temp);    
-            }
-        };
-        
-        function bringToFront(event){
-            console.log("bringToFront");
-            if(isMovable){
-                /*for(var i = 0; i < unitSquare.children.length; i++){
-                    console.log(unitSquare.children[i].exportJSON(this));
-                }*/
-                var hitResult = project.hitTest(event.point);
-                //console.log(origPos);
-                origPos = this.position;
-                //console.log(origPos);
-                //Adding something to the active layer removes it from its origonal group
-                //console.log(project.activeLayer.children[0].exportJSON(this));
-                //console.log(hitResult.item.exportJSON(this));
-                //console.log(project.activeLayer.children.length);
-                project.activeLayer.addChild(hitResult.item);
-                //console.log(project.activeLayer.children[0].exportJSON(this));
-                //console.log(project.activeLayer.children.length);
-                //console.log(project.activeLayer.lastChild.exportJSON(this));
-                /*for(var i = 0; i < unitSquare.children.length; i++){
-                    console.log(unitSquare.children[i].exportJSON(this));
-                }*/
-            }
-        };
-        
-        function moveActive(event){
-            console.log("moveActive");
-            if(this.fillColor != 'grey' && isMovable == true && this.fillColor != 'grey'){
-                //console.log(event.delta);
-                this.position += event.delta
-            }
-        };
-        
-        function endMove(event){
-            if(isMovable){
-                hits = [];
-                for(var i = 0; i < answerSquare.data.fillNumX * answerSquare.data.fillNumY; i++){
-                    if(answerSquare.children[answerSquare.data.offset+i].bounds.contains(event.point) && (Math.trunc(answerSquare.children[answerSquare.data.offset+i].bounds.width) == Math.trunc(this.bounds.width) && Math.trunc(answerSquare.children[answerSquare.data.offset+i].bounds.height) == Math.trunc(this.bounds.height) || Math.trunc(answerSquare.children[answerSquare.data.offset+i].bounds.height) == Math.trunc(this.bounds.width) && Math.trunc(answerSquare.children[answerSquare.data.offset+i].bounds.width) == Math.trunc(this.bounds.height)) && answerSquare.children[answerSquare.data.offset+i].fillColor != 'aquamarine'){
-                        hits.push(answerSquare.data.offset+i);
-        
-                        //answerSquare.children[answerSquare.data.offset+i].fillColor = 'grey';
-                        this.fillColor = 'grey';
-                        this.position = origPos;
-                    }
-                    else{
-                        this.position = origPos;
-                    }
-                }
-                
-                if(hits.length > 0){
-                    answerSquare.children[hits[0]].fillColor = 'grey';
-                }
-                
-                for(var i = 0; i < groupArray.length; i++){
-                    //console.log(groupArray[i].children.length);
-                    //console.log(groupArray[i].data.offset + groupArray[i].data.fillNumX * groupArray[i].data.fillNumX + groupArray[i].data.totalCuts * 2);
-                    if(groupArray[i].children.length < groupArray[i].data.offset + groupArray[i].data.fillNumX * groupArray[i].data.fillNumX + groupArray[i].data.totalCuts * 2){
-                        //console.log(project.activeLayer.children.length);
-                        //console.log(project.activeLayer.children[0].exportJSON(this));
-                        var activeTemp = project.activeLayer.lastChild;
-                        groupArray[i].insertChild(1,activeTemp);
-                    }
-                    
-                }
-            }
-        };
-        
-        function addBackdrop(group){
-            console.log("addBackdrop");
-            var backdrop = new Path.Rectangle(new Point(group.data.CENTER_X, group.data.CENTER_Y), group.data.WIDTH, group.data.HEIGHT);
-            backdrop.strokeColor = 'black';
-            backdrop.strokeWidth = 4;
-            backdrop.fillColor = 'grey';
-            group.addChild(backdrop);
-        };
-        
-        //add all vertical division lines as children
-        function addVertLines(group){
-            console.log("addVertLines");
-            for(var i=2; i<=group.data.MAX_CUTS; i++){
-                for(var j=1; j < i; j++){
-                    var line = new Path.Line({
-                        from: [j*(group.data.WIDTH/i)+group.data.CENTER_X, group.data.CENTER_Y], 
-                        to: [j*(group.data.WIDTH/i)+group.data.CENTER_X, group.data.HEIGHT + group.data.CENTER_Y],
-                        strokeColor: 'blue',
-                        strokeWidth: 10,
-                        visible: false
-                    });
-                    line.onClick = function(event){
-                        console.log("vertLineOnClick");
-                        var group;
-                        for(var i = 0; i < groupArray.length; i++){
-                            if(event.point.x >= groupArray[i].data.CENTER_X && event.point.x <= groupArray[i].data.CENTER_X + groupArray[i].data.WIDTH && event.point.y >= groupArray[i].data.CENTER_Y && event.point.y <= groupArray[i].data.CENTER_Y + groupArray[i].data.HEIGHT){
-                                group = groupArray[i];
-                            }
-                        }
-                        if(vertCutFlag){
-                            savePrev(group);
-                            if(event.point.x > (group.data.WIDTH/3)+group.data.CENTER_X && event.point.x < 2*(group.data.WIDTH/3)+group.data.CENTER_X){
-                                removeSquares(group);
-                                group.data.fillNumX = 2;
-                                addSquares(group);
-                                prevGroup.removeChildren();
-                                hideVertCutLines(group);
-                            } else if(event.point.x > (group.data.WIDTH/4)+group.data.CENTER_X && event.point.x < 3*(group.data.WIDTH/4)+group.data.CENTER_X){
-                                removeSquares(group);
-                                group.data.fillNumX = 3;
-                                addSquares(group);
-                                prevGroup.removeChildren();
-                                hideVertCutLines(group);
-                            } else if(event.point.x > (group.data.WIDTH/5)+group.data.CENTER_X && event.point.x < 4*(group.data.WIDTH/5)+group.data.CENTER_X){
-                                removeSquares(group);
-                                group.data.fillNumX = 4;
-                                addSquares(group);
-                                prevGroup.removeChildren();
-                                hideVertCutLines(group);
-                            } else if(event.point.x > (group.data.WIDTH/6)+group.data.CENTER_X && event.point.x < 5*(group.data.WIDTH/6)+group.data.CENTER_X){
-                                removeSquares(group);
-                                group.data.fillNumX = 5;
-                                addSquares(group);
-                                prevGroup.removeChildren();
-                                hideVertCutLines(group);
-                            } else {
-                                removeSquares(group);
-                                group.data.fillNumX = 6;
-                                addSquares(group);
-                                prevGroup.removeChildren();
-                                hideVertCutLines(group);
-                            }
-                        }
-                    };
-                    group.addChild(line);
-                }
-            }
-        };
-        
-        //add all horizontal division lines as children
-        function addHorizLines(group){
-            console.log("addHorizLines");
-            for(var i=2; i<=group.data.MAX_CUTS; i++){
-                for(var j=1; j < i; j++){
-                    var line = new Path.Line({
-                        from: [group.data.CENTER_X, j*(group.data.HEIGHT/i)+group.data.CENTER_Y], 
-                        to: [group.data.WIDTH + group.data.CENTER_X, j*(group.data.HEIGHT/i)+group.data.CENTER_Y],
-                        strokeColor: 'green',
-                        strokeWidth: 10,
-                        visible: false
-                    });
-                    line.onClick = function(event){
-                        console.log("horizLineOnClick");
-                        var group;
-                        for(var i = 0; i < groupArray.length; i++){
-                            if(event.point.x >= groupArray[i].data.CENTER_X && event.point.x <= groupArray[i].data.CENTER_X + groupArray[i].data.WIDTH && event.point.y >= groupArray[i].data.CENTER_Y && event.point.y <= groupArray[i].data.CENTER_Y + groupArray[i].data.HEIGHT){
-                                group = groupArray[i];
-                            }
-                        }
-                        if(horizCutFlag){
-                            savePrev(group);
-                            if(event.point.y > (group.data.HEIGHT/3)+group.data.CENTER_Y && event.point.y < 2*(group.data.HEIGHT/3)+group.data.CENTER_Y){
-                                removeSquares(group);
-                                group.data.fillNumY = 2;
-                                addSquares(group);
-                                prevGroup.removeChildren();
-                                hideHorizCutLines(group);
-                            } else if(event.point.y > (group.data.HEIGHT/4)+group.data.CENTER_Y && event.point.y < 3*(group.data.HEIGHT/4)+group.data.CENTER_Y){
-                                removeSquares(group);
-                                group.data.fillNumY = 3;
-                                addSquares(group);
-                                prevGroup.removeChildren();
-                                hideHorizCutLines(group);
-                            } else if(event.point.y > (group.data.HEIGHT/5)+group.data.CENTER_Y && event.point.y < 4*(group.data.HEIGHT/5)+group.data.CENTER_Y){
-                                removeSquares(group);
-                                group.data.fillNumY = 4;
-                                addSquares(group);
-                                prevGroup.removeChildren();
-                                hideHorizCutLines(group);
-                            } else if(event.point.y > (group.data.HEIGHT/6)+group.data.CENTER_Y && event.point.y < 5*(group.data.HEIGHT/6)+group.data.CENTER_Y){
-                                removeSquares(group);
-                                group.data.fillNumY = 5;
-                                addSquares(group);
-                                prevGroup.removeChildren();
-                                hideHorizCutLines(group);
-                            } else {
-                                removeSquares(group);
-                                group.data.fillNumY = 6;
-                                addSquares(group);
-                                prevGroup.removeChildren();
-                                hideHorizCutLines(group);
-                            }
-                        }
-                    };
-                    group.addChild(line);
-                }
-            }
-        };
-        
-        function hideHorizCutLines(group){
-            console.log("hideHorizCutLines");
-            if(horizCutFlag){
-                if(group != undefined){
-                    for(var i=(group.data.fillNumX*group.data.fillNumY)+group.data.totalCuts; i<group.children.length; i++){
-                        group.children[i].visible = false;
-                    }
-                }
-            }
-        };
-        
-        function horizCutSelect(event, group){
-            console.log("horizCutSelect");
-            if(horizCutFlag){
-                savePrev(group);
-                if(event.point.y > (group.data.HEIGHT/3)+group.data.CENTER_Y && event.point.y < 2*(group.data.HEIGHT/3)+group.data.CENTER_Y){
-                    removeSquares(group);
-                    group.data.fillNumY = 2;
-                    addSquares(group);
-                    prevGroup.removeChildren();
-                    hideHorizCutLines(group);
-                } else if(event.point.y > (group.data.HEIGHT/4)+group.data.CENTER_Y && event.point.y < 3*(group.data.HEIGHT/4)+group.data.CENTER_Y){
-                    removeSquares(group);
-                    group.data.fillNumY = 3;
-                    addSquares(group);
-                    prevGroup.removeChildren();
-                    hideHorizCutLines(group);
-                } else if(event.point.y > (group.data.HEIGHT/5)+group.data.CENTER_Y && event.point.y < 4*(group.data.HEIGHT/5)+group.data.CENTER_Y){
-                    removeSquares(group);
-                    group.data.fillNumY = 4;
-                    addSquares(group);
-                    prevGroup.removeChildren();
-                    hideHorizCutLines(group);
-                } else if(event.point.y > (group.data.HEIGHT/6)+group.data.CENTER_Y && event.point.y < 5*(group.data.HEIGHT/6)+group.data.CENTER_Y){
-                    removeSquares(group);
-                    group.data.fillNumY = 5;
-                    addSquares(group);
-                    prevGroup.removeChildren();
-                    hideHorizCutLines(group);
-                } else {
-                    removeSquares(group);
-                    group.data.fillNumY = 6;
-                    addSquares(group);
-                    prevGroup.removeChildren();
-                    hideHorizCutLines(group);
-                }
-            }
-        };
-        
-        function showHorizCutLines(event, group) {
-            console.log("showHorizCutLines");
-            if(horizCutFlag){
-                if(group != undefined){
-                    //console.log(event.point.x);
-                    hideHorizCutLines(group);
-                    if(event.point.y > (group.data.HEIGHT/3)+group.data.CENTER_Y && event.point.y < 2*(group.data.HEIGHT/3)+group.data.CENTER_Y){
-                        //console.log(2);
-                        group.children[1+(group.data.fillNumX*group.data.fillNumY)+group.data.totalCuts].visible = true;
-                    } else if(event.point.y > (group.data.HEIGHT/4)+group.data.CENTER_Y && event.point.y < 3*(group.data.HEIGHT/4)+group.data.CENTER_Y){
-                        //console.log(3);
-                        group.children[2+(group.data.fillNumX*group.data.fillNumY)+group.data.totalCuts].visible = true;
-                        group.children[3+(group.data.fillNumX*group.data.fillNumY)+group.data.totalCuts].visible = true;
-                    } else if(event.point.y > (group.data.HEIGHT/5)+group.data.CENTER_Y && event.point.y < 4*(group.data.HEIGHT/5)+group.data.CENTER_Y){
-                        //console.log(4);
-                        group.children[4+(group.data.fillNumX*group.data.fillNumY)+group.data.totalCuts].visible = true;
-                        group.children[5+(group.data.fillNumX*group.data.fillNumY)+group.data.totalCuts].visible = true;
-                        group.children[6+(group.data.fillNumX*group.data.fillNumY)+group.data.totalCuts].visible = true;
-                    } else if(event.point.y > (group.data.HEIGHT/6)+group.data.CENTER_Y && event.point.y < 5*(group.data.HEIGHT/6)+group.data.CENTER_Y){
-                        //console.log(5);
-                        group.children[7+(group.data.fillNumX*group.data.fillNumY)+group.data.totalCuts].visible = true;
-                        group.children[8+(group.data.fillNumX*group.data.fillNumY)+group.data.totalCuts].visible = true;
-                        group.children[9+(group.data.fillNumX*group.data.fillNumY)+group.data.totalCuts].visible = true;
-                        group.children[10+(group.data.fillNumX*group.data.fillNumY)+group.data.totalCuts].visible = true;
-                    } else {
-                        //console.log(6);
-                        group.children[11+(group.data.fillNumX*group.data.fillNumY)+group.data.totalCuts].visible = true;
-                        group.children[12+(group.data.fillNumX*group.data.fillNumY)+group.data.totalCuts].visible = true;
-                        group.children[13+(group.data.fillNumX*group.data.fillNumY)+group.data.totalCuts].visible = true;
-                        group.children[14+(group.data.fillNumX*group.data.fillNumY)+group.data.totalCuts].visible = true;
-                        group.children[15+(group.data.fillNumX*group.data.fillNumY)+group.data.totalCuts].visible = true;
-                    }
-                }
-            }
-        };
-        
-        function hideVertCutLines(group){
-            console.log("hideVertCutLines");
-            if(vertCutFlag){
-                if(group != undefined){
-                    for(var i=1+(group.data.fillNumX*group.data.fillNumY); i<group.data.totalCuts+1+(group.data.fillNumX*group.data.fillNumY); i++){
-                        group.children[i].visible = false;
-                    }
-                }
-            }
-        }
-        
-        function vertCutSelect(event, group){
-            console.log("vertCutSelect");
-            if(vertCutFlag){
-                savePrev(group);
-                if(event.point.x > (group.data.WIDTH/3)+group.data.CENTER_X && event.point.x < 2*(group.data.WIDTH/3)+group.data.CENTER_X){
-                    removeSquares(group);
-                    group.data.fillNumX = 2;
-                    addSquares(group);
-                    prevGroup.removeChildren();
-                    hideVertCutLines(group);
-                } else if(event.point.x > (group.data.WIDTH/4)+group.data.CENTER_X && event.point.x < 3*(group.data.WIDTH/4)+group.data.CENTER_X){
-                    removeSquares(group);
-                    group.data.fillNumX = 3;
-                    addSquares(group);
-                    prevGroup.removeChildren();
-                    hideVertCutLines(group);
-                } else if(event.point.x > (group.data.WIDTH/5)+group.data.CENTER_X && event.point.x < 4*(group.data.WIDTH/5)+group.data.CENTER_X){
-                    removeSquares(group);
-                    group.data.fillNumX = 4;
-                    addSquares(group);
-                    prevGroup.removeChildren();
-                    hideVertCutLines(group);
-                } else if(event.point.x > (group.data.WIDTH/6)+group.data.CENTER_X && event.point.x < 5*(group.data.WIDTH/6)+group.data.CENTER_X){
-                    removeSquares(group);
-                    group.data.fillNumX = 5;
-                    addSquares(group);
-                    prevGroup.removeChildren();
-                    hideVertCutLines(group);
-                } else {
-                    removeSquares(group);
-                    group.data.fillNumX = 6;
-                    addSquares(group);
-                    prevGroup.removeChildren();
-                    hideVertCutLines(group);
-                }
-            }
-        };
-        
-        function showVertCutLines(event, group) {
-            console.log("showVertCutLines");
-            if(vertCutFlag){
-                if(group != undefined){
-                    //console.log(event.point.x);
-                    hideVertCutLines(group);
-                    if(event.point.x > (group.data.WIDTH/3)+group.data.CENTER_X && event.point.x < 2*(group.data.WIDTH/3)+group.data.CENTER_X){
-                        //console.log(2);
-                        group.children[1+(group.data.fillNumX*group.data.fillNumY)].visible = true;
-                    } else if(event.point.x > (group.data.WIDTH/4)+group.data.CENTER_X && event.point.x < 3*(group.data.WIDTH/4)+group.data.CENTER_X){
-                        //console.log(3);
-                        group.children[2+(group.data.fillNumX*group.data.fillNumY)].visible = true;
-                        group.children[3+(group.data.fillNumX*group.data.fillNumY)].visible = true;
-                    } else if(event.point.x > (group.data.WIDTH/5)+group.data.CENTER_X && event.point.x < 4*(group.data.WIDTH/5)+group.data.CENTER_X){
-                        //console.log(4);
-                        group.children[4+(group.data.fillNumX*group.data.fillNumY)].visible = true;
-                        group.children[5+(group.data.fillNumX*group.data.fillNumY)].visible = true;
-                        group.children[6+(group.data.fillNumX*group.data.fillNumY)].visible = true;
-                    } else if(event.point.x > (group.data.WIDTH/6)+group.data.CENTER_X && event.point.x < 5*(group.data.WIDTH/6)+group.data.CENTER_X){
-                        //console.log(5);
-                        group.children[7+(group.data.fillNumX*group.data.fillNumY)].visible = true;
-                        group.children[8+(group.data.fillNumX*group.data.fillNumY)].visible = true;
-                        group.children[9+(group.data.fillNumX*group.data.fillNumY)].visible = true;
-                        group.children[10+(group.data.fillNumX*group.data.fillNumY)].visible = true;
-                    } else {
-                        //console.log(6);
-                        group.children[11+(group.data.fillNumX*group.data.fillNumY)].visible = true;
-                        group.children[12+(group.data.fillNumX*group.data.fillNumY)].visible = true;
-                        group.children[13+(group.data.fillNumX*group.data.fillNumY)].visible = true;
-                        group.children[14+(group.data.fillNumX*group.data.fillNumY)].visible = true;
-                        group.children[15+(group.data.fillNumX*group.data.fillNumY)].visible = true;
-                    }
-                }
-            }
-        };
-        
-        function cutSelect(event, group){
-            console.log("cutSelect");
-            if(vertCutFlag){
-                vertCutSelect(event, group);
-            }
+            // get url string and parse
+            queryString = window.location.search;
+            console.log(queryString);
             
-            if (horizCutFlag){
-                horizCutSelect(event, group);
-            }
+            // gets the fraction numbers
+            urlParams = new URLSearchParams(queryString);
+            num1 = urlParams.get('leftNum');
+            denom1 = urlParams.get('leftDenom');
+            num2 = urlParams.get('rightNum');
+            denom2 = urlParams.get('rightDenom');
+
+            console.log(num1 + num2 + denom1 +denom2)
+
             
-            if (paintFlag){
-                if(this.fillColor == paintColor){
-                    this.fillColor = 'white'
-                }
-                else{
-                    this.fillColor = paintColor;
-                }
-            }
-        };
-        
-        //done
-        function showCutLines(event, group){
-            console.log("showCutLines");
-            if(vertCutFlag){
-                showVertCutLines(event, group);
-            }
+            //Global Variable Definition
+            var vertCutFlag = false;
+            var horizCutFlag = false;
+            var paintFlag = false;
+            var isMovable = false;
+            var eraseFlag = false;
+            var paintColor = 'white';
             
-            if (horizCutFlag){
-                showHorizCutLines(event, group);
-            }
-        };
-        
-        function addSquares(group){
-            console.log("addSquares");
-            var local_Center_X = group.data.CENTER_X;
-            for(var i = 0; i < group.data.fillNumX; i++){
-                var local_Center_Y = group.data.CENTER_Y;
-                for(var j = 0; j < group.data.fillNumY; j++){
-                    var temp;
-                    temp = new Path.Rectangle(new Point(local_Center_X, local_Center_Y), group.data.WIDTH/group.data.fillNumX, group.data.HEIGHT/group.data.fillNumY);
-                    temp.strokeColor = 'black';
-                    temp.strokeWidth = 4;
-                    temp.fillColor = paintColor;
-                    if(prevGroup.children.length > 0){
-                        for(var k = 0; k < prevGroup.children.length; k++){
-                            if(doOverlap(prevGroup.children[k].segments[0].point, prevGroup.children[k].segments[2].point, temp.segments[0].point, temp.segments[2].point)){
-                                temp.fillColor = prevGroup.children[k].fillColor;
-                            }
-                        }
-                    }
-                    
-                    temp.onClick = function(event){
-                        console.log("squareOnClick");
-                        var group;
-                        for(var i = 0; i < groupArray.length; i++){
-                            if(event.point.x >= groupArray[i].data.CENTER_X && event.point.x <= groupArray[i].data.CENTER_X + groupArray[i].data.WIDTH && event.point.y >= groupArray[i].data.CENTER_Y && event.point.y <= groupArray[i].data.CENTER_Y + groupArray[i].data.HEIGHT){
-                                group = groupArray[i];
-                            }
-                        }
-                        if(vertCutFlag){
-                            vertCutSelect(event, group);
-                        }
-                        
-                        if (horizCutFlag){
-                            horizCutSelect(event, group);
-                        }
-                        
-                        if (paintFlag){
-                            if(this.fillColor == paintColor){
-                                this.fillColor = 'white'
+            var prevGroup = new Group();
+            
+            //unitSquare variable definition
+            var unitSquare = new Group();
+            unitSquare.data.type = "work";
+            unitSquare.data.MAX_CUTS = 6;
+            unitSquare.data.WIDTH = 300;
+            unitSquare.data.HEIGHT = 300;
+            unitSquare.data.CENTER_X = 100;
+            unitSquare.data.CENTER_Y = 200;
+            unitSquare.data.fillNumX = 1;
+            unitSquare.data.fillNumY = 1;
+            unitSquare.data.totalCuts = (unitSquare.data.MAX_CUTS - 1) * unitSquare.data.MAX_CUTS / 2;
+            unitSquare.data.offset = 1;
+            unitSquare.data.isCuttableHoriz = true;
+            unitSquare.data.isCuttableVert = true; 
+            
+            //otherSquare variable definition
+            var otherSquare = new Group();
+            otherSquare.data.type = "work";
+            otherSquare.data.MAX_CUTS = 6;
+            otherSquare.data.WIDTH = 300;
+            otherSquare.data.HEIGHT = 300;
+            otherSquare.data.CENTER_X = 100;
+            otherSquare.data.CENTER_Y = 550;
+            otherSquare.data.fillNumX = 1;
+            otherSquare.data.fillNumY = 1;
+            otherSquare.data.totalCuts = (unitSquare.data.MAX_CUTS - 1) * unitSquare.data.MAX_CUTS / 2;
+            otherSquare.data.offset = 1;
+            otherSquare.data.isCuttableHoriz = true;
+            otherSquare.data.isCuttableVert = true; 
+            
+            //answerSquare variable definition
+            var answerSquare = new Group();
+            answerSquare.data.type = "answ";
+            answerSquare.data.MAX_CUTS = 6;
+            answerSquare.data.WIDTH = 300;
+            answerSquare.data.HEIGHT = 300;
+            answerSquare.data.CENTER_X = 600;
+            answerSquare.data.CENTER_Y = 400;
+            answerSquare.data.fillNumX = 1;
+            answerSquare.data.fillNumY = 1;
+            answerSquare.data.totalCuts = (unitSquare.data.MAX_CUTS - 1) * unitSquare.data.MAX_CUTS / 2;
+            answerSquare.data.offset = 1;
+            answerSquare.data.isCuttableHoriz = true;
+            answerSquare.data.isCuttableVert = true; 
+            
+            groupArray = [unitSquare, otherSquare, answerSquare];
+            
+            var origPos;
+            
+            function doOverlap(l1,  r1,  l2,  r2) {
+            
+                // To check if either rectangle is actually a line
+                // For example : l1 ={-1,0} r1={1,1} l2={0,-1} r2={0,1}
+            
+                if (l1.x == r1.x || l1.y == r1.y ||
+                l2.x == r2.x || l2.y == r2.y) {
+                    // the line cannot have positive overlap
+                    return false;
+                }
+            
+                // If one rectangle is on left side of other
+                if (l1.x >= r2.x || l2.x >= r1.x) {
+                    return false;
+                }
+            
+                // If one rectangle is above other
+                if (r1.y >= l2.y || r2.y >= l1.y) {
+                    return false;
+                }
+            
+                return true;
+            };
+            
+            function savePrev(group){
+                for(var i = 0; i < group.data.fillNumX * group.data.fillNumY; i++){
+                    //add if to filter out white
+                    var temp = group.children[group.data.offset+i].clone();
+                    prevGroup.addChild(temp);    
+                }
+            };
+            
+            function bringToFront(event){
+                if(isMovable){
+                    this.data.movingSquare = true;
+                    /*for(var i = 0; i < unitSquare.children.length; i++){
+                        console.log(unitSquare.children[i].exportJSON(this));
+                    }*/
+                    var hitResult = project.hitTest(event.point);
+                    //console.log(origPos);
+                    origPos = this.position;
+                    //console.log(origPos);
+                    //Adding something to the active layer removes it from its origonal group
+                    //console.log(project.activeLayer.children[0].exportJSON(this));
+                    //console.log(hitResult.item.exportJSON(this));
+                    //console.log(project.activeLayer.children.length);
+                    project.activeLayer.addChild(hitResult.item);
+                    //console.log(project.activeLayer.children[0].exportJSON(this));
+                    //console.log(project.activeLayer.children.length);
+                    //console.log(project.activeLayer.lastChild.exportJSON(this));
+                    /*for(var i = 0; i < unitSquare.children.length; i++){
+                        console.log(unitSquare.children[i].exportJSON(this));
+                    }*/
+                }
+            };
+            
+            function moveActive(event){
+                if(this.fillColor != 'grey' && isMovable == true && this.fillColor != 'white'){
+                    //console.log(event.delta);
+                    this.position += event.delta
+                }
+            };
+            
+            function endMove(event){
+                if(isMovable){
+                    if(this.data.movingSquare){
+                        hits = [];
+                        var ogIndex;
+                        for(var i = 0; i < answerSquare.data.fillNumX * answerSquare.data.fillNumY; i++){
+                            if(answerSquare.children[answerSquare.data.offset+i].bounds.contains(event.point) && (Math.trunc(answerSquare.children[answerSquare.data.offset+i].bounds.width) == Math.trunc(this.bounds.width) && Math.trunc(answerSquare.children[answerSquare.data.offset+i].bounds.height) == Math.trunc(this.bounds.height) || Math.trunc(answerSquare.children[answerSquare.data.offset+i].bounds.height) == Math.trunc(this.bounds.width) && Math.trunc(answerSquare.children[answerSquare.data.offset+i].bounds.width) == Math.trunc(this.bounds.height)) && answerSquare.children[answerSquare.data.offset+i].fillColor != 'aquamarine'){
+                                hits.push(answerSquare.data.offset+i);
+                                //answerSquare.children[answerSquare.data.offset+i].fillColor = 'grey';
+                                this.fillColor = 'grey';
+                                this.position = origPos;
                             }
                             else{
-                                this.fillColor = paintColor;
+                                this.position = origPos;
                             }
-                        }
-                    };
-                    temp.onMouseMove = function(event){
-                        console.log("squareMouseMove");
-                        var group;
-                        for(var i = 0; i < groupArray.length; i++){
-                            if(event.point.x >= groupArray[i].data.CENTER_X && event.point.x <= groupArray[i].data.CENTER_X + groupArray[i].data.WIDTH && event.point.y >= groupArray[i].data.CENTER_Y && event.point.y <= groupArray[i].data.CENTER_Y + groupArray[i].data.HEIGHT){
-                                group = groupArray[i];
-                            }
-                        }
-                        //console.log(unitSquare.data);
-                        if(vertCutFlag){
-                            for(var i = 0; i < groupArray.length; i++){
-                                hideVertCutLines(groupArray[i]);
-                            }
-                            showVertCutLines(event, group);
                         }
                         
-                        if (horizCutFlag){
-                            for(var i = 0; i < groupArray.length; i++){
-                                hideHorizCutLines(groupArray[i]);
-                            }
-                            showHorizCutLines(event, group);
+                        if(hits.length > 0){
+                            answerSquare.children[hits[0]].fillColor = 'aquamarine';
                         }
-                    };
-                    
-                    if(group.data.type != "answ"){
-                        temp.onMouseDown = bringToFront;
-                        temp.onMouseDrag = moveActive;
-                        temp.onMouseUp = endMove;
+                        
+                        for(var i = 0; i < groupArray.length; i++){
+                                groupArray[i].data.isCuttableHoriz = false;
+                                groupArray[i].data.isCuttableVert = false;
+                        }
                     }
+                    this.data.movingSquare = false;
+                }
+            };
+            
+            function addBackdrop(group){
+                var backdrop = new Path.Rectangle(new Point(group.data.CENTER_X, group.data.CENTER_Y), group.data.WIDTH, group.data.HEIGHT);
+                backdrop.strokeColor = 'black';
+                backdrop.strokeWidth = 4;
+                backdrop.fillColor = 'grey';
+                group.addChild(backdrop);
+            };
+            
+            //add all vertical division lines as children
+            function addVertLines(group){
+                for(var i=2; i<=group.data.MAX_CUTS; i++){
+                    for(var j=1; j < i; j++){
+                        var line = new Path.Line({
+                            from: [j*(group.data.WIDTH/i)+group.data.CENTER_X, group.data.CENTER_Y], 
+                            to: [j*(group.data.WIDTH/i)+group.data.CENTER_X, group.data.HEIGHT + group.data.CENTER_Y],
+                            strokeColor: 'blue',
+                            strokeWidth: 10,
+                            visible: false
+                        });
+                        line.onClick = function(event){
+                            var group;
+                            for(var i = 0; i < groupArray.length; i++){
+                                if(event.point.x >= groupArray[i].data.CENTER_X && event.point.x <= groupArray[i].data.CENTER_X + groupArray[i].data.WIDTH && event.point.y >= groupArray[i].data.CENTER_Y && event.point.y <= groupArray[i].data.CENTER_Y + groupArray[i].data.HEIGHT){
+                                    group = groupArray[i];
+                                }
+                            }
+                            if(vertCutFlag){
+                                savePrev(group);
+                                if(event.point.x > (group.data.WIDTH/3)+group.data.CENTER_X && event.point.x < 2*(group.data.WIDTH/3)+group.data.CENTER_X){
+                                    removeSquares(group);
+                                    group.data.fillNumX = 2;
+                                    addSquares(group);
+                                    prevGroup.removeChildren();
+                                    hideVertCutLines(group);
+                                } else if(event.point.x > (group.data.WIDTH/4)+group.data.CENTER_X && event.point.x < 3*(group.data.WIDTH/4)+group.data.CENTER_X){
+                                    removeSquares(group);
+                                    group.data.fillNumX = 3;
+                                    addSquares(group);
+                                    prevGroup.removeChildren();
+                                    hideVertCutLines(group);
+                                } else if(event.point.x > (group.data.WIDTH/5)+group.data.CENTER_X && event.point.x < 4*(group.data.WIDTH/5)+group.data.CENTER_X){
+                                    removeSquares(group);
+                                    group.data.fillNumX = 4;
+                                    addSquares(group);
+                                    prevGroup.removeChildren();
+                                    hideVertCutLines(group);
+                                } else if(event.point.x > (group.data.WIDTH/6)+group.data.CENTER_X && event.point.x < 5*(group.data.WIDTH/6)+group.data.CENTER_X){
+                                    removeSquares(group);
+                                    group.data.fillNumX = 5;
+                                    addSquares(group);
+                                    prevGroup.removeChildren();
+                                    hideVertCutLines(group);
+                                } else {
+                                    removeSquares(group);
+                                    group.data.fillNumX = 6;
+                                    addSquares(group);
+                                    prevGroup.removeChildren();
+                                    hideVertCutLines(group);
+                                }
+                            }
+                        };
+                        group.addChild(line);
+                    }
+                }
+            };
+            
+            //add all horizontal division lines as children
+            function addHorizLines(group){
+                for(var i=2; i<=group.data.MAX_CUTS; i++){
+                    for(var j=1; j < i; j++){
+                        var line = new Path.Line({
+                            from: [group.data.CENTER_X, j*(group.data.HEIGHT/i)+group.data.CENTER_Y], 
+                            to: [group.data.WIDTH + group.data.CENTER_X, j*(group.data.HEIGHT/i)+group.data.CENTER_Y],
+                            strokeColor: 'green',
+                            strokeWidth: 10,
+                            visible: false
+                        });
+                        line.onClick = function(event){
+                            var group;
+                            for(var i = 0; i < groupArray.length; i++){
+                                if(event.point.x >= groupArray[i].data.CENTER_X && event.point.x <= groupArray[i].data.CENTER_X + groupArray[i].data.WIDTH && event.point.y >= groupArray[i].data.CENTER_Y && event.point.y <= groupArray[i].data.CENTER_Y + groupArray[i].data.HEIGHT){
+                                    group = groupArray[i];
+                                }
+                            }
+                            if(horizCutFlag){
+                                savePrev(group);
+                                if(event.point.y > (group.data.HEIGHT/3)+group.data.CENTER_Y && event.point.y < 2*(group.data.HEIGHT/3)+group.data.CENTER_Y){
+                                    removeSquares(group);
+                                    group.data.fillNumY = 2;
+                                    addSquares(group);
+                                    prevGroup.removeChildren();
+                                    hideHorizCutLines(group);
+                                } else if(event.point.y > (group.data.HEIGHT/4)+group.data.CENTER_Y && event.point.y < 3*(group.data.HEIGHT/4)+group.data.CENTER_Y){
+                                    removeSquares(group);
+                                    group.data.fillNumY = 3;
+                                    addSquares(group);
+                                    prevGroup.removeChildren();
+                                    hideHorizCutLines(group);
+                                } else if(event.point.y > (group.data.HEIGHT/5)+group.data.CENTER_Y && event.point.y < 4*(group.data.HEIGHT/5)+group.data.CENTER_Y){
+                                    removeSquares(group);
+                                    group.data.fillNumY = 4;
+                                    addSquares(group);
+                                    prevGroup.removeChildren();
+                                    hideHorizCutLines(group);
+                                } else if(event.point.y > (group.data.HEIGHT/6)+group.data.CENTER_Y && event.point.y < 5*(group.data.HEIGHT/6)+group.data.CENTER_Y){
+                                    removeSquares(group);
+                                    group.data.fillNumY = 5;
+                                    addSquares(group);
+                                    prevGroup.removeChildren();
+                                    hideHorizCutLines(group);
+                                } else {
+                                    removeSquares(group);
+                                    group.data.fillNumY = 6;
+                                    addSquares(group);
+                                    prevGroup.removeChildren();
+                                    hideHorizCutLines(group);
+                                }
+                            }
+                        };
+                        group.addChild(line);
+                    }
+                }
+            };
+            
+            function hideHorizCutLines(group){
+                if(horizCutFlag){
+                    if(group != undefined){
+                        for(var i=(group.data.fillNumX*group.data.fillNumY)+group.data.totalCuts; i<group.children.length; i++){
+                            group.children[i].visible = false;
+                        }
+                    }
+                }
+            };
+            
+            function horizCutSelect(event, group){
+                if(horizCutFlag){
+                    savePrev(group);
+                    if(event.point.y > (group.data.HEIGHT/3)+group.data.CENTER_Y && event.point.y < 2*(group.data.HEIGHT/3)+group.data.CENTER_Y){
+                        removeSquares(group);
+                        group.data.fillNumY = 2;
+                        addSquares(group);
+                        prevGroup.removeChildren();
+                        hideHorizCutLines(group);
+                    } else if(event.point.y > (group.data.HEIGHT/4)+group.data.CENTER_Y && event.point.y < 3*(group.data.HEIGHT/4)+group.data.CENTER_Y){
+                        removeSquares(group);
+                        group.data.fillNumY = 3;
+                        addSquares(group);
+                        prevGroup.removeChildren();
+                        hideHorizCutLines(group);
+                    } else if(event.point.y > (group.data.HEIGHT/5)+group.data.CENTER_Y && event.point.y < 4*(group.data.HEIGHT/5)+group.data.CENTER_Y){
+                        removeSquares(group);
+                        group.data.fillNumY = 4;
+                        addSquares(group);
+                        prevGroup.removeChildren();
+                        hideHorizCutLines(group);
+                    } else if(event.point.y > (group.data.HEIGHT/6)+group.data.CENTER_Y && event.point.y < 5*(group.data.HEIGHT/6)+group.data.CENTER_Y){
+                        removeSquares(group);
+                        group.data.fillNumY = 5;
+                        addSquares(group);
+                        prevGroup.removeChildren();
+                        hideHorizCutLines(group);
+                    } else {
+                        removeSquares(group);
+                        group.data.fillNumY = 6;
+                        addSquares(group);
+                        prevGroup.removeChildren();
+                        hideHorizCutLines(group);
+                    }
+                    group.data.isCuttableHoriz = false;
+                }
+            };
+            
+            function showHorizCutLines(event, group) {
+                if(!group.data.isCuttableHoriz){
+                    alert("Erase Before Cutting!")
+                    horizCutFlag = false;
+                }
+                else if(horizCutFlag){
+                    if(group != undefined){
+                        //console.log(event.point.x);
+                        hideHorizCutLines(group);
+                        if(event.point.y > (group.data.HEIGHT/3)+group.data.CENTER_Y && event.point.y < 2*(group.data.HEIGHT/3)+group.data.CENTER_Y){
+                            //console.log(2);
+                            group.children[1+(group.data.fillNumX*group.data.fillNumY)+group.data.totalCuts].visible = true;
+                        } else if(event.point.y > (group.data.HEIGHT/4)+group.data.CENTER_Y && event.point.y < 3*(group.data.HEIGHT/4)+group.data.CENTER_Y){
+                            //console.log(3);
+                            group.children[2+(group.data.fillNumX*group.data.fillNumY)+group.data.totalCuts].visible = true;
+                            group.children[3+(group.data.fillNumX*group.data.fillNumY)+group.data.totalCuts].visible = true;
+                        } else if(event.point.y > (group.data.HEIGHT/5)+group.data.CENTER_Y && event.point.y < 4*(group.data.HEIGHT/5)+group.data.CENTER_Y){
+                            //console.log(4);
+                            group.children[4+(group.data.fillNumX*group.data.fillNumY)+group.data.totalCuts].visible = true;
+                            group.children[5+(group.data.fillNumX*group.data.fillNumY)+group.data.totalCuts].visible = true;
+                            group.children[6+(group.data.fillNumX*group.data.fillNumY)+group.data.totalCuts].visible = true;
+                        } else if(event.point.y > (group.data.HEIGHT/6)+group.data.CENTER_Y && event.point.y < 5*(group.data.HEIGHT/6)+group.data.CENTER_Y){
+                            //console.log(5);
+                            group.children[7+(group.data.fillNumX*group.data.fillNumY)+group.data.totalCuts].visible = true;
+                            group.children[8+(group.data.fillNumX*group.data.fillNumY)+group.data.totalCuts].visible = true;
+                            group.children[9+(group.data.fillNumX*group.data.fillNumY)+group.data.totalCuts].visible = true;
+                            group.children[10+(group.data.fillNumX*group.data.fillNumY)+group.data.totalCuts].visible = true;
+                        } else {
+                            //console.log(6);
+                            group.children[11+(group.data.fillNumX*group.data.fillNumY)+group.data.totalCuts].visible = true;
+                            group.children[12+(group.data.fillNumX*group.data.fillNumY)+group.data.totalCuts].visible = true;
+                            group.children[13+(group.data.fillNumX*group.data.fillNumY)+group.data.totalCuts].visible = true;
+                            group.children[14+(group.data.fillNumX*group.data.fillNumY)+group.data.totalCuts].visible = true;
+                            group.children[15+(group.data.fillNumX*group.data.fillNumY)+group.data.totalCuts].visible = true;
+                        }
+                    }
+                }
+            };
+            
+            function hideVertCutLines(group){
+                if(vertCutFlag){
+                    if(group != undefined){
+                        for(var i=1+(group.data.fillNumX*group.data.fillNumY); i<group.data.totalCuts+1+(group.data.fillNumX*group.data.fillNumY); i++){
+                            group.children[i].visible = false;
+                        }
+                    }
+                }
+            }
+            
+            function vertCutSelect(event, group){
+                if(vertCutFlag){
+                    savePrev(group);
+                    if(event.point.x > (group.data.WIDTH/3)+group.data.CENTER_X && event.point.x < 2*(group.data.WIDTH/3)+group.data.CENTER_X){
+                        removeSquares(group);
+                        group.data.fillNumX = 2;
+                        addSquares(group);
+                        prevGroup.removeChildren();
+                        hideVertCutLines(group);
+                    } else if(event.point.x > (group.data.WIDTH/4)+group.data.CENTER_X && event.point.x < 3*(group.data.WIDTH/4)+group.data.CENTER_X){
+                        removeSquares(group);
+                        group.data.fillNumX = 3;
+                        addSquares(group);
+                        prevGroup.removeChildren();
+                        hideVertCutLines(group);
+                    } else if(event.point.x > (group.data.WIDTH/5)+group.data.CENTER_X && event.point.x < 4*(group.data.WIDTH/5)+group.data.CENTER_X){
+                        removeSquares(group);
+                        group.data.fillNumX = 4;
+                        addSquares(group);
+                        prevGroup.removeChildren();
+                        hideVertCutLines(group);
+                    } else if(event.point.x > (group.data.WIDTH/6)+group.data.CENTER_X && event.point.x < 5*(group.data.WIDTH/6)+group.data.CENTER_X){
+                        removeSquares(group);
+                        group.data.fillNumX = 5;
+                        addSquares(group);
+                        prevGroup.removeChildren();
+                        hideVertCutLines(group);
+                    } else {
+                        removeSquares(group);
+                        group.data.fillNumX = 6;
+                        addSquares(group);
+                        prevGroup.removeChildren();
+                        hideVertCutLines(group);
+                    }
+                    group.data.isCuttableVert = false;
+                }
+            };
+            
+            function showVertCutLines(event, group) {
+                if(!group.data.isCuttableVert){
+                    alert("Erase Before Cutting!")
+                    vertCutFlag = false;
+                }
+                else if(vertCutFlag){
+                    if(group != undefined){
+                        //console.log(event.point.x);
+                        hideVertCutLines(group);
+                        if(event.point.x > (group.data.WIDTH/3)+group.data.CENTER_X && event.point.x < 2*(group.data.WIDTH/3)+group.data.CENTER_X){
+                            //console.log(2);
+                            group.children[1+(group.data.fillNumX*group.data.fillNumY)].visible = true;
+                        } else if(event.point.x > (group.data.WIDTH/4)+group.data.CENTER_X && event.point.x < 3*(group.data.WIDTH/4)+group.data.CENTER_X){
+                            //console.log(3);
+                            group.children[2+(group.data.fillNumX*group.data.fillNumY)].visible = true;
+                            group.children[3+(group.data.fillNumX*group.data.fillNumY)].visible = true;
+                        } else if(event.point.x > (group.data.WIDTH/5)+group.data.CENTER_X && event.point.x < 4*(group.data.WIDTH/5)+group.data.CENTER_X){
+                            //console.log(4);
+                            group.children[4+(group.data.fillNumX*group.data.fillNumY)].visible = true;
+                            group.children[5+(group.data.fillNumX*group.data.fillNumY)].visible = true;
+                            group.children[6+(group.data.fillNumX*group.data.fillNumY)].visible = true;
+                        } else if(event.point.x > (group.data.WIDTH/6)+group.data.CENTER_X && event.point.x < 5*(group.data.WIDTH/6)+group.data.CENTER_X){
+                            //console.log(5);
+                            group.children[7+(group.data.fillNumX*group.data.fillNumY)].visible = true;
+                            group.children[8+(group.data.fillNumX*group.data.fillNumY)].visible = true;
+                            group.children[9+(group.data.fillNumX*group.data.fillNumY)].visible = true;
+                            group.children[10+(group.data.fillNumX*group.data.fillNumY)].visible = true;
+                        } else {
+                            //console.log(6);
+                            group.children[11+(group.data.fillNumX*group.data.fillNumY)].visible = true;
+                            group.children[12+(group.data.fillNumX*group.data.fillNumY)].visible = true;
+                            group.children[13+(group.data.fillNumX*group.data.fillNumY)].visible = true;
+                            group.children[14+(group.data.fillNumX*group.data.fillNumY)].visible = true;
+                            group.children[15+(group.data.fillNumX*group.data.fillNumY)].visible = true;
+                        }
+                    }
+                }
+            };
+            
+            function eraseFunc(event, group){
+                if(eraseFlag){
+                    if(group != undefined){
+                        group.data.fillNumX = 1;
+                        group.data.fillNumY = 1;
+                        group.data.isCuttableVert = true;
+                        group.data.isCuttableHoriz = true;
+                        group.removeChildren();
+                        addBackdrop(group);
+                        addSquares(group);
+                        prevGroup.removeChildren();
+                        addVertLines(group);
+                        addHorizLines(group);
+                    }
+                }
+            };
+            
+            function cutSelect(event, group){
+                if(vertCutFlag){
+                    vertCutSelect(event, group);
+                }
+                
+                if (horizCutFlag){
+                    horizCutSelect(event, group);
+                }
+                
+                if (paintFlag){
+                    if(this.fillColor == paintColor){
+                        this.fillColor = 'white'
+                    }
+                    else{
+                        this.fillColor = paintColor;
+                    }
+                }
+            };
+            
+            //done
+            function showCutLines(event, group){
+                if(vertCutFlag){
+                    showVertCutLines(event, group);
+                }
+                
+                if (horizCutFlag){
+                    showHorizCutLines(event, group);
+                }
+            };
+            
+            function addSquares(group){
+                var local_Center_X = group.data.CENTER_X;
+                for(var i = 0; i < group.data.fillNumX; i++){
+                    var local_Center_Y = group.data.CENTER_Y;
+                    for(var j = 0; j < group.data.fillNumY; j++){
+                        var temp;
+                        temp = new Path.Rectangle(new Point(local_Center_X, local_Center_Y), group.data.WIDTH/group.data.fillNumX, group.data.HEIGHT/group.data.fillNumY);
+                        temp.strokeColor = 'black';
+                        temp.strokeWidth = 4;
+                        temp.fillColor = paintColor;
+                        if(prevGroup.children.length > 0){
+                            for(var k = 0; k < prevGroup.children.length; k++){
+                                if(doOverlap(prevGroup.children[k].segments[0].point, prevGroup.children[k].segments[2].point, temp.segments[0].point, temp.segments[2].point)){
+                                    temp.fillColor = prevGroup.children[k].fillColor;
+                                }
+                            }
+                        }
+                        
+                        temp.onClick = function(event){
+                            var group;
+                            for(var i = 0; i < groupArray.length; i++){
+                                if(event.point.x >= groupArray[i].data.CENTER_X && event.point.x <= groupArray[i].data.CENTER_X + groupArray[i].data.WIDTH && event.point.y >= groupArray[i].data.CENTER_Y && event.point.y <= groupArray[i].data.CENTER_Y + groupArray[i].data.HEIGHT){
+                                    group = groupArray[i];
+                                }
+                            }
+                            if(vertCutFlag){
+                                vertCutSelect(event, group);
+                            }
+                            
+                            if (horizCutFlag){
+                                horizCutSelect(event, group);
+                            }
+                            
+                            if(eraseFlag){
+                                eraseFunc(event, group);
+                            }
+                            
+                            if (paintFlag){
+                                if(this.fillColor == paintColor){
+                                    this.fillColor = 'white'
+                                }
+                                else{
+                                    this.fillColor = paintColor;
+                                }
+                            }
+                        };
+                        temp.onMouseMove = function(event){
+                            var group;
+                            for(var i = 0; i < groupArray.length; i++){
+                                if(event.point.x >= groupArray[i].data.CENTER_X && event.point.x <= groupArray[i].data.CENTER_X + groupArray[i].data.WIDTH && event.point.y >= groupArray[i].data.CENTER_Y && event.point.y <= groupArray[i].data.CENTER_Y + groupArray[i].data.HEIGHT){
+                                    group = groupArray[i];
+                                }
+                            }
+                            //console.log(unitSquare.data);
+                            if(vertCutFlag){
+                                for(var i = 0; i < groupArray.length; i++){
+                                    hideVertCutLines(groupArray[i]);
+                                }
+                                showVertCutLines(event, group);
+                            }
+                            
+                            if (horizCutFlag){
+                                for(var i = 0; i < groupArray.length; i++){
+                                    hideHorizCutLines(groupArray[i]);
+                                }
+                                showHorizCutLines(event, group);
+                            }
+                        };
+                        
+                        if(group.data.type != "answ"){
+                            temp.onMouseDown = bringToFront;
+                            temp.onMouseDrag = moveActive;
+                            temp.onMouseUp = endMove;
+                        }
+                        
+                        group.insertChild(1,temp);
+                        local_Center_Y += group.data.WIDTH/group.data.fillNumY;
+                    }  
+                    local_Center_X += group.data.WIDTH/group.data.fillNumX;
+                }
+                hideVertCutLines(group);
+                hideHorizCutLines(group);
+                vertCutFlag = false;
+                horizCutFlag = false;
+            };
+            
+            function removeSquares(group){
+                group.removeChildren(group.data.offset, group.data.fillNumX * group.data.fillNumY + 1);
+            };
+            
+            // Vertical Toggle Button
+            var verticalcut = document.getElementById("vertcutImg");
+            
+            //Vertical Cut toggle
+            verticalcut.addEventListener("click",function(){
+            
+                if(!vertCutFlag){
+                    for(var i = 0; i < groupArray.length; i++){
+                        hideHorizCutLines(groupArray[i]);
+                        hideVertCutLines(groupArray[i]);
+                    }
+                    vertCutFlag = true;
+                    horizCutFlag = false;
+                    paintFlag = false;
+                    isMovable = false;
+                    eraseFlag = false;
                     
-                    group.insertChild(1,temp);
-                    local_Center_Y += group.data.WIDTH/group.data.fillNumY;
-                }  
-                local_Center_X += group.data.WIDTH/group.data.fillNumX;
-            }
-            hideVertCutLines(group);
-            hideHorizCutLines(group);
-            vertCutFlag = false;
-            horizCutFlag = false;
-        };
-        
-        function removeSquares(group){
-            console.log("removeSquares");
-            group.removeChildren(group.data.offset, group.data.fillNumX * group.data.fillNumY + 1);
-        };
-        
-        
-        
-          
-        // Reset toggle button 
-        var resetTool = document.getElementById("resetImg");
-        resetTool.addEventListener("click",function(){
-            location.reload();
-        })
-        
-        
-        
-        // Vertical Toggle Button
-        var verticalcut = document.getElementById("vertcutImg");
-        
-        //Vertical Cut toggle
-        verticalcut.addEventListener("click",function(){
-            if(!vertCutFlag){
-                for(var i = 0; i < groupArray.length; i++){
-                    hideHorizCutLines(groupArray[i]);
-                    hideVertCutLines(groupArray[i]);
+                    paintColor = 'white';
+                } else {
+                    //hide any other groups with vert lines here
+                    hideVertCutLines(unitSquare);
+                    vertCutFlag = false;
                 }
-                vertCutFlag = true;
-                horizCutFlag = false;
-                paintFlag = false;
-                isMovable = false;
-                paletteGroup.removeChildren();
-                paintColor = 'white';
-            } else {
-                //hide any other groups with vert lines here
-                hideVertCutLines(unitSquare);
-                vertCutFlag = false;
-            }
-        })
-        
-        // Horizontal Toggle Button
-        var horizCutTool = document.getElementById("horizCutimg");
-        
-        //Horizontal Cut toggle
-        horizCutTool.addEventListener("click",function(){
-       
-            if(!horizCutFlag){
-                for(var i = 0; i < groupArray.length; i++){
-                    hideHorizCutLines(groupArray[i]);
-                    hideVertCutLines(groupArray[i]);
+            })
+            
+            // Horizontal Toggle Button
+            var horizCutTool = document.getElementById("horizCutimg");
+            
+            
+            //Horizontal Cut toggle
+            horizCutTool.addEventListener("click",function(){
+            
+                if(!horizCutFlag){
+                    for(var i = 0; i < groupArray.length; i++){
+                        hideHorizCutLines(groupArray[i]);
+                        hideVertCutLines(groupArray[i]);
+                    }
+                    horizCutFlag = true;
+                    vertCutFlag = false;
+                    paintFlag = false;
+                    isMovable = false;
+                    eraseFlag = false;
+                    
+                    paintColor = 'white';
+                } else {
+                    //hide any other groups with horiz lines here
+                    hideHorizCutLines(unitSquare);
+                    horizCutFlag = false;
                 }
-                horizCutFlag = true;
-                vertCutFlag = false;
-                paintFlag = false;
-                isMovable = false;
-                paletteGroup.removeChildren();
-                paintColor = 'white';
-            } else {
-                //hide any other groups with horiz lines here
-                hideHorizCutLines(unitSquare);
-                horizCutFlag = false;
-            }
-        })
-        
-        //Color Toggle Button
-        var paintTool = document.getElementById("palletImg");
-       
-
-        var colorBlot1 = document.getElementById("colorBlot1");
-        var colorBlot2 = document.getElementById("colorBlot2");
-        var colorBlot3 = document.getElementById("colorBlot3");
-
-        // make 4 colors dont use naitive red blue or green
-        // do a show hide for the div ( and put all blobs into the div so then just show hide div )
-        colorBlot1.addEventListener("click",function(){
-            paintColor = "yellow"; // TODO need to change to red blob
-        })
-
-        colorBlot2.addEventListener("click",function(){
-            paintColor = "purple"; // TODO need to change to red blob
-        })
-
-        colorBlot3.addEventListener("click",function(){
-            paintColor = "pink"; // TODO need to change to red blob
-        })
-
-        
-        //Palette Set Up
-        var paletteGroup = new Group();
-
-        
-        //Show Palette
-        paintTool.addEventListener("click",function(){
-       
-            if(!paintFlag){
+            })
+            
+            //Color Toggle Button
+            var paintTool = document.getElementById("palletImg");
+            
+            var colorBlot1 = document.getElementById("colorBlot1");
+            var colorBlot2 = document.getElementById("colorBlot2");
+            var colorBlot3 = document.getElementById("colorBlot3");
+            
+            
+            colorBlot1.addEventListener("click",function(){
+                paintColor = "#FCFF00"; // yellow 
                 for(var i = 0; i < groupArray.length; i++){
                     hideHorizCutLines(groupArray[i]);
                     hideVertCutLines(groupArray[i]);
@@ -799,89 +797,150 @@
                 vertCutFlag = false;
                 horizCutFlag = false;
                 isMovable = false;
+                eraseFlag = false;
                 
-                // put the change visible property to true 
-                
-            } else {
-
-                paintFlag = false;
-                // put the change visible property to false 
-
-                paintColor = 'white'
-            }
-        })
-        
-        // Move Toggle Button
-        var moveTool = document.getElementById("moveImg");
-        
-        
-        //Move toggle
-        moveTool.addEventListener("mousedown",function(){
-       
-            if(!isMovable){
+            })
+            
+            colorBlot2.addEventListener("click",function(){
+                paintColor = "#71F479"; // green
                 for(var i = 0; i < groupArray.length; i++){
                     hideHorizCutLines(groupArray[i]);
                     hideVertCutLines(groupArray[i]);
                 }
-                isMovable = true;
-                horizCutFlag = false;
+                paintFlag = true;
                 vertCutFlag = false;
-                paintFlag = false;
-                paletteGroup.removeChildren();
-                paintColor = 'white';
-            } else {
+                horizCutFlag = false;
                 isMovable = false;
-            }
-        })
-        
-        // Answer Check Button
-        var answTool = document.getElementById("answToolImg");
-       
-        
-        //Answer Check Function
-        answTool.addEventListener("click",function(){
-            var counter = 0;
-            var answ = (num1 / denom1) + (num2 / denom2);
-            
-            for(var i = 0 + answerSquare.data.offset; i <= answerSquare.data.fillNumX * answerSquare.data.fillNumY; i++){
-                if(answerSquare.children[i].fillColor == 'aquamarine'){
-                    counter++;
-                }
-            }
-            userAnsw = counter / (answerSquare.data.fillNumX * answerSquare.data.fillNumY);
-            //precision broken
-            if(answ.toFixed(4) == userAnsw.toFixed(4)){
-                console.log(true);
-                document.getElementById('checkImg_visual').style.display='inline-block';
-                alert("Correct");
+                eraseFlag = false;
                 
-       
-            } else {
-                console.log(false);
-                alert("Try again - reset the problem to start over");
-            }
-        })
-        
-        addBackdrop(unitSquare);
-        addBackdrop(otherSquare);
-        addBackdrop(answerSquare);
-        
-        addSquares(unitSquare);
-        prevGroup.removeChildren();
-        addSquares(otherSquare);
-        prevGroup.removeChildren();
-        addSquares(answerSquare);
-        prevGroup.removeChildren();
-        
-        addVertLines(unitSquare);
-        addVertLines(otherSquare);
-        addVertLines(answerSquare);
-        
-        addHorizLines(unitSquare);
-        addHorizLines(otherSquare);
-        addHorizLines(answerSquare);
-        
+            })
+            
+            colorBlot3.addEventListener("click",function(){
+                paintColor = "#EE9CFF"; //pink
+                for(var i = 0; i < groupArray.length; i++){
+                    hideHorizCutLines(groupArray[i]);
+                    hideVertCutLines(groupArray[i]);
+                }
+                paintFlag = true;
+                vertCutFlag = false;
+                horizCutFlag = false;
+                isMovable = false;
+                eraseFlag = false;
+            })
+            
+            colorBlot4.addEventListener("click",function(){
+                paintColor = "#FF474C"; // red 
+                for(var i = 0; i < groupArray.length; i++){
+                    hideHorizCutLines(groupArray[i]);
+                    hideVertCutLines(groupArray[i]);
+                }
+                paintFlag = true;
+                vertCutFlag = false;
+                horizCutFlag = false;
+                isMovable = false;
+                eraseFlag = false;
+                
+            })
+            
+            // Move Toggle Button
+            var moveTool = document.getElementById("moveImg");
+            
+            //Horizontal Cut toggle
+            moveTool.addEventListener("mousedown",function(){
+            
+                if(!isMovable){
+                    for(var i = 0; i < groupArray.length; i++){
+                        hideHorizCutLines(groupArray[i]);
+                        hideVertCutLines(groupArray[i]);
+                    }
+                    isMovable = true;
+                    horizCutFlag = false;
+                    vertCutFlag = false;
+                    paintFlag = false;
+                    eraseFlag = false;
+                    
+                    paintColor = 'white';
+                } else {
+                    isMovable = false;
+                }
+            })
+            
+            // Answer Check Button
+            var answTool = document.getElementById("answToolImg");
+            
+            
+            //Answer Check Function
+            answTool.addEventListener("click",function(){
+            
+                var counter = 0;
+                var answ = (num1 / denom1) + (num2 / denom2);
+                
+                for(var i = 0 + answerSquare.data.offset; i <= answerSquare.data.fillNumX * answerSquare.data.fillNumY; i++){
+                    if(answerSquare.children[i].fillColor == 'aquamarine'){
+                        counter++;
+                    }
+                }
+                userAnsw = counter / (answerSquare.data.fillNumX * answerSquare.data.fillNumY);
+                if(answ.toFixed(6) == userAnsw.toFixed(6)){
+                    console.log(true);
+                    document.getElementById('checkImg_visual').style.display='inline-block';
+                    alert("Correct");
 
+                } else {
+                    console.log(false);
+                    alert("Try again - reset the problem to start over");
+
+                }
+            })
+            
+            // Erase Button
+            var eraseTool = document.getElementById("eraseImg");
+            
+            //Erase Function
+            eraseTool.addEventListener("click",function(){
+            
+                if(!eraseFlag){
+                    for(var i = 0; i < groupArray.length; i++){
+                        hideHorizCutLines(groupArray[i]);
+                        hideVertCutLines(groupArray[i]);
+                    }
+                    isMovable = false;
+                    horizCutFlag = false;
+                    vertCutFlag = false;
+                    paintFlag = false;
+                    eraseFlag = true;
+                    
+                    paintColor = 'white';
+                } else {
+                    eraseFlag = false;
+                }
+            })
+            
+            // Reset toggle button 
+            var resetTool = document.getElementById("resetImg");
+            resetTool.addEventListener("click",function(){
+                location.reload();
+            })
+            
+            
+            addBackdrop(unitSquare);
+            addBackdrop(otherSquare);
+            addBackdrop(answerSquare);
+            
+            addSquares(unitSquare);
+            prevGroup.removeChildren();
+            addSquares(otherSquare);
+            prevGroup.removeChildren();
+            addSquares(answerSquare);
+            prevGroup.removeChildren();
+            
+            addVertLines(unitSquare);
+            addVertLines(otherSquare);
+            addVertLines(answerSquare);
+            
+            addHorizLines(unitSquare);
+            addHorizLines(otherSquare);
+            addHorizLines(answerSquare);
     </script>
 
     <link rel="stylesheet" href="../css/work.css">
@@ -919,7 +978,12 @@
                 
             </div>
 
-            <div class="answerContainer">
+
+            <div class="answerContainerWhole">
+                <input type="text" id="answerWholeNum" name="answerWholeNum"><br>
+            </div>
+            
+            <div class="answerContainerFrac">
                 <input type="text" id="answerNum" name="answerNum"><br>
                 <input type="text" id="answerDenom" name="answerDenom" />
 
@@ -927,7 +991,7 @@
 
             <div class="submitContainer">
                 <img id="checkImg" src="../imgs/greencheck.png" style="display:none;"/>
-                <input type="image" id ="numeric_answToolimg" onclick="return checkAnswer()" src="../imgs/blackcheck.png" title="Check Answer" style="display:inline-block;" />
+                <input type="image" id ="numeric_answToolimg" onclick="return checkAnswer()" src="../imgs/blackcheck.png" title=" Numeric Answer Check" style="display:inline-block;" />
                 
             </div>
 
@@ -942,17 +1006,19 @@
                 <input type="image" id ="horizCutimg" src="../imgs/cut-with-scissors.png" title="Horizontal Cut"/>
                 <input type="image" id ="palletImg" src="../imgs/color-palette.png" title="Color"/>
                 <input type="image" id ="moveImg" src="../imgs/pointer.png" title="Move"/>
-                <input type="image" id ="answToolImg" src="../imgs/blackcheck.png" title="Check Answer"/>
+                <input type="image" id ="answToolImg" src="../imgs/blackcheck.png" title="Visual Answer Check"/>
                 <input type="image" id ="resetImg" src="../imgs/circular-arrow.png" title="Reset Problem"/>  
+                <input type="image" id ="eraseImg" src="../imgs/eraser.svg" title="Erase Square"/>  
                 
             </div>
 
             <div class="paletteContainer">
-                <input  type="image" id ="color-palette" src="../imgs/palette.png" />
-                <input  type="image" id ="colorBlot1" src="../imgs/colorBlot1.png" title="colorBlot1"/>
-                <input  type="image" id ="colorBlot2" src="../imgs/colorBlot2.png" title="colorBlot2"/>
-                <input  type="image" id ="colorBlot3" src="../imgs/colorBlot3.png" title="colorBlot3"/>
-
+                <!-- <input  type="image" id ="color-palette" src="../imgs/palette.png" /> -->
+                <input  type="image" id ="colorBlot1" src="../imgs/Blots/yellowblot.png" title="colorBlot1"/>
+                <input  type="image" id ="colorBlot2" src="../imgs/Blots/greenbot.png" title="colorBlot2"/>
+                <input  type="image" id ="colorBlot3" src="../imgs/Blots/pinkblot.png" title="colorBlot3"/>
+                <input  type="image" id ="colorBlot4" src="../imgs/Blots/orangeblot.png" title="colorBlot4"/>
+                
             </div>
            
         </div>
@@ -960,8 +1026,8 @@
         <img id="checkImg_visual" src="../imgs/greencheck.png" style="display:none;"/>
         <!-- <img id="checkImg_visual" src="imgs/greencheck.png" /> -->
         
-        <div class="canvasContainer">
-            <canvas id="workcanvas" width="1000" height="900"></canvas>
+        <div class="canvasContainer" id ="additionCanvas">
+            <canvas id="workcanvas" width="800" height="600"></canvas>
         </div>
 
     </div>
