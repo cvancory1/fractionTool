@@ -607,15 +607,22 @@ function removeSquares(group){
 
 
 
-
+// highlights button to indicate tool in use
 var activeButton = null;
+var numericAnswercheck = document.getElementById("numeric_answToolimg");
 
 function updateSelectedClass(){
     verticalcut.classList.remove('selected');
     horizCutTool.classList.remove('selected');
     moveTool.classList.remove('selected');
     eraseTool.classList.remove('selected');
-
+    colorBlot1.classList.remove('selected');
+    colorBlot2.classList.remove('selected');
+    colorBlot3.classList.remove('selected');
+    colorBlot4.classList.remove('selected');
+    answTool.classList.remove('selected');
+    numericAnswercheck.classList.remove('selected');
+    
     activeButton.classList.add('selected');
 }
 
@@ -693,7 +700,7 @@ colorBlot1.addEventListener("click",function(){
     horizCutFlag = false;
     isMovable = false;
     eraseFlag = false;
-    activeButton = null;
+    activeButton = this;
     updateSelectedClass();
 
     
@@ -710,7 +717,7 @@ colorBlot2.addEventListener("click",function(){
     horizCutFlag = false;
     isMovable = false;
     eraseFlag = false;
-    activeButton = null;
+    activeButton = this;
     updateSelectedClass();
 
     
@@ -727,7 +734,7 @@ colorBlot3.addEventListener("click",function(){
     horizCutFlag = false;
     isMovable = false;
     eraseFlag = false;
-    activeButton = null;
+    activeButton = this;
     updateSelectedClass();
 
 })
@@ -743,7 +750,7 @@ colorBlot4.addEventListener("click",function(){
     horizCutFlag = false;
     isMovable = false;
     eraseFlag = false;
-    activeButton = null;
+    activeButton = this;
     updateSelectedClass();
 
     
