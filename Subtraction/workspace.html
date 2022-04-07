@@ -73,6 +73,10 @@
           
 
         function checkAnswer() {
+            // indicate button is on
+            document.getElementById("numeric_answToolimg").classList.add('selected');;
+
+            // parse URL 
             const queryString = window.location.search;
             const urlParams = new URLSearchParams(queryString);
             var choice = urlParams.get('problemChoice');
@@ -111,13 +115,13 @@
 
 
             }
+
         }
 
 
 
     </script>
 
-    
     <!-- paper.js code Ryan and Will -->
     <script type="text/paperscript" canvas="workcanvas" src="Subtraction.js"></script>
 
