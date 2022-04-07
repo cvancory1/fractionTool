@@ -6,47 +6,113 @@
   <link rel="stylesheet" href="css/home.css">
 
   <script>
+    function randNumerator() {
+      var MAXNUM = 6;
+      return (Math.floor)(Math.random() * MAXNUM) + 1;  // between 1-6
+    }
 
-  
+
+    function randDenom() {
+      MAXNUM = 5;
+      return Math.floor(Math.random() * MAXNUM + 2);// between 2-6
+    }
+
 
     function submitCheck() {
-      
+
+      // If creating a question, website loads to the create page
       if (document.getElementById("Create").checked) {
 
-        if(document.getElementById("Addition").checked){
+        if (document.getElementById("Addition").checked) {
           document.getElementById("homeForm1").action = "Addition/create.html";
 
-        }else if (document.getElementById("Multiplication").checked){
+        } else if (document.getElementById("Multiplication").checked) {
           document.getElementById("homeForm1").action = "Multiplication/create.html";
 
-        }else if (document.getElementById("Division").checked){
+        } else if (document.getElementById("Division").checked) {
           document.getElementById("homeForm1").action = "Division/create.html";
 
-        }else if (document.getElementById("Subtraction").checked){
+        } else if (document.getElementById("Subtraction").checked) {
           document.getElementById("homeForm1").action = "Subtraction/create.html";
 
         }
 
-      } else if (document.getElementById("Random").checked) {
-       
         
-        if(document.getElementById("Addition").checked){
+      // Generate random numbers for the fractions 
+      } else if (document.getElementById("Random").checked) {
+        leftNum = -1;
+        leftDenom = -1;
+        rightNum = -1;
+        rightDenom = -1;
+
+
+        if (document.getElementById("Addition").checked) {
+          solution = (rightNum / rightDenom) + (leftNum / leftDenom);
+
+          // check if either fract == 1 or num > denom 
+          while ((rightNum == rightDenom || rightNum > rightDenom) || (leftNum == leftDenom || leftNum > leftDenom) || (solution > 1)) {
+            rightNum = randNumerator();
+            leftNum = randNumerator();
+            rightDenom = randDenom();
+            leftDenom = randDenom();
+
+            solution = (rightNum / rightDenom) + (leftNum / leftDenom);
+          }
+          
           document.getElementById("homeForm1").action = "Addition/workspace.html";
 
-        }else if (document.getElementById("Multiplication").checked){
+        } else if (document.getElementById("Multiplication").checked) {
+
+          var solution = (rightNum / rightDenom) * (leftNum / leftDenom);
+          while ((rightNum == rightDenom || rightNum > rightDenom) || (leftNum == leftDenom || leftNum > leftDenom)) {
+            rightNum = randNumerator();
+            leftNum = randNumerator();
+            rightDenom = randDenom();
+            leftDenom = randDenom();
+            solution = (rightNum / rightDenom) * (leftNum / leftDenom);
+          }
+
+
           document.getElementById("homeForm1").action = "Multiplication/workspace.html";
 
-        }else if (document.getElementById("Division").checked){
+        } else if (document.getElementById("Division").checked) {
+          var solution = (rightNum / rightDenom) / (leftNum / leftDenom);
+
+          while ((rightNum == rightDenom || rightNum > rightDenom) || (leftNum == leftDenom || leftNum > leftDenom)) {
+            rightNum = randNumerator();
+            leftNum = randNumerator();
+            rightDenom = randDenom();
+            leftDenom = randDenom();
+            solution = (rightNum / rightDenom) / (leftNum / leftDenom);
+          }
+
           document.getElementById("homeForm1").action = "Division/workspace.html";
 
-          
-        }else if (document.getElementById("Subtraction").checked){
+
+        } else if (document.getElementById("Subtraction").checked) {
+
+          var solution = ((leftNum * rightDenom) - (rightNum * leftDenom)) / (rightDenom * leftDenom);
+         
+          while (((rightNum / rightDenom) > (leftNum / leftDenom)) || (leftNum == leftDenom || leftNum > leftDenom)
+            || (rightNum == rightDenom || rightNum > rightDenom) || (solution == 0)) {
+            rightNum = randNumerator();
+            leftNum = randNumerator();
+            rightDenom = randDenom();
+            leftDenom = randDenom();
+            solution = ((leftNum * rightDenom) - (rightNum * leftDenom)) / (rightDenom * leftDenom);
+
+
+          }
           document.getElementById("homeForm1").action = "Subtraction/workspace.html";
 
         }
       }
-      document.getElementById("homeForm1").submit(); // submit form 
 
+      document.getElementById("leftNumerator").value = leftNum;
+      document.getElementById("leftDenominator").value = leftDenom;
+      document.getElementById("rightNumerator").value = rightNum;
+      document.getElementById("rightDenominator").value = rightDenom;
+      document.getElementById("homeForm1").submit(); // submit form 
 
     }
 
@@ -62,20 +128,20 @@
 
   <body>
 
-    <form method="get" id="homeForm1" >
+    <form method="get" id="homeForm1">
 
       <div class="operationsContainer_top">
         <input type="radio" id="Addition" name="operationChoice" value="Addition" />
-        <label for="Addition">+</label>
+        <label for="Addition">&#43;</label>
 
         <input type="radio" id="Subtraction" name="operationChoice" value="Subtraction" />
-        <label for="Subtraction"> - </label>
+        <label for="Subtraction">&#8722;</label>
 
         <input type="radio" id="Division" name="operationChoice" value="Division" />
-        <label for="Division">÷</label>
+        <label for="Division">&#247;</label>
 
         <input type="radio" id="Multiplication" name="operationChoice" value="Multiplication" />
-        <label for="Multiplication">X</label>
+        <label for="Multiplication">&#215;</label>
       </div>
 
 
@@ -91,14 +157,14 @@
         <button type="submit" class="submitButton" onclick="submitCheck()">Start</button>
       </div>
 
-      <!-- <input type="hidden" id="leftNumerator" name="leftNum" value="" />
+      <input type="hidden" id="leftNumerator" name="leftNum" value="" />
       <input type="hidden" id="leftDenominator" name="leftDenom" value="" />
       <input type="hidden" id="rightNumerator" name="rightNum" value="" />
-      <input type="hidden" id="rightDenominator" name="rightDenom" value="" /> -->
+      <input type="hidden" id="rightDenominator" name="rightDenom" value="" />
 
     </form>
-</body>
-  
+  </body>
+
 </div>
 
 
