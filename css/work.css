@@ -46,6 +46,7 @@
 
 #equalsign,
 #operationSign,
+#answerWholeNum,
 #answerNum,
 #answerDenom,
 #leftNum,
@@ -69,6 +70,40 @@
     align-items: center;
     text-align: right;
 } 
+
+
+.paletteContainer {
+    background-image: url(../imgs/palette.png);
+    background-repeat: no-repeat;
+    width: 200;
+    height: 200px;
+    background-size: contain;
+    position: relative;
+}
+
+#colorBlot1{
+    position: relative;
+    top: 108px;
+    left: 3px;
+}
+
+#colorBlot2{
+    position: relative;
+    top: 126px;
+    left: -40px;
+}
+
+#colorBlot3{
+    position: relative;
+    top: 114px;
+    left: -74px;
+}
+
+#colorBlot4{
+    position: relative;
+    top: 53px;
+    left: -259px;
+}
 
 
 
@@ -158,12 +193,28 @@ input[type = "image"] {
 #vertcutImg:checked {
     border-color: green;
     background: green;
-  
 
 }
 
-.canvasContainer{
-    /* background-color: yellow; */
+#additionCanvas
+{
+    background-color: yellow;
+    margin: -150px 100px 100px 100px;
+
+}
+#subtractionCanvas{
+    background-color: yellow;
+    margin: -200px 0px 0px 0px;
+
+}
+#multplicationCanvas{
+    margin: 0px 200px 200px 300px;
+
+}
+
+#divisionCanvas{
+    background-color: yellow;
+    margin: -200px 0px 0px 0px;
 
 }
 
@@ -174,17 +225,14 @@ input[type = "image"] {
     
 }
 
-.selected {
-    background-color: red;
-}
-
-.paletteContainer{
-    height: 100;
-    width: 200px;
-    
-}
 
 .img{
     max-width: 100%;
     max-height: 100%;
+}
+
+.selected {
+    border-radius: 10px;
+    border-width: 10px;
+    background-color: green;
 }
