@@ -502,12 +502,6 @@ var numericAnswercheck = document.getElementById("numeric_answToolimg");
 function updateSelectedClass(){
     verticalcut.classList.remove('selected');
     horizCutTool.classList.remove('selected');
-    moveTool.classList.remove('selected');
-    eraseTool.classList.remove('selected');
-    colorBlot1.classList.remove('selected');
-    colorBlot2.classList.remove('selected');
-    colorBlot3.classList.remove('selected');
-    colorBlot4.classList.remove('selected');
     answTool.classList.remove('selected');
     numericAnswercheck.classList.remove('selected');
     
@@ -519,6 +513,8 @@ var verticalcut = document.getElementById("vertcutImg");
 
 //Vertical Cut toggle
 verticalcut.addEventListener("click",function(){
+    activeButton = this;
+
     if(!vertCutFlag){
         for(var i = 0; i < groupArray.length; i++){
             hideHorizCutLines(groupArray[i]);
@@ -667,6 +663,8 @@ function revDiagonalDraw(object){
     }
 }
 
+
+// TODO hook up buttons here 
 //column fill button
 var isMovable = false
 var Diagonal = new Path.Rectangle(new Point(325, 25), 50, 50);
@@ -683,6 +681,7 @@ Diagonal.onClick = function(event){
     }
 };
 
+// TODO hook up buttons here 
 //row fill button
 var revDiagonal = new Path.Rectangle(new Point(425, 25), 50, 50);
 revDiagonal.strokeColor = 'black';

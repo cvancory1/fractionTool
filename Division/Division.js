@@ -607,7 +607,6 @@ verticalcut.addEventListener("click",function(){
         paintFlag = false;
         isMovable = false;
         eraseFlag = false;
-        paletteGroup.removeChildren();
         paintColor = 'white';
     } else {
         //hide any other groups with vert lines here
@@ -633,7 +632,7 @@ horizCutTool.addEventListener("click",function(){
         paintFlag = false;
         isMovable = false;
         eraseFlag = false;
-        paletteGroup.removeChildren();
+        // paletteGroup.removeChildren();
         paintColor = 'white';
     } else {
         //hide any other groups with horiz lines here
@@ -737,7 +736,7 @@ moveTool.addEventListener("mousedown",function(){
         vertCutFlag = false;
         paintFlag = false;
         eraseFlag = false;
-        paletteGroup.removeChildren();
+        // paletteGroup.removeChildren();
         paintColor = 'white';
         answerAreas[0].visible = true
         areaFilled = 1;
@@ -749,32 +748,33 @@ moveTool.addEventListener("mousedown",function(){
     }
 })
 
-//var answerArea = new Path.Rectangle(new Point( 600, 200),answerSquare.data.HEIGHT / denom2 * num2, answerSquare.data.WIDTH )
-//console.log(answerSquare.data.fillNumX)
-//answerArea.strokeColor = 'gold'
-//answerArea.strokeWidth = '4'
-//answerArea.visible = false
-// var answ = (num1 / denom1) / (num2 / denom2);
-// var test = Math.ceil(answ)
-// var answerAreas = [test]
-// var areaSize
-// if(denom1 * num2 == denom2){
-//     areaSize = 1
-// }
-// else{
-//     areaSize = denom1 * num2
-// }
-// var areaFilled = 0   
-// console.log(areaFilled)  
-//console.log(answ)
-//console.log(test)
-//console.log(answerAreas.length)
-// for(var i = 0; i < test; i++){
-//     answerAreas[i] = new Path.Rectangle(new Point( 600 + ((answerSquare.data.HEIGHT / denom2 * num2) * i), 200 ),answerSquare.data.HEIGHT / denom2 * num2, answerSquare.data.WIDTH )
-//     answerAreas[i].strokeColor = 'gold'
-//     answerAreas[i].strokeWidth = '4'
-//     answerAreas[i].visible = false
-// }
+// Gold Answer area generation 
+var answerArea = new Path.Rectangle(new Point( 600, 200),answerSquare.data.HEIGHT / denom2 * num2, answerSquare.data.WIDTH )
+console.log(answerSquare.data.fillNumX)
+answerArea.strokeColor = 'gold'
+answerArea.strokeWidth = '4'
+answerArea.visible = false
+var answ = (num1 / denom1) / (num2 / denom2);
+var test = Math.ceil(answ)
+var answerAreas = [test]
+var areaSize
+if(denom1 * num2 == denom2){
+    areaSize = 1
+}
+else{
+    areaSize = denom1 * num2
+}
+var areaFilled = 0   
+console.log(areaFilled)  
+console.log(answ)
+console.log(test)
+console.log(answerAreas.length)
+for(var i = 0; i < test; i++){
+    answerAreas[i] = new Path.Rectangle(new Point( 600 + ((answerSquare.data.HEIGHT / denom2 * num2) * i), 200 ),answerSquare.data.HEIGHT / denom2 * num2, answerSquare.data.WIDTH )
+    answerAreas[i].strokeColor = 'gold'
+    answerAreas[i].strokeWidth = '4'
+    answerAreas[i].visible = false
+}
 
 function checkAnswerArea(group){
     var areaCount = 0
@@ -840,7 +840,6 @@ eraseTool.addEventListener("click",function(){
         vertCutFlag = false;
         paintFlag = false;
         eraseFlag = true;
-        paletteGroup.removeChildren();
         paintColor = 'white';
     } else {
         eraseFlag = false;

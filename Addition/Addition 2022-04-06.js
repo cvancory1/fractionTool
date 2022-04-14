@@ -790,6 +790,8 @@ var answTool = document.getElementById("answToolImg");
 
 //Answer Check Function
 answTool.addEventListener("click",function(){
+    activeButton = this;
+
     var counter = 0;
     var answ = (num1 / denom1) + (num2 / denom2);
     
@@ -809,6 +811,8 @@ answTool.addEventListener("click",function(){
         alert("Try again - reset the problem to start over");
 
     }
+    updateSelectedClass();
+
 })
 
 // Erase Button
