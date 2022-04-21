@@ -37,32 +37,7 @@
             rightNum = urlParams.get('rightNum');
             rightDenom = urlParams.get('rightDenom')
 
-            //  //user created their own problem 
-            // if(choice == "Create"){
-            //      // parse the url string 
-            //     leftNum = urlParams.get('leftNum');
-            //     leftDenom = urlParams.get('leftDenom');
-            //     rightNum = urlParams.get('rightNum');
-            //     rightDenom = urlParams.get('rightDenom');
-
-               
-            // // generate numbers for the user
-            // }else if (choice == "Random"){
-
-            //     var solution =  0
-                
-            //     while ( ( (rightNum/ rightDenom) > ( leftNum / leftDenom)) || (leftNum == leftDenom || leftNum > leftDenom) 
-            //     || (rightNum == rightDenom || rightNum > rightDenom) || ( solution == 0)){
-            //         rightNum = randNumerator();
-            //         leftNum = randNumerator();
-            //         solution =  ((leftNum * rightDenom) - (rightNum * leftDenom))  / (rightDenom * leftDenom);
-            //         console.log("final = "+ solution)
-                   
-
-            //     }
-
-            // }
-
+          
             // puts fraction numbers onto the page
             document.getElementById("leftNum").innerHTML = leftNum;
             document.getElementById("leftDenom").innerHTML = leftDenom;
@@ -113,12 +88,9 @@
                 alert("Try again - fraction is not correct");
                 console.log("solotion=" + solution + "useranswer = " + userAnswer)
 
-
             }
 
         }
-
-
 
     </script>
 
@@ -178,7 +150,13 @@
             </div>
 
         </div>
-        
+        <div class="paletteContainer">
+            <input  type="image" id ="colorBlot1" src="../imgs/Blots/yellowblot.png" title="colorBlot1"/>
+            <input  type="image" id ="colorBlot2" src="../imgs/Blots/greenbot.png" title="colorBlot2"/>
+            <input  type="image" id ="colorBlot3" src="../imgs/Blots/pinkblot.png" title="colorBlot3"/>
+            <input  type="image" id ="colorBlot4" src="../imgs/Blots/orangeblot.png" title="colorBlot4"/>
+            
+        </div>
 
         <div  class="toolbar">
             
@@ -195,15 +173,11 @@
                 
             </div>
 
-            <div class="paletteContainer">
-                <input  type="image" id ="colorBlot1" src="../imgs/Blots/yellowblot.png" title="colorBlot1"/>
-                <input  type="image" id ="colorBlot2" src="../imgs/Blots/greenbot.png" title="colorBlot2"/>
-                <input  type="image" id ="colorBlot3" src="../imgs/Blots/pinkblot.png" title="colorBlot3"/>
-                <input  type="image" id ="colorBlot4" src="../imgs/Blots/orangeblot.png" title="colorBlot4"/>
-                
-            </div>
+           
         
         </div>
+
+   
        
         <img id="checkImg_visual" src="../imgs/greencheck.png" style="display:none;"/>
         
