@@ -72,9 +72,7 @@
 
 <h1>Division</h1>
 
-
-
-<body>
+<!-- <body>
   <div class="content">
 
     <form method="get" id="createForm" action = "workspace.html" >
@@ -86,7 +84,6 @@
       </div>
 
       <div class="signContainer">
-        <!-- &#247; is the code for the division sign  -->
         <span id = operationSign>&#247;</span>
      </div>
 
@@ -107,6 +104,45 @@
 
   </form>
 
+</body>
+ -->
+
+
+
+
+<body>
+  <div class="container">
+    <form method="get" id="createForm" action = "workspace.html" >
+
+    <table>
+      <tr>
+        <td> <input type="text" id="leftNumerator" name="leftNum" /></td>
+        <td></td>
+        <td> <input type="text" id="rightNumerator" name="rightNum" /></td>
+      </tr>
+      <tr>
+        <td class="HrContainer">
+          <hr>
+        </td>
+        <td id="operationSign" >&#247;</td>
+        <td class="HrContainer">
+          <hr>
+        </td>
+      </tr>
+      <tr>
+        <td><input type="text" id="leftDenominator" name="leftDenom" /></td>
+        <td></td>
+        <td><input type="text" id="rightDenominator" name="rightDenom" /></td>
+      </tr>
+    </table>
+
+    <div class="submitContainer">
+      <button type="submit" class='submitButton' onclick="dataValidation(event)">Submit</button>
+    </div>
+
+  </div>
+  <input type="hidden" id = "problemChoice" name="problemChoice" value= "Create"/>
+  </form>
 </body>
 
 </html>

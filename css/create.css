@@ -14,7 +14,19 @@ body{
 
 }
 
-.container div {
+
+.homeButton_container{
+  text-align: left;
+}
+
+.content{
+  margin-top: 75px;
+
+} 
+
+
+.container{
+
   display: inline-block;
   text-align: center;
 }
@@ -33,14 +45,17 @@ body{
 .left .middle, .right .middle {
   border-top: 2px solid black;
   margin: 10px 0 10px 0;
+} 
+ 
+hr {
+  border-style: solid;
 }
 
-/* .content{
-    margin-top: 75px;
+.HrContainer{
+  padding: 0 20px 0 20px;
+}
 
-} */
 
-/* 
 .top_fractionContainer,
 .bottom_fractionContainer{
     display: flex;
@@ -51,7 +66,7 @@ body{
     margin-bottom: 10px;
 
    
-} */
+} 
 /* select spans that are children */
 /* .top_fractionContainer > span{
     padding-bottom: 50px;
@@ -82,7 +97,7 @@ input[type="text"] {
 
 
 
-.signContainer{
+.signContainer {
     /* text-align: center; */
 }
 

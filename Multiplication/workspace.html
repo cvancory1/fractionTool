@@ -33,8 +33,6 @@
             // looks at URL and store 
             const queryString = window.location.search;
             console.log(queryString);
-            // var choice = urlParams.get('problemChoice');
-            // console.log("choice = "+ choice);
 
             const urlParams = new URLSearchParams(queryString);
             leftNum = urlParams.get('leftNum');
@@ -42,32 +40,6 @@
             rightNum = urlParams.get('rightNum');
             rightDenom = urlParams.get('rightDenom');
 
-
-             //user created their own problem 
-            // if(choice == "Create"){
-            //      // parse the url string 
-            //     const urlParams = new URLSearchParams(queryString);
-            //     leftNum = urlParams.get('leftNum');
-            //     leftDenom = urlParams.get('leftDenom');
-            //     rightNum = urlParams.get('rightNum');
-            //     rightDenom = urlParams.get('rightDenom');
-
-               
-            // // generate numbers for the user
-            // }else if (choice == "Random"){
-                
-
-            //     //  ensures the fraction != 1 and is a proper fraction
-            //     while ((rightNum == rightDenom || rightNum > rightDenom)  || (leftNum == leftDenom || leftNum > leftDenom)){
-            //       rightNum = randNumerator();
-            //       leftNum = randNumerator();
-
-            //     }
-
-
-            //     var solution = (rightNum / rightDenom) * (leftNum / leftDenom);
-              
-            // }
 
             // puts fraction numbers onto the page
             document.getElementById("leftNum").innerHTML = leftNum;
@@ -123,10 +95,11 @@
 
     </script>
 
+    <script type="text/paperscript" canvas="workcanvas" src="Multiplication.txt 2022-04-07.js"></script>
 
 
     <!-- paper.js code Ryan and Will -->
-    <script type="text/paperscript" canvas="workcanvas">
+    <!-- <script type="text/paperscript" canvas="workcanvas">
 
         document.body.style.backgroundColor = "#81cbab";
 
@@ -886,7 +859,7 @@
         location.reload();
         })
 
-    </script>
+    </script> -->
 
     <link rel="stylesheet" href="../css/work.css">
 
@@ -950,11 +923,13 @@
                
                 <input  type="image" id ="vertcutImg" src="../imgs/cut-with-scissors2.png" title="Vertical Cut"/>
                 <input type="image" id ="horizCutimg" src="../imgs/cut-with-scissors.png" title="Horizontal Cut"/>
+                <input type="image" id ="horizCross" src="../imgs/horizontalCrossHatch.png" title="Horizontal Cross Hatch"/>
+                <input type="image" id ="vertCross" src="../imgs/verticalCrossHatch.png" title="Vertical Cross Hatch"/>
                 <!-- <input type="image" id ="palletImg" src="../imgs/color-palette.png" title="Color"/> -->
                 <!-- <input type="image" id ="moveImg" src="../imgs/pointer.png" title="Move"/> -->
                 <input type="image" id ="answToolImg" src="../imgs/blackcheck.png" title="Visual Answer Check"/>
                 <input type="image" id ="resetImg" src="../imgs/circular-arrow.png" title="Reset Problem"/>  
-                <input type="image" id ="eraseImg" src="../imgs/eraser.svg" title="=Erase Problem"/>  
+                <!-- <input type="image" id ="eraseImg" src="../imgs/eraser.svg" title="=Erase Problem"/>   -->
 
                 
             </div>

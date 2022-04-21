@@ -12,7 +12,6 @@
 
         var MAXNUM = 6;
 
-      
         // generate num and denom for the problem
         function randNumerator() {
             return Math.floor(Math.random() * MAXNUM) + 1;  // between 1-6
@@ -38,32 +37,6 @@
             leftDenom = urlParams.get('leftDenom');
             rightNum = urlParams.get('rightNum');
             rightDenom = urlParams.get('rightDenom');
-
-
-
-             //user created their own problem 
-            // if(choice == "Create"){
-            //      // parse the url string 
-            //     leftNum = urlParams.get('leftNum');
-            //     leftDenom = urlParams.get('leftDenom');
-            //     rightNum = urlParams.get('rightNum');
-            //     rightDenom = urlParams.get('rightDenom');
-
-               
-            // // generate numbers for the user
-            // }else if (choice == "Random"){
-
-            //     //  ensures the fraction != 1 and is a proper fraction
-            //     while (rightNum == rightDenom || rightNum > rightDenom) {
-            //       rightNum = randNumerator();
-            //     }
-
-            //     while (leftNum == leftDenom || leftNum > leftDenom) {
-            //       leftNum = randNumerator();
-            //     }
-
-            //     var solution = (rightNum / rightDenom) / (leftNum / leftDenom);
-            // }
 
             // puts fraction numbers onto the page
             document.getElementById("leftNum").innerHTML = leftNum;
@@ -118,8 +91,9 @@
     </script>
 
 
+    <script type="text/paperscript" canvas="workcanvas" src="Division.js"></script>
 
-    <!-- paper.js code Ryan and Will -->
+    <!-- paper.js code Ryan and Will
     <script type="text/paperscript" canvas="workcanvas">
         document.body.style.backgroundColor = "#366677";
         //Global Variable Definition
@@ -935,7 +909,7 @@
         
        
 
-    </script>
+    </script> -->
 
     <link rel="stylesheet" href="../css/work.css">
 
@@ -971,7 +945,10 @@
             <div class="signContainer">
                 <span id = equalsign>&#61;</span>
              </div>
-        
+             
+             <div class="answerContainerWhole">
+                <input type="text" id="answerWholeNum" name="answerWholeNum"><br>
+            </div>
 
             <div class="answerContainer">
                 <input type="text" id="answerNum" name="answerNum"><br>
@@ -987,7 +964,14 @@
 
         </div>
         
-
+        <div class="paletteContainer">
+            <input  type="image" id ="colorBlot1" src="../imgs/Blots/yellowblot.png" title="Red"/>
+            <input  type="image" id ="colorBlot2" src="../imgs/Blots/greenbot.png" title="Green"/>
+            <input  type="image" id ="colorBlot3" src="../imgs/Blots/pinkblot.png" title="Yellow"/>
+            <input  type="image" id ="colorBlot4" src="../imgs/Blots/orangeblot.png" title="Pink"/>
+            
+        </div>
+        
         <div  class="toolbar">
             
 
@@ -995,21 +979,14 @@
                
                 <input  type="image" id ="vertcutImg" src="../imgs/cut-with-scissors2.png" title="Vertical Cut"/>
                 <input type="image" id ="horizCutimg" src="../imgs/cut-with-scissors.png" title="Horizontal Cut"/>
-                <input type="image" id ="palletImg" src="../imgs/color-palette.png" title="Color"/>
                 <input type="image" id ="moveImg" src="../imgs/pointer.png" title="Move"/>
                 <input type="image" id ="answToolImg" src="../imgs/blackcheck.png" title="Visual Answer Check"/>
                 <input type="image" id ="resetImg" src="../imgs/circular-arrow.png" title="Reset Problem"/>  
-                <input type="image" id ="eraseImg" src="../imgs/eraser.svg" title="=Erase Problem"/>  
+                <input type="image" id ="eraseImg" src="../imgs/eraser.svg" title="Erase Square"/>  
                 
             </div>
 
-            <div class="paletteContainer">
-                <input  type="image" id ="colorBlot1" src="../imgs/Blots/yellowblot.png" title="colorBlot1"/>
-                <input  type="image" id ="colorBlot2" src="../imgs/Blots/greenbot.png" title="colorBlot2"/>
-                <input  type="image" id ="colorBlot3" src="../imgs/Blots/pinkblot.png" title="colorBlot3"/>
-                <input  type="image" id ="colorBlot4" src="../imgs/Blots/orangeblot.png" title="colorBlot4"/>
-                
-            </div>
+        
 
         
         </div>
@@ -1023,5 +1000,5 @@
 
 </body>
 
-<!-- <div>Icons made by <a href="https://www.freepik.com" title="Freepik">Freepik</a> from <a href="https://www.flaticon.com/" title="Flaticon">www.flaticon.com</a></div> -->
+<!-- <div> Icons made by <a href="https://www.freepik.com" title="Freepik">Freepik</a> from <a href="https://www.flaticon.com/" title="Flaticon">www.flaticon.com</a></div> -->
 </html>

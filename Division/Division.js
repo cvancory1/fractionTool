@@ -1,5 +1,5 @@
-document.body.style.backgroundColor = "#e5ccc9";
-        
+document.body.style.backgroundColor = "#366677";
+
 // get url string and parse
 queryString = window.location.search;
 console.log(queryString);
@@ -15,16 +15,15 @@ denom2 = urlParams.get('rightDenom');
 
 console.log(num1 + num2 + denom1 +denom2)
 
-
 //Global Variable Definition
 var vertCutFlag = false;
 var horizCutFlag = false;
 var paintFlag = false;
 var isMovable = false;
-var eraseFlag = false;
 var paintColor = 'white';
-
+var eraseFlag = false;
 var prevGroup = new Group();
+
 
 //unitSquare variable definition
 var unitSquare = new Group();
@@ -32,8 +31,8 @@ unitSquare.data.type = "work";
 unitSquare.data.MAX_CUTS = 6;
 unitSquare.data.WIDTH = 300;
 unitSquare.data.HEIGHT = 300;
-unitSquare.data.CENTER_X = 600;
-unitSquare.data.CENTER_Y = 400;
+unitSquare.data.CENTER_X = 100;
+unitSquare.data.CENTER_Y = 200;
 unitSquare.data.fillNumX = 1;
 unitSquare.data.fillNumY = 1;
 unitSquare.data.totalCuts = (unitSquare.data.MAX_CUTS - 1) * unitSquare.data.MAX_CUTS / 2;
@@ -47,8 +46,8 @@ answerSquare.data.type = "answ";
 answerSquare.data.MAX_CUTS = 6;
 answerSquare.data.WIDTH = 300;
 answerSquare.data.HEIGHT = 300;
-answerSquare.data.CENTER_X = 100;
-answerSquare.data.CENTER_Y = 400;
+answerSquare.data.CENTER_X = 600;
+answerSquare.data.CENTER_Y = 200;
 answerSquare.data.fillNumX = 1;
 answerSquare.data.fillNumY = 1;
 answerSquare.data.totalCuts = (unitSquare.data.MAX_CUTS - 1) * unitSquare.data.MAX_CUTS / 2;
@@ -56,31 +55,25 @@ answerSquare.data.offset = 1;
 answerSquare.data.isCuttableHoriz = true;
 answerSquare.data.isCuttableVert = true;
 
- groupArray = [unitSquare, answerSquare];
-
+groupArray = [unitSquare, answerSquare];
 var origPos;
 
 function doOverlap(l1,  r1,  l2,  r2) {
- 
     // To check if either rectangle is actually a line
     // For example : l1 ={-1,0} r1={1,1} l2={0,-1} r2={0,1}
-
     if (l1.x == r1.x || l1.y == r1.y ||
     l2.x == r2.x || l2.y == r2.y) {
         // the line cannot have positive overlap
         return false;
     }
-
     // If one rectangle is on left side of other
     if (l1.x >= r2.x || l2.x >= r1.x) {
         return false;
     }
-
     // If one rectangle is above other
     if (r1.y >= l2.y || r2.y >= l1.y) {
         return false;
     }
-
     return true;
 };
 
@@ -374,7 +367,7 @@ function hideVertCutLines(group){
             }
         }
     }
-}
+};
 
 function vertCutSelect(event, group){
     if(vertCutFlag){
@@ -475,11 +468,9 @@ function cutSelect(event, group){
     if(vertCutFlag){
         vertCutSelect(event, group);
     }
-    
     if (horizCutFlag){
         horizCutSelect(event, group);
     }
-    
     if (paintFlag){
         if(this.fillColor == paintColor){
             this.fillColor = 'white'
@@ -490,12 +481,11 @@ function cutSelect(event, group){
     }
 };
 
-
+//done
 function showCutLines(event, group){
     if(vertCutFlag){
         showVertCutLines(event, group);
     }
-    
     if (horizCutFlag){
         showHorizCutLines(event, group);
     }
@@ -518,7 +508,6 @@ function addSquares(group){
                     }
                 }
             }
-            
             temp.onClick = function(event){
                 var group;
                 for(var i = 0; i < groupArray.length; i++){
@@ -529,15 +518,12 @@ function addSquares(group){
                 if(vertCutFlag){
                     vertCutSelect(event, group);
                 }
-                
                 if(eraseFlag){
                     eraseFunc(event, group);
                 }
-                
                 if (horizCutFlag){
                     horizCutSelect(event, group);
                 }
-                
                 if (paintFlag){
                     if(this.fillColor == paintColor){
                         this.fillColor = 'white'
@@ -561,7 +547,6 @@ function addSquares(group){
                     }
                     showVertCutLines(event, group);
                 }
-                
                 if (horizCutFlag){
                     for(var i = 0; i < groupArray.length; i++){
                         hideHorizCutLines(groupArray[i]);
@@ -569,13 +554,12 @@ function addSquares(group){
                     showHorizCutLines(event, group);
                 }
             };
-            
             if(group.data.type != "answ"){
                 temp.onMouseDown = bringToFront;
                 temp.onMouseDrag = moveActive;
                 temp.onMouseUp = endMove;
+                //  project.activeLayer.addChild(answerArea);
             }
-            
             group.insertChild(1,temp);
             local_Center_Y += group.data.WIDTH/group.data.fillNumY;
         }  
@@ -592,6 +576,7 @@ function removeSquares(group){
 };
 
 
+
 // highlights button to indicate tool in use
 var activeButton = null;
 var numericAnswercheck = document.getElementById("numeric_answToolimg");
@@ -601,15 +586,9 @@ function updateSelectedClass(){
     horizCutTool.classList.remove('selected');
     moveTool.classList.remove('selected');
     eraseTool.classList.remove('selected');
-    colorBlot1.classList.remove('selected');
-    colorBlot2.classList.remove('selected');
-    colorBlot3.classList.remove('selected');
-    colorBlot4.classList.remove('selected');
-    answTool.classList.remove('selected');
-    numericAnswercheck.classList.remove('selected');
-    
     activeButton.classList.add('selected');
 }
+
 
 // Vertical Toggle Button
 var verticalcut = document.getElementById("vertcutImg");
@@ -617,7 +596,7 @@ var verticalcut = document.getElementById("vertcutImg");
 //Vertical Cut toggle
 verticalcut.addEventListener("click",function(){
     activeButton = this;
-
+    updateSelectedClass();
     if(!vertCutFlag){
         for(var i = 0; i < groupArray.length; i++){
             hideHorizCutLines(groupArray[i]);
@@ -628,23 +607,20 @@ verticalcut.addEventListener("click",function(){
         paintFlag = false;
         isMovable = false;
         eraseFlag = false;
-        //paletteGroup.removeChildren();
         paintColor = 'white';
     } else {
         //hide any other groups with vert lines here
         hideVertCutLines(unitSquare);
         vertCutFlag = false;
     }
-    updateSelectedClass();
-
 })
 
 // Horizontal Toggle Button
 var horizCutTool = document.getElementById("horizCutimg");
-
 //Horizontal Cut toggle
 horizCutTool.addEventListener("click",function(){
     activeButton = this;
+    updateSelectedClass();
 
     if(!horizCutFlag){
         for(var i = 0; i < groupArray.length; i++){
@@ -656,21 +632,21 @@ horizCutTool.addEventListener("click",function(){
         paintFlag = false;
         isMovable = false;
         eraseFlag = false;
-        //paletteGroup.removeChildren();
+        // paletteGroup.removeChildren();
         paintColor = 'white';
     } else {
         //hide any other groups with horiz lines here
         hideHorizCutLines(unitSquare);
         horizCutFlag = false;
     }
-    updateSelectedClass();
-
 })
 
 //Color Toggle Button
 var paintTool = document.getElementById("palletImg");
 
-          
+//Palette Set Up
+var paintTool = document.getElementById("palletImg");
+
 var colorBlot1 = document.getElementById("colorBlot1");
 var colorBlot2 = document.getElementById("colorBlot2");
 var colorBlot3 = document.getElementById("colorBlot3");
@@ -740,18 +716,16 @@ colorBlot4.addEventListener("click",function(){
     activeButton = this;
     updateSelectedClass();
 
-
     
 })
 
-// Move Toggle Button
-var moveTool = document.getElementById("moveImg");
 
-//Move Function
+// Move Toggle Button
+var moveTool = document.getElementById("moveImg")
+//Horizontal Cut toggle
 moveTool.addEventListener("mousedown",function(){
     activeButton = this;
-
-    
+    updateSelectedClass();
     if(!isMovable){
         for(var i = 0; i < groupArray.length; i++){
             hideHorizCutLines(groupArray[i]);
@@ -762,46 +736,91 @@ moveTool.addEventListener("mousedown",function(){
         vertCutFlag = false;
         paintFlag = false;
         eraseFlag = false;
-        //paletteGroup.removeChildren();
+        // paletteGroup.removeChildren();
         paintColor = 'white';
+        answerAreas[0].visible = true
+        areaFilled = 1;
+        for(var i = answerSquare.data.offset; i < answerSquare.children.length; i++){
+            answerSquare.children[i].fillColor = 'white'
+        }
     } else {
         isMovable = false;
     }
-    updateSelectedClass();
-
 })
+
+// Gold Answer area generation 
+var answerArea = new Path.Rectangle(new Point( 600, 200),answerSquare.data.HEIGHT / denom2 * num2, answerSquare.data.WIDTH )
+console.log(answerSquare.data.fillNumX)
+answerArea.strokeColor = 'gold'
+answerArea.strokeWidth = '4'
+answerArea.visible = false
+var answ = (num1 / denom1) / (num2 / denom2);
+var test = Math.ceil(answ)
+var answerAreas = [test]
+var areaSize
+if(denom1 * num2 == denom2){
+    areaSize = 1
+}
+else{
+    areaSize = denom1 * num2
+}
+var areaFilled = 0   
+console.log(areaFilled)  
+console.log(answ)
+console.log(test)
+console.log(answerAreas.length)
+for(var i = 0; i < test; i++){
+    answerAreas[i] = new Path.Rectangle(new Point( 600 + ((answerSquare.data.HEIGHT / denom2 * num2) * i), 200 ),answerSquare.data.HEIGHT / denom2 * num2, answerSquare.data.WIDTH )
+    answerAreas[i].strokeColor = 'gold'
+    answerAreas[i].strokeWidth = '4'
+    answerAreas[i].visible = false
+}
+
+function checkAnswerArea(group){
+    var areaCount = 0
+    for(var i = 0; i < group.children.length; i++){
+        if(group.children[i].fillColor == 'aquamarine'){
+            areaCount++
+        }
+    }
+    if(areaCount % areaSize == 0 && areaFilled != test){
+        console.log('isgood')
+            answerAreas[areaFilled].visible = true 
+            areaFilled++
+    }
+}
 
 // Answer Check Button
 var answTool = document.getElementById("answToolImg");
 
-
+console.log(answTool.className)
 //Answer Check Function
 answTool.addEventListener("click",function(){
     activeButton = this;
-
-    var counter = 0;
-    var answ = (num1 / denom1) - (num2 / denom2);
-    console.log('answ');
-    console.log(answ);
-    
-    for(var i = 0 + answerSquare.data.offset; i <= answerSquare.data.fillNumX * answerSquare.data.fillNumY; i++){
-        if(answerSquare.children[i].fillColor != 'white' && answerSquare.children[i].fillColor != 'grey'){
-            counter++;
+    updateSelectedClass();
+    var numCounter = 0;
+    var denomCounter = 0;
+    var answ = (num1 / denom1) / (num2 / denom2);
+    for(var i = 0 ; i < answerSquare.children.length; i++){
+        if(answerSquare.children[i].fillColor == 'red' || answerSquare.children[i].fillColor == 'blue' || answerSquare.children[i].fillColor == 'green' || answerSquare.children[i].fillColor == 'aquamarine' ){
+            denomCounter++
+            if(answerSquare.children[i].fillColor == 'aquamarine'){
+                numCounter++;
+            }
         }
     }
-    userAnsw = counter / (answerSquare.data.fillNumX * answerSquare.data.fillNumY);
-    console.log('userAnsw');
-    console.log(userAnsw);
+    bottom = denom2/ denom1
+    Math.trunc(bottom)
+    userAnsw = numCounter / areaSize;
     if(answ.toFixed(6) == userAnsw.toFixed(6)){
         console.log(true);
-        document.getElementById('checkImg_visual').style.display='inline-block';
-        alert("Correct");
     } else {
         console.log(false);
-        alert("Try again - reset the problem to start over");
     }
-    updateSelectedClass();
-    
+    console.log(denomCounter)
+    console.log(numCounter)
+    console.log(userAnsw)
+    console.log(answ)
 })
 
 // Erase Button
@@ -809,8 +828,8 @@ var eraseTool = document.getElementById("eraseImg");
 
 //Erase Function
 eraseTool.addEventListener("click",function(){
-    activeButton = this;
-
+	activeButton = this;
+	updateSelectedClass();
     if(!eraseFlag){
         for(var i = 0; i < groupArray.length; i++){
             hideHorizCutLines(groupArray[i]);
@@ -821,20 +840,10 @@ eraseTool.addEventListener("click",function(){
         vertCutFlag = false;
         paintFlag = false;
         eraseFlag = true;
-        //paletteGroup.removeChildren();
         paintColor = 'white';
     } else {
         eraseFlag = false;
     }
-    updateSelectedClass();
-
-})
-
-var resetTool = document.getElementById("resetImg");
-   
-resetTool.addEventListener("click",function(){
-    location.reload();
-
 })
 
 addBackdrop(unitSquare);
@@ -850,4 +859,9 @@ addVertLines(answerSquare);
 
 addHorizLines(unitSquare);
 addHorizLines(answerSquare);
+
+var resetTool = document.getElementById("resetImg");
+resetTool.addEventListener("click",function(){
+	location.reload();
+})
 

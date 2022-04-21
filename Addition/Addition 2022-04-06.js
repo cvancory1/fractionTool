@@ -1,4 +1,4 @@
-document.body.style.backgroundColor = "#e5ccc9";
+document.body.style.backgroundColor = "#c9f4fe";
         
 // get url string and parse
 queryString = window.location.search;
@@ -14,8 +14,7 @@ num2 = urlParams.get('rightNum');
 denom2 = urlParams.get('rightDenom');
 
 console.log(num1 + num2 + denom1 +denom2)
-
-
+            
 //Global Variable Definition
 var vertCutFlag = false;
 var horizCutFlag = false;
@@ -32,8 +31,8 @@ unitSquare.data.type = "work";
 unitSquare.data.MAX_CUTS = 6;
 unitSquare.data.WIDTH = 300;
 unitSquare.data.HEIGHT = 300;
-unitSquare.data.CENTER_X = 600;
-unitSquare.data.CENTER_Y = 400;
+unitSquare.data.CENTER_X = 100;
+unitSquare.data.CENTER_Y = 200;
 unitSquare.data.fillNumX = 1;
 unitSquare.data.fillNumY = 1;
 unitSquare.data.totalCuts = (unitSquare.data.MAX_CUTS - 1) * unitSquare.data.MAX_CUTS / 2;
@@ -41,22 +40,37 @@ unitSquare.data.offset = 1;
 unitSquare.data.isCuttableHoriz = true;
 unitSquare.data.isCuttableVert = true; 
 
+//otherSquare variable definition
+var otherSquare = new Group();
+otherSquare.data.type = "work";
+otherSquare.data.MAX_CUTS = 6;
+otherSquare.data.WIDTH = 300;
+otherSquare.data.HEIGHT = 300;
+otherSquare.data.CENTER_X = 100;
+otherSquare.data.CENTER_Y = 550;
+otherSquare.data.fillNumX = 1;
+otherSquare.data.fillNumY = 1;
+otherSquare.data.totalCuts = (unitSquare.data.MAX_CUTS - 1) * unitSquare.data.MAX_CUTS / 2;
+otherSquare.data.offset = 1;
+otherSquare.data.isCuttableHoriz = true;
+otherSquare.data.isCuttableVert = true; 
+
 //answerSquare variable definition
 var answerSquare = new Group();
 answerSquare.data.type = "answ";
 answerSquare.data.MAX_CUTS = 6;
 answerSquare.data.WIDTH = 300;
 answerSquare.data.HEIGHT = 300;
-answerSquare.data.CENTER_X = 100;
+answerSquare.data.CENTER_X = 600;
 answerSquare.data.CENTER_Y = 400;
 answerSquare.data.fillNumX = 1;
 answerSquare.data.fillNumY = 1;
 answerSquare.data.totalCuts = (unitSquare.data.MAX_CUTS - 1) * unitSquare.data.MAX_CUTS / 2;
 answerSquare.data.offset = 1;
 answerSquare.data.isCuttableHoriz = true;
-answerSquare.data.isCuttableVert = true;
+answerSquare.data.isCuttableVert = true; 
 
- groupArray = [unitSquare, answerSquare];
+ groupArray = [unitSquare, otherSquare, answerSquare];
 
 var origPos;
 
@@ -129,7 +143,7 @@ function endMove(event){
              hits = [];
             var ogIndex;
             for(var i = 0; i < answerSquare.data.fillNumX * answerSquare.data.fillNumY; i++){
-                if(answerSquare.children[answerSquare.data.offset+i].bounds.contains(event.point) && (Math.trunc(answerSquare.children[answerSquare.data.offset+i].bounds.width) == Math.trunc(this.bounds.width) && Math.trunc(answerSquare.children[answerSquare.data.offset+i].bounds.height) == Math.trunc(this.bounds.height) || Math.trunc(answerSquare.children[answerSquare.data.offset+i].bounds.height) == Math.trunc(this.bounds.width) && Math.trunc(answerSquare.children[answerSquare.data.offset+i].bounds.width) == Math.trunc(this.bounds.height)) && answerSquare.children[answerSquare.data.offset+i].fillColor != 'grey'){
+                if(answerSquare.children[answerSquare.data.offset+i].bounds.contains(event.point) && (Math.trunc(answerSquare.children[answerSquare.data.offset+i].bounds.width) == Math.trunc(this.bounds.width) && Math.trunc(answerSquare.children[answerSquare.data.offset+i].bounds.height) == Math.trunc(this.bounds.height) || Math.trunc(answerSquare.children[answerSquare.data.offset+i].bounds.height) == Math.trunc(this.bounds.width) && Math.trunc(answerSquare.children[answerSquare.data.offset+i].bounds.width) == Math.trunc(this.bounds.height)) && answerSquare.children[answerSquare.data.offset+i].fillColor != 'aquamarine'){
                     hits.push(answerSquare.data.offset+i);
                     //answerSquare.children[answerSquare.data.offset+i].fillColor = 'grey';
                     this.fillColor = 'grey';
@@ -141,7 +155,7 @@ function endMove(event){
             }
             
             if(hits.length > 0){
-                answerSquare.children[hits[0]].fillColor = 'grey';
+                answerSquare.children[hits[0]].fillColor = 'aquamarine';
             }
             
             for(var i = 0; i < groupArray.length; i++){
@@ -490,7 +504,7 @@ function cutSelect(event, group){
     }
 };
 
-
+//done
 function showCutLines(event, group){
     if(vertCutFlag){
         showVertCutLines(event, group);
@@ -530,12 +544,12 @@ function addSquares(group){
                     vertCutSelect(event, group);
                 }
                 
-                if(eraseFlag){
-                    eraseFunc(event, group);
-                }
-                
                 if (horizCutFlag){
                     horizCutSelect(event, group);
+                }
+                
+                if(eraseFlag){
+                    eraseFunc(event, group);
                 }
                 
                 if (paintFlag){
@@ -592,6 +606,7 @@ function removeSquares(group){
 };
 
 
+
 // highlights button to indicate tool in use
 var activeButton = null;
 var numericAnswercheck = document.getElementById("numeric_answToolimg");
@@ -636,7 +651,6 @@ verticalcut.addEventListener("click",function(){
         vertCutFlag = false;
     }
     updateSelectedClass();
-
 })
 
 // Horizontal Toggle Button
@@ -645,7 +659,6 @@ var horizCutTool = document.getElementById("horizCutimg");
 //Horizontal Cut toggle
 horizCutTool.addEventListener("click",function(){
     activeButton = this;
-
     if(!horizCutFlag){
         for(var i = 0; i < groupArray.length; i++){
             hideHorizCutLines(groupArray[i]);
@@ -667,10 +680,10 @@ horizCutTool.addEventListener("click",function(){
 
 })
 
+
 //Color Toggle Button
 var paintTool = document.getElementById("palletImg");
-
-          
+            
 var colorBlot1 = document.getElementById("colorBlot1");
 var colorBlot2 = document.getElementById("colorBlot2");
 var colorBlot3 = document.getElementById("colorBlot3");
@@ -740,18 +753,18 @@ colorBlot4.addEventListener("click",function(){
     activeButton = this;
     updateSelectedClass();
 
-
     
 })
 
-// Move Toggle Button
-var moveTool = document.getElementById("moveImg");
 
-//Move Function
+
+
+// Move Toggle Button
+var moveTool = document.getElementById("moveImg")
+
+//Horizontal Cut toggle
 moveTool.addEventListener("mousedown",function(){
     activeButton = this;
-
-    
     if(!isMovable){
         for(var i = 0; i < groupArray.length; i++){
             hideHorizCutLines(groupArray[i]);
@@ -780,28 +793,26 @@ answTool.addEventListener("click",function(){
     activeButton = this;
 
     var counter = 0;
-    var answ = (num1 / denom1) - (num2 / denom2);
-    console.log('answ');
-    console.log(answ);
+    var answ = (num1 / denom1) + (num2 / denom2);
     
     for(var i = 0 + answerSquare.data.offset; i <= answerSquare.data.fillNumX * answerSquare.data.fillNumY; i++){
-        if(answerSquare.children[i].fillColor != 'white' && answerSquare.children[i].fillColor != 'grey'){
+        if(answerSquare.children[i].fillColor == 'aquamarine'){
             counter++;
         }
     }
     userAnsw = counter / (answerSquare.data.fillNumX * answerSquare.data.fillNumY);
-    console.log('userAnsw');
-    console.log(userAnsw);
     if(answ.toFixed(6) == userAnsw.toFixed(6)){
         console.log(true);
         document.getElementById('checkImg_visual').style.display='inline-block';
         alert("Correct");
+
     } else {
         console.log(false);
         alert("Try again - reset the problem to start over");
+
     }
     updateSelectedClass();
-    
+
 })
 
 // Erase Button
@@ -810,7 +821,6 @@ var eraseTool = document.getElementById("eraseImg");
 //Erase Function
 eraseTool.addEventListener("click",function(){
     activeButton = this;
-
     if(!eraseFlag){
         for(var i = 0; i < groupArray.length; i++){
             hideHorizCutLines(groupArray[i]);
@@ -831,23 +841,26 @@ eraseTool.addEventListener("click",function(){
 })
 
 var resetTool = document.getElementById("resetImg");
-   
-resetTool.addEventListener("click",function(){
+    resetTool.addEventListener("click",function(){
     location.reload();
-
 })
 
 addBackdrop(unitSquare);
+addBackdrop(otherSquare);
 addBackdrop(answerSquare);
 
 addSquares(unitSquare);
+prevGroup.removeChildren();
+addSquares(otherSquare);
 prevGroup.removeChildren();
 addSquares(answerSquare);
 prevGroup.removeChildren();
 
 addVertLines(unitSquare);
+addVertLines(otherSquare);
 addVertLines(answerSquare);
 
 addHorizLines(unitSquare);
+addHorizLines(otherSquare);
 addHorizLines(answerSquare);
 

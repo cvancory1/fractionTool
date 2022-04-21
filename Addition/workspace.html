@@ -20,57 +20,18 @@
             return Math.floor(Math.random() * MAXNUM + 2 );// between 2-6
         }
      
-
-        // var rightNum = randNumerator();
-        // var rightDenom = randDenom();
-        // var leftNum = randNumerator();
-        // var leftDenom = randDenom();
         
         window.onload = function () {
             // looks at URL and store 
             const queryString = window.location.search;
             const urlParams = new URLSearchParams(queryString);
-            // var choice = urlParams.get('problemChoice');
-
-            // console.log("choice = "+ choice);
-
-
-             //user created their own problem 
-            // if(choice == "Create"){
-                 // parse the url string 
+            
             leftNum = urlParams.get('leftNum');
             leftDenom = urlParams.get('leftDenom');
             rightNum = urlParams.get('rightNum');
             rightDenom = urlParams.get('rightDenom');
 
                
-            // }else if (choice == "Random"){
-
-                //  ensures the fraction != 1 and is a proper fraction
-                // while (rightNum == rightDenom || rightNum > rightDenom) {
-                //   rightNum = randNumerator();
-                // }
-
-                // while (leftNum == leftDenom || leftNum > leftDenom) {
-                //   leftNum = randNumerator();
-                // }
-
-                // Prime loop to enter 
-                // var solution = 2
-
-                // // check if either fract == 1 or num >denom 
-                // while ((rightNum == rightDenom || rightNum > rightDenom) || (leftNum == leftDenom || leftNum > leftDenom) || (  solution > 1 )) {
-                //   rightNum = randNumerator();
-                //   leftNum = randNumerator();
-
-                //   solution = (rightNum / rightDenom) + (leftNum / leftDenom);
-                // //   console.log("final = " + solution)
-                    
-                // }
-                
-
-            // }
-
             // puts fraction numbers onto the page
             document.getElementById("leftNum").innerHTML = leftNum;
             document.getElementById("leftDenom").innerHTML = leftDenom;
@@ -82,6 +43,10 @@
 
         // checks the numeric answer check with user's input 
         function checkAnswer() {
+            // indicate button is on
+            document.getElementById("numeric_answToolimg").classList.add('selected');;
+
+
             const queryString = window.location.search;
             const urlParams = new URLSearchParams(queryString);
             var choice = urlParams.get('problemChoice');
@@ -123,8 +88,10 @@
     </script>
 
 
-        <!-- paper.js code Ryan and Will -->
-    <script type="text/paperscript" canvas="workcanvas">
+
+    <script type="text/paperscript" canvas="workcanvas" src="Addition 2022-04-06.js"></script>
+
+    <!-- <script type="text/paperscript" canvas="workcanvas" ></script>
             document.body.style.backgroundColor = "#c9f4fe";
         
             // get url string and parse
@@ -941,7 +908,7 @@
             addHorizLines(unitSquare);
             addHorizLines(otherSquare);
             addHorizLines(answerSquare);
-    </script>
+    </script>  -->
 
     <link rel="stylesheet" href="../css/work.css">
 
@@ -997,14 +964,23 @@
 
         </div>
         
-
+        <div class="paletteContainer">
+            <!-- <input  type="image" id ="color-palette" src="../imgs/palette.png" /> -->
+            <input  type="image" id ="colorBlot1" src="../imgs/Blots/yellowblot.png" title="colorBlot1"/>
+            <input  type="image" id ="colorBlot2" src="../imgs/Blots/greenbot.png" title="colorBlot2"/>
+            <input  type="image" id ="colorBlot3" src="../imgs/Blots/pinkblot.png" title="colorBlot3"/>
+            <input  type="image" id ="colorBlot4" src="../imgs/Blots/orangeblot.png" title="colorBlot4"/>
+            
+        </div>
+        
         <div  class="toolbar">
             
+         
 
             <div class="buttonContainer" >
                 <input  type="image" id ="vertcutImg" src="../imgs/cut-with-scissors2.png" title="Vertical Cut"/>
                 <input type="image" id ="horizCutimg" src="../imgs/cut-with-scissors.png" title="Horizontal Cut"/>
-                <input type="image" id ="palletImg" src="../imgs/color-palette.png" title="Color"/>
+                <!-- <input type="image" id ="palletImg" src="../imgs/color-palette.png" title="Color"/> -->
                 <input type="image" id ="moveImg" src="../imgs/pointer.png" title="Move"/>
                 <input type="image" id ="answToolImg" src="../imgs/blackcheck.png" title="Visual Answer Check"/>
                 <input type="image" id ="resetImg" src="../imgs/circular-arrow.png" title="Reset Problem"/>  
@@ -1012,14 +988,7 @@
                 
             </div>
 
-            <div class="paletteContainer">
-                <!-- <input  type="image" id ="color-palette" src="../imgs/palette.png" /> -->
-                <input  type="image" id ="colorBlot1" src="../imgs/Blots/yellowblot.png" title="colorBlot1"/>
-                <input  type="image" id ="colorBlot2" src="../imgs/Blots/greenbot.png" title="colorBlot2"/>
-                <input  type="image" id ="colorBlot3" src="../imgs/Blots/pinkblot.png" title="colorBlot3"/>
-                <input  type="image" id ="colorBlot4" src="../imgs/Blots/orangeblot.png" title="colorBlot4"/>
-                
-            </div>
+         
            
         </div>
        
@@ -1027,7 +996,7 @@
         <!-- <img id="checkImg_visual" src="imgs/greencheck.png" /> -->
         
         <div class="canvasContainer" id ="additionCanvas">
-            <canvas id="workcanvas" width="800" height="600"></canvas>
+            <canvas id="workcanvas" width="1000" height="900"></canvas>
         </div>
 
     </div>
