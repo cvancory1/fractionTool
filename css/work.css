@@ -15,6 +15,7 @@
     text-align: center;
 
   }
+  
   .problemContainer{
     display: flex;
     align-items: center;
@@ -27,9 +28,22 @@
 
 }  
 .toolbar{
-    margin-left: 100px;
-    margin-right: 100px;
-    /* background-color: red; */
+    /* margin-left: 300px;
+    margin-right: 100px; */
+    display:  inline-flex;
+    align-items: center;
+    /* margin-left: 30%;
+    margin-right: 30%; */
+}
+
+.paletteContainer {
+    background-image: url(../imgs/palette.png);
+    background-repeat: no-repeat;
+    width: 200;
+    height: 200px;
+    background-size: contain;
+    position: relative;
+    display: inline-flex;
 }
 
 
@@ -72,14 +86,8 @@
 } 
 
 
-.paletteContainer {
-    background-image: url(../imgs/palette.png);
-    background-repeat: no-repeat;
-    width: 200;
-    height: 200px;
-    background-size: contain;
-    position: relative;
-}
+
+
 
 #colorBlot1{
     position: relative;
@@ -198,12 +206,14 @@ input[type = "image"] {
 
 #additionCanvas
 {
-    background-color: yellow;
-    margin: -150px 100px 100px 100px;
+    /* background-color: yellow; */
+    /* margin: 10%; */
+    margin: -150px 100px 100px 0px;
+
 
 }
 #subtractionCanvas{
-    background-color: yellow;
+    /* background-color: yellow; */
     margin: -200px 0px 0px 0px;
 
 }
@@ -213,8 +223,8 @@ input[type = "image"] {
 }
 
 #divisionCanvas{
-    background-color: yellow;
-    margin: -200px 0px 0px 0px;
+    background-color: green
+    /* margin: -200px 0px 0px 0px; */
 
 }
 
