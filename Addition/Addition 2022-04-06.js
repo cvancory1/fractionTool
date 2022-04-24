@@ -1,4 +1,4 @@
-document.body.style.backgroundColor = "#c9f4fe";
+document.body.style.backgroundColor = "#7C9EB2";
         
 // get url string and parse
 queryString = window.location.search;

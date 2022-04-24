@@ -1,4 +1,4 @@
-document.body.style.backgroundColor = "#e5ccc9";
+document.body.style.backgroundColor = "#845A6D";
         
 // get url string and parse
 queryString = window.location.search;
@@ -610,7 +610,6 @@ function updateSelectedClass(){
     
     activeButton.classList.add('selected');
 }
-
 // Vertical Toggle Button
 var verticalcut = document.getElementById("vertcutImg");
 
