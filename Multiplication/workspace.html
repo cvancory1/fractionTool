@@ -51,6 +51,19 @@
           
 
         function checkAnswer() {
+            // indicate button is on
+            document.getElementById("numeric_answToolimg").classList.add('selected');
+            
+            // turn off all other highlighting indicators 
+            document.getElementById("vertcutImg").classList.remove('selected');
+            document.getElementById("horizCutimg").classList.remove('selected');
+            document.getElementById("answToolImg").classList.remove('selected');
+            document.getElementById("resetImg").classList.remove('selected');
+            document.getElementById("vertCross").classList.remove('selected');
+            document.getElementById("horizCross").classList.remove('selected');
+
+
+
             const queryString = window.location.search;
             const urlParams = new URLSearchParams(queryString);
             var choice = urlParams.get('problemChoice');
@@ -925,11 +938,8 @@
                 <input type="image" id ="horizCutimg" src="../imgs/cut-with-scissors.png" title="Horizontal Cut"/>
                 <input type="image" id ="vertCross" src="../imgs/verticalCrossHatch.png" title="Vertical Cross Hatch"/>
                 <input type="image" id ="horizCross" src="../imgs/horizontalCrossHatch.png" title="Horizontal Cross Hatch"/>
-                <!-- <input type="image" id ="palletImg" src="../imgs/color-palette.png" title="Color"/> -->
-                <!-- <input type="image" id ="moveImg" src="../imgs/pointer.png" title="Move"/> -->
                 <input type="image" id ="answToolImg" src="../imgs/blackcheck.png" title="Visual Answer Check"/>
                 <input type="image" id ="resetImg" src="../imgs/circular-arrow.png" title="Reset Problem"/>  
-                <!-- <input type="image" id ="eraseImg" src="../imgs/eraser.svg" title="=Erase Problem"/>   -->
 
                 
             </div>

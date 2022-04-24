@@ -48,6 +48,22 @@
           
 
         function checkAnswer() {
+            // indicate button is on
+            document.getElementById("numeric_answToolimg").classList.add('selected');
+            
+            // turn off all other highlighting indicators 
+            document.getElementById("vertcutImg").classList.remove('selected');
+            document.getElementById("horizCutimg").classList.remove('selected');
+            document.getElementById("moveImg").classList.remove('selected');
+            document.getElementById("answToolImg").classList.remove('selected');
+            document.getElementById("resetImg").classList.remove('selected');
+            document.getElementById("eraseImg").classList.remove('selected');
+            document.getElementById("colorBlot1").classList.remove('selected');
+            document.getElementById("colorBlot2").classList.remove('selected');
+            document.getElementById("colorBlot3").classList.remove('selected');
+            document.getElementById("colorBlot4").classList.remove('selected');
+            
+
             const queryString = window.location.search;
             const urlParams = new URLSearchParams(queryString);
             var choice = urlParams.get('problemChoice');
@@ -69,12 +85,11 @@
 
             // Calc before comparing 
             var userAnswer = userWholeNumber + (userNumerator / userDenominator);
-            var solution = (leftNum /leftDenom ) / (rightNum / rightDenom )
+            var solution = (leftNum /leftDenom ) / (rightNum / rightDenom );
 
-          
             // Checks the users input 
             if (userAnswer == solution) {
-                Alert("Correct!")
+                alert("Correct!");
                 console.log("YAY correct ");
 
                 // display image to indicate user is correct 
@@ -82,8 +97,10 @@
                 document.getElementById('numeric_answToolimg').style.display='none';
             } else {
                 alert("Try again - fraction is not correct");
-                console.log("solution=" + solution + " useranswer = " + userAnswer)
+                console.log("solution=" + solution + " useranswer = " + userAnswer);
+
             }
+            console.log("end of function ")
         }
 
 
@@ -994,7 +1011,7 @@
         <img id="checkImg_visual" src="../imgs/greencheck.png" style="display:none;"/>
         
         <div class="canvasContainer" id = "divisionCanvas">
-            <canvas id="workcanvas" width="1000" height="900"></canvas>
+            <canvas id="workcanvas" width="1200" height="1200"></canvas>
         </div>
     </div>
 

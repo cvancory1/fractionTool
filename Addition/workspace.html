@@ -6,6 +6,9 @@
     <!-- Load the Paper.js library -->
     <script type="text/javascript" src="../paper.js"></script>
 
+    <script type="text/paperscript" canvas="workcanvas" src="Addition 2022-04-06.js"></script>
+
+
     <!-- Define inlined PaperScript associate it with canvas -->
     <script type="text/javascript">
 
@@ -19,6 +22,8 @@
             MAXNUM = 5;
             return Math.floor(Math.random() * MAXNUM + 2 );// between 2-6
         }
+
+
      
         
         window.onload = function () {
@@ -39,12 +44,26 @@
             document.getElementById("rightDenom").innerHTML = rightDenom;
            
         }
-          
+
+
 
         // checks the numeric answer check with user's input 
         function checkAnswer() {
             // indicate button is on
-            document.getElementById("numeric_answToolimg").classList.add('selected');;
+            document.getElementById("numeric_answToolimg").classList.add('selected');
+            
+            // turn off all other highlighting indicators 
+            document.getElementById("vertcutImg").classList.remove('selected');
+            document.getElementById("horizCutimg").classList.remove('selected');
+            document.getElementById("moveImg").classList.remove('selected');
+            document.getElementById("answToolImg").classList.remove('selected');
+            document.getElementById("resetImg").classList.remove('selected');
+            document.getElementById("eraseImg").classList.remove('selected');
+            document.getElementById("colorBlot1").classList.remove('selected');
+            document.getElementById("colorBlot2").classList.remove('selected');
+            document.getElementById("colorBlot3").classList.remove('selected');
+            document.getElementById("colorBlot4").classList.remove('selected');
+
 
 
             const queryString = window.location.search;
@@ -80,7 +99,6 @@
                 alert("Try again - fraction is not correct");
                 console.log("solution=" + solution + " useranswer = " + userAnswer)
 
-
             }
         }
 
@@ -89,7 +107,6 @@
 
 
 
-    <script type="text/paperscript" canvas="workcanvas" src="Addition 2022-04-06.js"></script>
 
     <!-- <script type="text/paperscript" canvas="workcanvas" ></script>
             document.body.style.backgroundColor = "#c9f4fe";
@@ -975,8 +992,6 @@
         
         <div  class="toolbar">
             
-         
-
             <div class="buttonContainer" >
                 <input  type="image" id ="vertcutImg" src="../imgs/cut-with-scissors2.png" title="Vertical Cut"/>
                 <input type="image" id ="horizCutimg" src="../imgs/cut-with-scissors.png" title="Horizontal Cut"/>
@@ -993,7 +1008,6 @@
         </div>
        
         <img id="checkImg_visual" src="../imgs/greencheck.png" style="display:none;"/>
-        <!-- <img id="checkImg_visual" src="imgs/greencheck.png" /> -->
         
         <div class="canvasContainer" id ="additionCanvas">
             <canvas id="workcanvas" width="1000" height="900"></canvas>

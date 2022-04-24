@@ -674,9 +674,8 @@ var colorBlot1 = document.getElementById("colorBlot1");
 var colorBlot2 = document.getElementById("colorBlot2");
 var colorBlot3 = document.getElementById("colorBlot3");
 
-
 colorBlot1.addEventListener("click",function(){
-    paintColor = "#FCFF00"; // yellow 
+    paintColor = "#648FFF"; // Blue 
     for(var i = 0; i < groupArray.length; i++){
         hideHorizCutLines(groupArray[i]);
         hideVertCutLines(groupArray[i]);
@@ -693,7 +692,7 @@ colorBlot1.addEventListener("click",function(){
 })
 
 colorBlot2.addEventListener("click",function(){
-    paintColor = "#71F479"; // green
+    paintColor = "#785EF0"; // purple
     for(var i = 0; i < groupArray.length; i++){
         hideHorizCutLines(groupArray[i]);
         hideVertCutLines(groupArray[i]);
@@ -710,7 +709,7 @@ colorBlot2.addEventListener("click",function(){
 })
 
 colorBlot3.addEventListener("click",function(){
-    paintColor = "#EE9CFF"; //pink
+    paintColor = "#DC267F"; //pink
     for(var i = 0; i < groupArray.length; i++){
         hideHorizCutLines(groupArray[i]);
         hideVertCutLines(groupArray[i]);
@@ -726,7 +725,7 @@ colorBlot3.addEventListener("click",function(){
 })
 
 colorBlot4.addEventListener("click",function(){
-    paintColor = "#FF474C"; // red 
+    paintColor = "#FE6100"; //  
     for(var i = 0; i < groupArray.length; i++){
         hideHorizCutLines(groupArray[i]);
         hideVertCutLines(groupArray[i]);
@@ -738,9 +737,6 @@ colorBlot4.addEventListener("click",function(){
     eraseFlag = false;
     activeButton = this;
     updateSelectedClass();
-
-
-    
 })
 
 // Move Toggle Button
