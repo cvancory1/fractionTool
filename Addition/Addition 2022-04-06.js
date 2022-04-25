@@ -684,13 +684,14 @@ horizCutTool.addEventListener("click",function(){
 //Color Toggle Button
 var paintTool = document.getElementById("palletImg");
             
-var colorBlot1 = document.getElementById("colorBlot1");
-var colorBlot2 = document.getElementById("colorBlot2");
-var colorBlot3 = document.getElementById("colorBlot3");
+var colorBlot1 = document.getElementById("pinkblot");
+var colorBlot2 = document.getElementById("blueblot");
+var colorBlot3 = document.getElementById("orangeblot");
+var colorBlot4 = document.getElementById("purpleblot");
 
 
 colorBlot1.addEventListener("click",function(){
-    paintColor = "#648FFF"; // Blue 
+    paintColor = "#DC267F"; // Blue 
     for(var i = 0; i < groupArray.length; i++){
         hideHorizCutLines(groupArray[i]);
         hideVertCutLines(groupArray[i]);
@@ -707,7 +708,7 @@ colorBlot1.addEventListener("click",function(){
 })
 
 colorBlot2.addEventListener("click",function(){
-    paintColor = "#785EF0"; // purple
+    paintColor = "#648FFF"; // purple
     for(var i = 0; i < groupArray.length; i++){
         hideHorizCutLines(groupArray[i]);
         hideVertCutLines(groupArray[i]);
@@ -724,7 +725,7 @@ colorBlot2.addEventListener("click",function(){
 })
 
 colorBlot3.addEventListener("click",function(){
-    paintColor = "#DC267F"; //pink
+    paintColor = "#FE6100"; //pink
     for(var i = 0; i < groupArray.length; i++){
         hideHorizCutLines(groupArray[i]);
         hideVertCutLines(groupArray[i]);
@@ -740,7 +741,8 @@ colorBlot3.addEventListener("click",function(){
 })
 
 colorBlot4.addEventListener("click",function(){
-    paintColor = "#FE6100"; //  
+    // paintColor = "#FE6100"; //  
+    paintColor = "#DC267F"; //  
     for(var i = 0; i < groupArray.length; i++){
         hideHorizCutLines(groupArray[i]);
         hideVertCutLines(groupArray[i]);
