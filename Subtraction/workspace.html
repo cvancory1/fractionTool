@@ -81,10 +81,7 @@
             var userNumerator = document.getElementById("answerNum").value;
             var userDenominator = document.getElementById("answerDenom").value;
 
-            // cast to an int
-            userWholeNumber = userWholeNumber/1
-
-            var userAnswer =  (userWholeNumber + (userNumerator / userDenominator));
+            var userAnswer =   (userNumerator / userDenominator);
             var solution =  ((leftNum * rightDenom) - (rightNum * leftDenom))  / (rightDenom * leftDenom);
 
           
@@ -145,10 +142,6 @@
                 <span id = equalsign>&#61;</span>
              </div>
 
-             <div class="answerContainerWhole">
-                <input type="text" id="answerWholeNum" name="answerWholeNum"><br>
-            </div>
-        
 
             <div class="answerContainer">
                 <input type="text" id="answerNum" name="answerNum"><br>
@@ -178,7 +171,6 @@
                
                 <input type="image" id ="vertcutImg" src="../imgs/cut-with-scissors2.png" title="Vertical Cut"/>
                 <input type="image" id ="horizCutimg" src="../imgs/cut-with-scissors.png" title="Horizontal Cut"/>
-                <!-- <input type="image" id ="palletImg" src="../imgs/color-palette.png" title="Color"/> -->
                 <input type="image" id ="moveImg" src="../imgs/pointer.png" title="Move"/>
                 <input type="image" id ="answToolImg" src="../imgs/blackcheck.png" title="Visual Answer Check"/>
                 <input type="image" id ="resetImg" src="../imgs/circular-arrow.png" title="Reset Problem"/>  
