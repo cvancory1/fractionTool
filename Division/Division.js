@@ -642,28 +642,83 @@ function removeSquares(group){
 
 
 // tool indicator highlight
-var activeButton = null;
-function updateSelectedClass(){
-    verticalcut.classList.remove('selected');
-    horizCutTool.classList.remove('selected');
-    moveTool.classList.remove('selected');
-    eraseTool.classList.remove('selected');
-    colorBlot1.classList.remove('selected');
-    colorBlot2.classList.remove('selected');
-    colorBlot3.classList.remove('selected');
-    colorBlot4.classList.remove('selected');
-    document.getElementById("numeric_answToolimg").classList.remove('selected');
+document.getElementById("content").addEventListener("click", function(){
+    // debug 
+    // alert("vertCutFlag: " + vertCutFlag + "\nhorizCutFlag: " + horizCutFlag  + "\npaintFlag: " + paintFlag + "\nisMovable: " + isMovable + "\neraseFlag:" + eraseFlag   )
 
-    activeButton.classList.add('selected');
+    if (vertCutFlag){
+        verticalcut.classList.add('selected');
+    }else{
+        verticalcut.classList.remove('selected');
 
-}
+    }
+
+    if (horizCutFlag){
+        horizCutTool.classList.add('selected');
+    }else{
+        horizCutTool.classList.remove('selected');
+
+    }
+
+    if (isMovable){
+        moveTool.classList.add('selected');
+    }else{
+        moveTool.classList.remove('selected');
+    }
+
+
+    if (eraseFlag){
+        eraseTool.classList.add('selected');
+    }else{
+        eraseTool.classList.remove('selected');
+    }
+
+    if (paintFlag){
+        if (paintColor == "#DC267F"){
+            colorBlot1.classList.add('selected');
+
+        }else{
+            colorBlot1.classList.remove('selected');
+        }
+
+        if (paintColor == "#648FFF"){
+            colorBlot2.classList.add('selected');
+
+        }else{
+            colorBlot2.classList.remove('selected');
+        }
+
+        if (paintColor == "#FE6100"){
+            colorBlot3.classList.add('selected');
+
+        }else{
+            colorBlot3.classList.remove('selected');
+        }
+
+        if (paintColor == "#785EF0"){
+            colorBlot4.classList.add('selected');
+
+        }else{
+            colorBlot4.classList.remove('selected');
+        }
+
+
+    }else{
+        colorBlot1.classList.remove('selected');
+        colorBlot2.classList.remove('selected');
+        colorBlot3.classList.remove('selected');
+        colorBlot4.classList.remove('selected');
+
+    }
+    
+
+})
+
 
 // Vertical Toggle Button
 var verticalcut = document.getElementById("vertcutImg");
 //Vertical Cut toggle
 verticalcut.addEventListener("click",function(){
-    activeButton = this;
-    updateSelectedClass();
     if(!vertCutFlag){
         for(var i = 0; i < groupArray.length; i++){
             hideHorizCutLines(groupArray[i]);
@@ -686,8 +741,6 @@ verticalcut.addEventListener("click",function(){
 var horizCutTool = document.getElementById("horizCutimg");
 //Horizontal Cut toggle
 horizCutTool.addEventListener("click",function(){
-    activeButton = this;
-    updateSelectedClass();
     if(!horizCutFlag){
         for(var i = 0; i < groupArray.length; i++){
             hideHorizCutLines(groupArray[i]);
@@ -729,8 +782,6 @@ colorBlot1.addEventListener("click",function(){
     horizCutFlag = false;
     isMovable = false;
     eraseFlag = false;
-    activeButton = this;
-    updateSelectedClass();
 
     
 })
@@ -746,8 +797,6 @@ colorBlot2.addEventListener("click",function(){
     horizCutFlag = false;
     isMovable = false;
     eraseFlag = false;
-    activeButton = this;
-    updateSelectedClass();
 
     
 })
@@ -763,8 +812,6 @@ colorBlot3.addEventListener("click",function(){
     horizCutFlag = false;
     isMovable = false;
     eraseFlag = false;
-    activeButton = this;
-    updateSelectedClass();
 
 })
 
@@ -780,8 +827,6 @@ colorBlot4.addEventListener("click",function(){
     horizCutFlag = false;
     isMovable = false;
     eraseFlag = false;
-    activeButton = this;
-    updateSelectedClass();
 })
 
 
@@ -789,8 +834,6 @@ colorBlot4.addEventListener("click",function(){
 var moveTool = document.getElementById("moveImg")
 //Horizontal Cut toggle
 moveTool.addEventListener("mousedown",function(){
-    activeButton = this;
-    updateSelectedClass();
     if(!isMovable){
         //create2ndSquare()
         for(var i = 0; i < groupArray.length; i++){
@@ -877,8 +920,6 @@ console.log(answTool.className)
 
 //Answer Check Function
 answTool.addEventListener("click",function(){
-    activeButton = this;
-    updateSelectedClass();
     var numCounter = 0;
     var denomCounter = 0;
     var answ = (num1 / denom1) / (num2 / denom2);
@@ -921,8 +962,6 @@ var eraseTool = document.getElementById("eraseImg");
 
 //Erase Function
 eraseTool.addEventListener("click",function(){
-	activeButton = this;
-	updateSelectedClass();
     if(!eraseFlag){
         for(var i = 0; i < groupArray.length; i++){
             hideHorizCutLines(groupArray[i]);
