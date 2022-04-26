@@ -772,7 +772,7 @@ var colorBlot4 = document.getElementById("purpleblot");
 
 
 colorBlot1.addEventListener("click",function(){
-    paintColor = "#DC267F"; // Blue 
+    paintColor = "#DC267F"; // Pink 
     for(var i = 0; i < groupArray.length; i++){
         hideHorizCutLines(groupArray[i]);
         hideVertCutLines(groupArray[i]);
@@ -782,7 +782,6 @@ colorBlot1.addEventListener("click",function(){
     horizCutFlag = false;
     isMovable = false;
     eraseFlag = false;
-
     
 })
 
@@ -797,6 +796,7 @@ colorBlot2.addEventListener("click",function(){
     horizCutFlag = false;
     isMovable = false;
     eraseFlag = false;
+   
 
     
 })
@@ -812,12 +812,12 @@ colorBlot3.addEventListener("click",function(){
     horizCutFlag = false;
     isMovable = false;
     eraseFlag = false;
+   
 
 })
 
 colorBlot4.addEventListener("click",function(){
-    // paintColor = "#FE6100"; //  
-    paintColor = "#DC267F"; //  
+    paintColor = "#785EF0"; //  
     for(var i = 0; i < groupArray.length; i++){
         hideHorizCutLines(groupArray[i]);
         hideVertCutLines(groupArray[i]);
@@ -827,6 +827,7 @@ colorBlot4.addEventListener("click",function(){
     horizCutFlag = false;
     isMovable = false;
     eraseFlag = false;
+ 
 })
 
 

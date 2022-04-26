@@ -592,30 +592,84 @@ function removeSquares(group){
 };
 
 
-// highlights button to indicate tool in use
-var activeButton = null;
-var numericAnswercheck = document.getElementById("numeric_answToolimg");
 
-function updateSelectedClass(){
-    verticalcut.classList.remove('selected');
-    horizCutTool.classList.remove('selected');
-    moveTool.classList.remove('selected');
-    eraseTool.classList.remove('selected');
-    colorBlot1.classList.remove('selected');
-    colorBlot2.classList.remove('selected');
-    colorBlot3.classList.remove('selected');
-    colorBlot4.classList.remove('selected');
-    answTool.classList.remove('selected');
-    numericAnswercheck.classList.remove('selected');
+// detect if a tool needs to be turned off
+document.getElementById("content").addEventListener("click", function(){
+    // debug 
+    // alert("vertCutFlag: " + vertCutFlag + "\nhorizCutFlag: " + horizCutFlag  + "\npaintFlag: " + paintFlag + "\nisMovable: " + isMovable + "\neraseFlag:" + eraseFlag   )
+
+    if (vertCutFlag){
+        verticalcut.classList.add('selected');
+    }else{
+        verticalcut.classList.remove('selected');
+
+    }
+
+    if (horizCutFlag){
+        horizCutTool.classList.add('selected');
+    }else{
+        horizCutTool.classList.remove('selected');
+
+    }
+
+    if (isMovable){
+        moveTool.classList.add('selected');
+    }else{
+        moveTool.classList.remove('selected');
+    }
+
+
+    if (eraseFlag){
+        eraseTool.classList.add('selected');
+    }else{
+        eraseTool.classList.remove('selected');
+    }
+
+    if (paintFlag){
+        if (paintColor == "#DC267F"){
+            colorBlot1.classList.add('selected');
+
+        }else{
+            colorBlot1.classList.remove('selected');
+        }
+
+        if (paintColor == "#648FFF"){
+            colorBlot2.classList.add('selected');
+
+        }else{
+            colorBlot2.classList.remove('selected');
+        }
+
+        if (paintColor == "#FE6100"){
+            colorBlot3.classList.add('selected');
+
+        }else{
+            colorBlot3.classList.remove('selected');
+        }
+
+        if (paintColor == "#785EF0"){
+            colorBlot4.classList.add('selected');
+
+        }else{
+            colorBlot4.classList.remove('selected');
+        }
+
+
+    }else{
+        colorBlot1.classList.remove('selected');
+        colorBlot2.classList.remove('selected');
+        colorBlot3.classList.remove('selected');
+        colorBlot4.classList.remove('selected');
+
+    }
     
-    activeButton.classList.add('selected');
-}
+
+})
 // Vertical Toggle Button
 var verticalcut = document.getElementById("vertcutImg");
 
 //Vertical Cut toggle
 verticalcut.addEventListener("click",function(){
-    activeButton = this;
 
     if(!vertCutFlag){
         for(var i = 0; i < groupArray.length; i++){
@@ -634,8 +688,6 @@ verticalcut.addEventListener("click",function(){
         hideVertCutLines(unitSquare);
         vertCutFlag = false;
     }
-    updateSelectedClass();
-
 })
 
 // Horizontal Toggle Button
@@ -643,7 +695,6 @@ var horizCutTool = document.getElementById("horizCutimg");
 
 //Horizontal Cut toggle
 horizCutTool.addEventListener("click",function(){
-    activeButton = this;
 
     if(!horizCutFlag){
         for(var i = 0; i < groupArray.length; i++){
@@ -662,7 +713,6 @@ horizCutTool.addEventListener("click",function(){
         hideHorizCutLines(unitSquare);
         horizCutFlag = false;
     }
-    updateSelectedClass();
 
 })
 
@@ -677,7 +727,7 @@ var colorBlot4 = document.getElementById("purpleblot");
 
 
 colorBlot1.addEventListener("click",function(){
-    paintColor = "#DC267F"; // Blue 
+    paintColor = "#DC267F"; // Pink 
     for(var i = 0; i < groupArray.length; i++){
         hideHorizCutLines(groupArray[i]);
         hideVertCutLines(groupArray[i]);
@@ -687,9 +737,6 @@ colorBlot1.addEventListener("click",function(){
     horizCutFlag = false;
     isMovable = false;
     eraseFlag = false;
-    activeButton = this;
-    updateSelectedClass();
-
     
 })
 
@@ -704,8 +751,7 @@ colorBlot2.addEventListener("click",function(){
     horizCutFlag = false;
     isMovable = false;
     eraseFlag = false;
-    activeButton = this;
-    updateSelectedClass();
+   
 
     
 })
@@ -721,14 +767,12 @@ colorBlot3.addEventListener("click",function(){
     horizCutFlag = false;
     isMovable = false;
     eraseFlag = false;
-    activeButton = this;
-    updateSelectedClass();
+   
 
 })
 
 colorBlot4.addEventListener("click",function(){
-    // paintColor = "#FE6100"; //  
-    paintColor = "#DC267F"; //  
+    paintColor = "#785EF0"; //  
     for(var i = 0; i < groupArray.length; i++){
         hideHorizCutLines(groupArray[i]);
         hideVertCutLines(groupArray[i]);
@@ -738,8 +782,7 @@ colorBlot4.addEventListener("click",function(){
     horizCutFlag = false;
     isMovable = false;
     eraseFlag = false;
-    activeButton = this;
-    updateSelectedClass();
+ 
 })
 
 
@@ -748,8 +791,6 @@ var moveTool = document.getElementById("moveImg");
 
 //Move Function
 moveTool.addEventListener("mousedown",function(){
-    activeButton = this;
-
     
     if(!isMovable){
         for(var i = 0; i < groupArray.length; i++){
@@ -766,7 +807,6 @@ moveTool.addEventListener("mousedown",function(){
     } else {
         isMovable = false;
     }
-    updateSelectedClass();
 
 })
 
@@ -776,7 +816,6 @@ var answTool = document.getElementById("answToolImg");
 
 //Answer Check Function
 answTool.addEventListener("click",function(){
-    activeButton = this;
 
     var counter = 0;
     var answ = (num1 / denom1) - (num2 / denom2);
@@ -799,7 +838,6 @@ answTool.addEventListener("click",function(){
         console.log(false);
         alert("Try again - reset the problem to start over");
     }
-    updateSelectedClass();
     
 })
 
@@ -808,7 +846,6 @@ var eraseTool = document.getElementById("eraseImg");
 
 //Erase Function
 eraseTool.addEventListener("click",function(){
-    activeButton = this;
 
     if(!eraseFlag){
         for(var i = 0; i < groupArray.length; i++){
@@ -825,7 +862,6 @@ eraseTool.addEventListener("click",function(){
     } else {
         eraseFlag = false;
     }
-    updateSelectedClass();
 
 })
 
