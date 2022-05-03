@@ -1,4 +1,5 @@
-document.body.style.backgroundColor = "#845A6D";
+// document.body.style.backgroundColor = "#845A6D";
+document.body.style.backgroundColor = "#E3BAC6";
         
 // get url string and parse
 queryString = window.location.search;
@@ -15,7 +16,6 @@ denom2 = urlParams.get('rightDenom');
 
 console.log(num1 + num2 + denom1 +denom2)
 
-
 //Global Variable Definition
 var vertCutFlag = false;
 var horizCutFlag = false;
@@ -23,8 +23,10 @@ var paintFlag = false;
 var isMovable = false;
 var eraseFlag = false;
 var paintColor = 'white';
+var hasMoved = false;
 
 var prevGroup = new Group();
+
 
 //unitSquare variable definition
 var unitSquare = new Group();
@@ -56,7 +58,7 @@ answerSquare.data.offset = 1;
 answerSquare.data.isCuttableHoriz = true;
 answerSquare.data.isCuttableVert = true;
 
- groupArray = [unitSquare, answerSquare];
+groupArray = [unitSquare, answerSquare];
 
 var origPos;
 
@@ -129,7 +131,7 @@ function endMove(event){
              hits = [];
             var ogIndex;
             for(var i = 0; i < answerSquare.data.fillNumX * answerSquare.data.fillNumY; i++){
-                if(answerSquare.children[answerSquare.data.offset+i].bounds.contains(event.point) && (Math.trunc(answerSquare.children[answerSquare.data.offset+i].bounds.width) == Math.trunc(this.bounds.width) && Math.trunc(answerSquare.children[answerSquare.data.offset+i].bounds.height) == Math.trunc(this.bounds.height) || Math.trunc(answerSquare.children[answerSquare.data.offset+i].bounds.height) == Math.trunc(this.bounds.width) && Math.trunc(answerSquare.children[answerSquare.data.offset+i].bounds.width) == Math.trunc(this.bounds.height)) && answerSquare.children[answerSquare.data.offset+i].fillColor != 'grey'){
+                if(answerSquare.children[answerSquare.data.offset+i].bounds.contains(event.point) && (Math.trunc(answerSquare.children[answerSquare.data.offset+i].bounds.width) == Math.trunc(this.bounds.width) && Math.trunc(answerSquare.children[answerSquare.data.offset+i].bounds.height) == Math.trunc(this.bounds.height) || Math.trunc(answerSquare.children[answerSquare.data.offset+i].bounds.height) == Math.trunc(this.bounds.width) && Math.trunc(answerSquare.children[answerSquare.data.offset+i].bounds.width) == Math.trunc(this.bounds.height)) && answerSquare.children[answerSquare.data.offset+i].fillColor != 'grey' && answerSquare.children[answerSquare.data.offset+i].fillColor != 'white'){
                     hits.push(answerSquare.data.offset+i);
                     //answerSquare.children[answerSquare.data.offset+i].fillColor = 'grey';
                     this.fillColor = 'grey';
@@ -168,7 +170,7 @@ function addVertLines(group){
             var line = new Path.Line({
                 from: [j*(group.data.WIDTH/i)+group.data.CENTER_X, group.data.CENTER_Y], 
                 to: [j*(group.data.WIDTH/i)+group.data.CENTER_X, group.data.HEIGHT + group.data.CENTER_Y],
-                strokeColor: 'blue',
+                strokeColor: 'black',
                 strokeWidth: 10,
                 visible: false
             });
@@ -181,25 +183,25 @@ function addVertLines(group){
                 }
                 if(vertCutFlag){
                     savePrev(group);
-                    if(event.point.x > (group.data.WIDTH/3)+group.data.CENTER_X && event.point.x < 2*(group.data.WIDTH/3)+group.data.CENTER_X){
+                    if(this.position.x > (group.data.WIDTH/3)+group.data.CENTER_X && this.position.x < 2*(group.data.WIDTH/3)+group.data.CENTER_X){
                         removeSquares(group);
                         group.data.fillNumX = 2;
                         addSquares(group);
                         prevGroup.removeChildren();
                         hideVertCutLines(group);
-                    } else if(event.point.x > (group.data.WIDTH/4)+group.data.CENTER_X && event.point.x < 3*(group.data.WIDTH/4)+group.data.CENTER_X){
+                    } else if(this.position.x > (group.data.WIDTH/4)+group.data.CENTER_X && this.position.x < 3*(group.data.WIDTH/4)+group.data.CENTER_X){
                         removeSquares(group);
                         group.data.fillNumX = 3;
                         addSquares(group);
                         prevGroup.removeChildren();
                         hideVertCutLines(group);
-                    } else if(event.point.x > (group.data.WIDTH/5)+group.data.CENTER_X && event.point.x < 4*(group.data.WIDTH/5)+group.data.CENTER_X){
+                    } else if(this.position.x > (group.data.WIDTH/5)+group.data.CENTER_X && this.position.x < 4*(group.data.WIDTH/5)+group.data.CENTER_X){
                         removeSquares(group);
                         group.data.fillNumX = 4;
                         addSquares(group);
                         prevGroup.removeChildren();
                         hideVertCutLines(group);
-                    } else if(event.point.x > (group.data.WIDTH/6)+group.data.CENTER_X && event.point.x < 5*(group.data.WIDTH/6)+group.data.CENTER_X){
+                    } else if(this.position.x > (group.data.WIDTH/6)+group.data.CENTER_X && this.position.x < 5*(group.data.WIDTH/6)+group.data.CENTER_X){
                         removeSquares(group);
                         group.data.fillNumX = 5;
                         addSquares(group);
@@ -227,7 +229,7 @@ function addHorizLines(group){
             var line = new Path.Line({
                 from: [group.data.CENTER_X, j*(group.data.HEIGHT/i)+group.data.CENTER_Y], 
                 to: [group.data.WIDTH + group.data.CENTER_X, j*(group.data.HEIGHT/i)+group.data.CENTER_Y],
-                strokeColor: 'green',
+                strokeColor: 'black',
                 strokeWidth: 10,
                 visible: false
             });
@@ -240,25 +242,25 @@ function addHorizLines(group){
                 }
                 if(horizCutFlag){
                     savePrev(group);
-                    if(event.point.y > (group.data.HEIGHT/3)+group.data.CENTER_Y && event.point.y < 2*(group.data.HEIGHT/3)+group.data.CENTER_Y){
+                    if(this.position.y > (group.data.HEIGHT/3)+group.data.CENTER_Y && this.position.y < 2*(group.data.HEIGHT/3)+group.data.CENTER_Y){
                         removeSquares(group);
                         group.data.fillNumY = 2;
                         addSquares(group);
                         prevGroup.removeChildren();
                         hideHorizCutLines(group);
-                    } else if(event.point.y > (group.data.HEIGHT/4)+group.data.CENTER_Y && event.point.y < 3*(group.data.HEIGHT/4)+group.data.CENTER_Y){
+                    } else if(this.position.y > (group.data.HEIGHT/4)+group.data.CENTER_Y && this.position.y < 3*(group.data.HEIGHT/4)+group.data.CENTER_Y){
                         removeSquares(group);
                         group.data.fillNumY = 3;
                         addSquares(group);
                         prevGroup.removeChildren();
                         hideHorizCutLines(group);
-                    } else if(event.point.y > (group.data.HEIGHT/5)+group.data.CENTER_Y && event.point.y < 4*(group.data.HEIGHT/5)+group.data.CENTER_Y){
+                    } else if(this.position.y > (group.data.HEIGHT/5)+group.data.CENTER_Y && this.position.y < 4*(group.data.HEIGHT/5)+group.data.CENTER_Y){
                         removeSquares(group);
                         group.data.fillNumY = 4;
                         addSquares(group);
                         prevGroup.removeChildren();
                         hideHorizCutLines(group);
-                    } else if(event.point.y > (group.data.HEIGHT/6)+group.data.CENTER_Y && event.point.y < 5*(group.data.HEIGHT/6)+group.data.CENTER_Y){
+                    } else if(this.position.y > (group.data.HEIGHT/6)+group.data.CENTER_Y && this.position.y < 5*(group.data.HEIGHT/6)+group.data.CENTER_Y){
                         removeSquares(group);
                         group.data.fillNumY = 5;
                         addSquares(group);
@@ -290,7 +292,7 @@ function hideHorizCutLines(group){
 };
 
 function horizCutSelect(event, group){
-    if(horizCutFlag){
+    if(horizCutFlag && !hasMoved && group.data.isCuttableHoriz){
         savePrev(group);
         if(event.point.y > (group.data.HEIGHT/3)+group.data.CENTER_Y && event.point.y < 2*(group.data.HEIGHT/3)+group.data.CENTER_Y){
             removeSquares(group);
@@ -330,10 +332,10 @@ function horizCutSelect(event, group){
 function showHorizCutLines(event, group) {
     if(group != undefined){
         if(!group.data.isCuttableHoriz){
-            console.log("Erase Before Cutting!")
-            horizCutFlag = false;
+            //console.log("Erase Before Cutting!")
+            //horizCutFlag = false;
         }
-        else if(horizCutFlag){
+        else if(horizCutFlag && !hasMoved){
             //console.log(event.point.x);
             hideHorizCutLines(group);
             if(event.point.y > (group.data.HEIGHT/3)+group.data.CENTER_Y && event.point.y < 2*(group.data.HEIGHT/3)+group.data.CENTER_Y){
@@ -377,7 +379,7 @@ function hideVertCutLines(group){
 }
 
 function vertCutSelect(event, group){
-    if(vertCutFlag){
+    if(vertCutFlag && !hasMoved && group.data.isCuttableVert){
         savePrev(group);
         if(event.point.x > (group.data.WIDTH/3)+group.data.CENTER_X && event.point.x < 2*(group.data.WIDTH/3)+group.data.CENTER_X){
             removeSquares(group);
@@ -417,10 +419,10 @@ function vertCutSelect(event, group){
 function showVertCutLines(event, group) {
     if(group != undefined){
         if(!group.data.isCuttableVert){
-            console.log("Erase Before Cutting!")
-            vertCutFlag = false;
+            //console.log("Erase Before Cutting!")
+            //vertCutFlag = false;
         }
-        else if(vertCutFlag){
+        else if(vertCutFlag && !hasMoved){
             //console.log(event.point.x);
             hideVertCutLines(group);
             if(event.point.x > (group.data.WIDTH/3)+group.data.CENTER_X && event.point.x < 2*(group.data.WIDTH/3)+group.data.CENTER_X){
@@ -454,7 +456,7 @@ function showVertCutLines(event, group) {
 };
 
 function eraseFunc(event, group){
-    if(eraseFlag){
+    if(eraseFlag && !hasMoved){
         if(group != undefined){
             paintColor = 'white';
             group.data.fillNumX = 1;
@@ -592,7 +594,6 @@ function removeSquares(group){
 };
 
 
-
 // detect if a tool needs to be turned off
 document.getElementById("content").addEventListener("click", function(){
     // debug 
@@ -662,15 +663,13 @@ document.getElementById("content").addEventListener("click", function(){
         colorBlot4.classList.remove('selected');
 
     }
-    
-
 })
+
 // Vertical Toggle Button
 var verticalcut = document.getElementById("vertcutImg");
 
 //Vertical Cut toggle
 verticalcut.addEventListener("click",function(){
-
     if(!vertCutFlag){
         for(var i = 0; i < groupArray.length; i++){
             hideHorizCutLines(groupArray[i]);
@@ -681,7 +680,6 @@ verticalcut.addEventListener("click",function(){
         paintFlag = false;
         isMovable = false;
         eraseFlag = false;
-        //paletteGroup.removeChildren();
         paintColor = 'white';
     } else {
         //hide any other groups with vert lines here
@@ -695,7 +693,6 @@ var horizCutTool = document.getElementById("horizCutimg");
 
 //Horizontal Cut toggle
 horizCutTool.addEventListener("click",function(){
-
     if(!horizCutFlag){
         for(var i = 0; i < groupArray.length; i++){
             hideHorizCutLines(groupArray[i]);
@@ -706,19 +703,17 @@ horizCutTool.addEventListener("click",function(){
         paintFlag = false;
         isMovable = false;
         eraseFlag = false;
-        //paletteGroup.removeChildren();
         paintColor = 'white';
     } else {
         //hide any other groups with horiz lines here
         hideHorizCutLines(unitSquare);
         horizCutFlag = false;
     }
-
 })
+
 
 //Color Toggle Button
 var paintTool = document.getElementById("palletImg");
-
             
 var colorBlot1 = document.getElementById("pinkblot");
 var colorBlot2 = document.getElementById("blueblot");
@@ -787,11 +782,10 @@ colorBlot4.addEventListener("click",function(){
 
 
 // Move Toggle Button
-var moveTool = document.getElementById("moveImg");
+var moveTool = document.getElementById("moveImg")
 
 //Move Function
 moveTool.addEventListener("mousedown",function(){
-    
     if(!isMovable){
         for(var i = 0; i < groupArray.length; i++){
             hideHorizCutLines(groupArray[i]);
@@ -802,12 +796,15 @@ moveTool.addEventListener("mousedown",function(){
         vertCutFlag = false;
         paintFlag = false;
         eraseFlag = false;
-        //paletteGroup.removeChildren();
         paintColor = 'white';
+        hasMoved = true;
+        answerArea = new Path.Rectangle(new Point(answerSquare.data.CENTER_X, answerSquare.data.CENTER_Y), answerSquare.data.HEIGHT, answerSquare.data.WIDTH)
+        answerArea.strokeColor = 'gold'
+        answerArea.strokeWidth = '4'
+        answerArea.visible = true
     } else {
         isMovable = false;
     }
-
 })
 
 // Answer Check Button
@@ -816,7 +813,6 @@ var answTool = document.getElementById("answToolImg");
 
 //Answer Check Function
 answTool.addEventListener("click",function(){
-
     var counter = 0;
     var answ = (num1 / denom1) - (num2 / denom2);
     console.log('answ');
@@ -832,13 +828,9 @@ answTool.addEventListener("click",function(){
     console.log(userAnsw);
     if(answ.toFixed(6) == userAnsw.toFixed(6)){
         console.log(true);
-        document.getElementById('checkImg_visual').style.display='inline-block';
-        alert("Correct");
     } else {
         console.log(false);
-        alert("Try again - reset the problem to start over");
     }
-    
 })
 
 // Erase Button
@@ -846,7 +838,6 @@ var eraseTool = document.getElementById("eraseImg");
 
 //Erase Function
 eraseTool.addEventListener("click",function(){
-
     if(!eraseFlag){
         for(var i = 0; i < groupArray.length; i++){
             hideHorizCutLines(groupArray[i]);
@@ -857,19 +848,16 @@ eraseTool.addEventListener("click",function(){
         vertCutFlag = false;
         paintFlag = false;
         eraseFlag = true;
-        //paletteGroup.removeChildren();
         paintColor = 'white';
     } else {
         eraseFlag = false;
     }
-
 })
 
-var resetTool = document.getElementById("resetImg");
-   
-resetTool.addEventListener("click",function(){
-    location.reload();
 
+var resetTool = document.getElementById("resetImg");
+resetTool.addEventListener("click",function(){
+	location.reload();
 })
 
 addBackdrop(unitSquare);
@@ -885,4 +873,3 @@ addVertLines(answerSquare);
 
 addHorizLines(unitSquare);
 addHorizLines(answerSquare);
-
