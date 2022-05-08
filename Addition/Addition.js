@@ -993,7 +993,7 @@
 
 
 
-// START 
+// // START 
 document.body.style.backgroundColor = "#7C9EB2";
     
 // get url string and parse
@@ -1746,7 +1746,6 @@ verticalcut.addEventListener("click",function(){
         paintFlag = false;
         isMovable = false;
         eraseFlag = false;
-        paletteGroup.removeChildren();
         paintColor = 'white';
     } else {
         //hide any other groups with vert lines here
@@ -1770,7 +1769,6 @@ horizCutTool.addEventListener("click",function(){
         paintFlag = false;
         isMovable = false;
         eraseFlag = false;
-        paletteGroup.removeChildren();
         paintColor = 'white';
     } else {
         //hide any other groups with horiz lines here
@@ -1788,63 +1786,77 @@ var colorBlot3 = document.getElementById("orangeblot");
 var colorBlot4 = document.getElementById("purpleblot");
 
 
-colorBlot1.addEventListener("click",function(){
-paintColor = "#DC267F"; // Pink 
-for(var i = 0; i < groupArray.length; i++){
-    hideHorizCutLines(groupArray[i]);
-    hideVertCutLines(groupArray[i]);
-}
-paintFlag = true;
-vertCutFlag = false;
-horizCutFlag = false;
-isMovable = false;
-eraseFlag = false;
 
+colorBlot1.addEventListener("click",function(){
+    if(!hasMoved){
+        paintColor = "#DC267F"; // Pink 
+        for(var i = 0; i < groupArray.length; i++){
+            hideHorizCutLines(groupArray[i]);
+            hideVertCutLines(groupArray[i]);
+        }
+        paintFlag = true;
+        vertCutFlag = false;
+        horizCutFlag = false;
+        isMovable = false;
+        eraseFlag = false;
+
+    }
+   
+    
 })
 
 colorBlot2.addEventListener("click",function(){
-paintColor = "#648FFF"; // purple
-for(var i = 0; i < groupArray.length; i++){
-    hideHorizCutLines(groupArray[i]);
-    hideVertCutLines(groupArray[i]);
-}
-paintFlag = true;
-vertCutFlag = false;
-horizCutFlag = false;
-isMovable = false;
-eraseFlag = false;
+    if(!hasMoved){
 
+        paintColor = "#648FFF"; // purple
+        for(var i = 0; i < groupArray.length; i++){
+            hideHorizCutLines(groupArray[i]);
+            hideVertCutLines(groupArray[i]);
+        }
+        paintFlag = true;
+        vertCutFlag = false;
+        horizCutFlag = false;
+        isMovable = false;
+        eraseFlag = false;
+    }
+   
 
-
+    
 })
 
 colorBlot3.addEventListener("click",function(){
-paintColor = "#FE6100"; //pink
-for(var i = 0; i < groupArray.length; i++){
-    hideHorizCutLines(groupArray[i]);
-    hideVertCutLines(groupArray[i]);
-}
-paintFlag = true;
-vertCutFlag = false;
-horizCutFlag = false;
-isMovable = false;
-eraseFlag = false;
+    if(!hasMoved){
 
+        paintColor = "#FE6100"; //pink
+        for(var i = 0; i < groupArray.length; i++){
+            hideHorizCutLines(groupArray[i]);
+            hideVertCutLines(groupArray[i]);
+        }
+        paintFlag = true;
+        vertCutFlag = false;
+        horizCutFlag = false;
+        isMovable = false;
+        eraseFlag = false;
+    }
+   
 
 })
 
 colorBlot4.addEventListener("click",function(){
-paintColor = "#785EF0"; //  
-for(var i = 0; i < groupArray.length; i++){
-    hideHorizCutLines(groupArray[i]);
-    hideVertCutLines(groupArray[i]);
-}
-paintFlag = true;
-vertCutFlag = false;
-horizCutFlag = false;
-isMovable = false;
-eraseFlag = false;
+    if(!hasMoved){
 
+        paintColor = "#785EF0"; //  
+        for(var i = 0; i < groupArray.length; i++){
+            hideHorizCutLines(groupArray[i]);
+            hideVertCutLines(groupArray[i]);
+        }
+        paintFlag = true;
+        vertCutFlag = false;
+        horizCutFlag = false;
+        isMovable = false;
+        eraseFlag = false;
+    }
+ 
 })
 
 // Move Toggle Button
@@ -1862,7 +1874,6 @@ moveTool.addEventListener("mousedown",function(){
         vertCutFlag = false;
         paintFlag = false;
         eraseFlag = false;
-        paletteGroup.removeChildren();
         paintColor = 'white';
         answerAreas[0].visible = true
         hasMoved = true;
@@ -1916,7 +1927,6 @@ eraseTool.addEventListener("click",function(){
         vertCutFlag = false;
         paintFlag = false;
         eraseFlag = true;
-        paletteGroup.removeChildren();
         paintColor = 'white';
     } else {
         eraseFlag = false;

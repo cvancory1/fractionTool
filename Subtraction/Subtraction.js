@@ -1,5 +1,4 @@
-// document.body.style.backgroundColor = "#845A6D";
-document.body.style.backgroundColor = "#E3BAC6";
+document.body.style.backgroundColor = "#845A6D";
         
 // get url string and parse
 queryString = window.location.search;
@@ -722,61 +721,74 @@ var colorBlot4 = document.getElementById("purpleblot");
 
 
 colorBlot1.addEventListener("click",function(){
-    paintColor = "#DC267F"; // Pink 
-    for(var i = 0; i < groupArray.length; i++){
-        hideHorizCutLines(groupArray[i]);
-        hideVertCutLines(groupArray[i]);
+    if(!hasMoved){
+        paintColor = "#DC267F"; // Pink 
+        for(var i = 0; i < groupArray.length; i++){
+            hideHorizCutLines(groupArray[i]);
+            hideVertCutLines(groupArray[i]);
+        }
+        paintFlag = true;
+        vertCutFlag = false;
+        horizCutFlag = false;
+        isMovable = false;
+        eraseFlag = false;
+
     }
-    paintFlag = true;
-    vertCutFlag = false;
-    horizCutFlag = false;
-    isMovable = false;
-    eraseFlag = false;
+   
     
 })
 
 colorBlot2.addEventListener("click",function(){
-    paintColor = "#648FFF"; // purple
-    for(var i = 0; i < groupArray.length; i++){
-        hideHorizCutLines(groupArray[i]);
-        hideVertCutLines(groupArray[i]);
+    if(!hasMoved){
+
+        paintColor = "#648FFF"; // purple
+        for(var i = 0; i < groupArray.length; i++){
+            hideHorizCutLines(groupArray[i]);
+            hideVertCutLines(groupArray[i]);
+        }
+        paintFlag = true;
+        vertCutFlag = false;
+        horizCutFlag = false;
+        isMovable = false;
+        eraseFlag = false;
     }
-    paintFlag = true;
-    vertCutFlag = false;
-    horizCutFlag = false;
-    isMovable = false;
-    eraseFlag = false;
    
 
     
 })
 
 colorBlot3.addEventListener("click",function(){
-    paintColor = "#FE6100"; //pink
-    for(var i = 0; i < groupArray.length; i++){
-        hideHorizCutLines(groupArray[i]);
-        hideVertCutLines(groupArray[i]);
+    if(!hasMoved){
+
+        paintColor = "#FE6100"; //pink
+        for(var i = 0; i < groupArray.length; i++){
+            hideHorizCutLines(groupArray[i]);
+            hideVertCutLines(groupArray[i]);
+        }
+        paintFlag = true;
+        vertCutFlag = false;
+        horizCutFlag = false;
+        isMovable = false;
+        eraseFlag = false;
     }
-    paintFlag = true;
-    vertCutFlag = false;
-    horizCutFlag = false;
-    isMovable = false;
-    eraseFlag = false;
    
 
 })
 
 colorBlot4.addEventListener("click",function(){
-    paintColor = "#785EF0"; //  
-    for(var i = 0; i < groupArray.length; i++){
-        hideHorizCutLines(groupArray[i]);
-        hideVertCutLines(groupArray[i]);
+    if(!hasMoved){
+
+        paintColor = "#785EF0"; //  
+        for(var i = 0; i < groupArray.length; i++){
+            hideHorizCutLines(groupArray[i]);
+            hideVertCutLines(groupArray[i]);
+        }
+        paintFlag = true;
+        vertCutFlag = false;
+        horizCutFlag = false;
+        isMovable = false;
+        eraseFlag = false;
     }
-    paintFlag = true;
-    vertCutFlag = false;
-    horizCutFlag = false;
-    isMovable = false;
-    eraseFlag = false;
  
 })
 
