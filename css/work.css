@@ -1,20 +1,17 @@
 .content{
-    margin-left: 100px;
-    margin-right: 100px;
-    margin-top: 100px;
-    margin-bottom: 100px;
-    /* background-color: pink; */
-
+    margin-left: 2%;
+    margin-top: 2%;
 }
 
 
- h1 {
+h1{
     font-size: medium;
     font-size: xx-large;
     color: black;
     text-align: center;
 
   }
+  
   
   .problemContainer{
     display: flex;
@@ -30,10 +27,11 @@
 .toolbar{
     /* margin-left: 300px;
     margin-right: 100px; */
-    display:  inline-flex;
+    /* display:  inline-flex;
+    align-items: center; */
     align-items: center;
-    /* margin-left: 30%;
-    margin-right: 30%; */
+    margin-left: 20%;
+    margin-right: 20%;
 }
 
 .paletteContainer {
@@ -84,8 +82,6 @@
     align-items: center;
     text-align: right;
 } 
-
-
 
 
 
@@ -181,23 +177,19 @@ input[type = "image"] {
 #palletImg,
 #moveImg,
 #answToolImg,
+#horizCross,
+#vertCross,
 #resetImg{
     border: 1px solid #C8BFC7;
-    
-
 }
 
-/* on hover grey border appears  */
-#vertcutImg:hover,
-#horizCutimg:hover,
-#palletImg:hover,
-#moveImg:hover,
-#answToolImg:hover,
-#resetImg:hover{
+
+
+.toolbarbutton:hover{
     background: #e1e1e1;
     border: 1px solid #d0d0d0;
 
-}
+} 
 
 /* #vertcutImg:checked {
     border-color: green;
@@ -205,30 +197,39 @@ input[type = "image"] {
 
 } */
 
-/* #additionCanvas
+#additionCanvas
 {
-
+    margin-right: 20%;
+    margin-left: 20%;
+    margin-top: -10%;
 
 }
 #subtractionCanvas{
-    margin: -200px 0px 0px 0px;
+    margin-right: 20%;
+    margin-left: 20%;
+    margin-top: -20%;
 
 }
 #multplicationCanvas{
-    margin: 0px 200px 200px 300px;
+    margin-right: 20%;
+    margin-left: 33%;
+    margin-top: -10;
+
+    
 
 }
 
 #divisionCanvas{
-    background-color: green
+    margin-right: 20%;
+    margin-left: 20%;
+    margin-top: -10%;
 
-} */
+} 
 
 #checkImg_visual{
     /* background-color: green; */
      margin-left: 1000px;
      margin-top: 10px;
-    
 }
 
 
