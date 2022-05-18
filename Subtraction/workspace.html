@@ -48,8 +48,6 @@
           
 
         function checkAnswer() {
-            // indicate button is on
-            document.getElementById("numeric_answToolimg").classList.add('selected');;
 
             // parse URL 
             const queryString = window.location.search;
@@ -64,14 +62,10 @@
             }
 
             // gather user input 
-            var userWholeNumber = document.getElementById("answerWholeNum").value;
             var userNumerator = document.getElementById("answerNum").value;
             var userDenominator = document.getElementById("answerDenom").value;
 
-            // cast to an int
-            userWholeNumber = userWholeNumber/1
-
-            var userAnswer =  (userWholeNumber + (userNumerator / userDenominator));
+            var userAnswer =   (userNumerator / userDenominator);
             var solution =  ((leftNum * rightDenom) - (rightNum * leftDenom))  / (rightDenom * leftDenom);
 
           
@@ -104,10 +98,14 @@
 
 <body>
 
-    <div class="content" >
+    <div class="content" id = "content" >
 
         <h1>Subtraction</h1>
+        <div>
         <a href="../Homepage.html"> <img  src= "../imgs/home.png" > </a>
+        <a href="../Tutorials/SubtractionHelp.pdf"  id="questionMark"> <img  src= "../imgs/question-mark.png" ></a>
+
+        </div>
         
 
         <div class="problemContainer">
@@ -132,10 +130,6 @@
                 <span id = equalsign>&#61;</span>
              </div>
 
-             <div class="answerContainerWhole">
-                <input type="text" id="answerWholeNum" name="answerWholeNum"><br>
-            </div>
-        
 
             <div class="answerContainer">
                 <input type="text" id="answerNum" name="answerNum"><br>
@@ -150,34 +144,34 @@
             </div>
 
         </div>
-        <div class="paletteContainer">
-            <input  type="image" id ="colorBlot1" src="../imgs/Blots/yellowblot.png" title="colorBlot1"/>
-            <input  type="image" id ="colorBlot2" src="../imgs/Blots/greenbot.png" title="colorBlot2"/>
-            <input  type="image" id ="colorBlot3" src="../imgs/Blots/pinkblot.png" title="colorBlot3"/>
-            <input  type="image" id ="colorBlot4" src="../imgs/Blots/orangeblot.png" title="colorBlot4"/>
-            
-        </div>
+        
+       
 
         <div  class="toolbar">
             
 
             <div class="buttonContainer" >
                
-                <input type="image" id ="vertcutImg" src="../imgs/cut-with-scissors2.png" title="Vertical Cut"/>
-                <input type="image" id ="horizCutimg" src="../imgs/cut-with-scissors.png" title="Horizontal Cut"/>
-                <!-- <input type="image" id ="palletImg" src="../imgs/color-palette.png" title="Color"/> -->
-                <input type="image" id ="moveImg" src="../imgs/pointer.png" title="Move"/>
-                <input type="image" id ="answToolImg" src="../imgs/blackcheck.png" title="Visual Answer Check"/>
-                <input type="image" id ="resetImg" src="../imgs/circular-arrow.png" title="Reset Problem"/>  
-                <input type="image" id ="eraseImg" src="../imgs/eraser.svg" title="=Erase Problem"/>  
+                <input class="toolbarbutton" type="image" id ="vertcutImg" src="../imgs/cut-with-scissors2.png" title="Vertical Cut"/>
+                <input class="toolbarbutton" type="image" id ="horizCutimg" src="../imgs/cut-with-scissors.png" title="Horizontal Cut"/>
+                <input class="toolbarbutton" type="image" id ="moveImg" src="../imgs/pointer.png" title="Move"/>
+                <input class="toolbarbutton" type="image" id ="answToolImg" src="../imgs/blackcheck.png" title="Visual Answer Check"/>
+                <input class="toolbarbutton" type="image" id ="resetImg" src="../imgs/circular-arrow.png" title="Reset Problem"/>  
+                <input class="toolbarbutton" type="image" id ="eraseImg" src="../imgs/eraser.svg" title="=Erase Problem"/>  
                 
             </div>
 
            
-        
         </div>
 
-   
+        <div class="paletteContainer">
+            <input  type="image" id ="pinkblot" src="../imgs/Blots/pinkblot.png" title="Pink"/>
+            <input  type="image" id ="blueblot" src="../imgs/Blots/blueblot.png" title="Blue"/>
+            <input  type="image" id ="orangeblot" src="../imgs/Blots/orangeblot.png" title="Orange"/>
+            <input  type="image" id ="purpleblot" src="../imgs/Blots/purpleblot.png" title="Purple"/>
+            
+        </div>
+
        
         <img id="checkImg_visual" src="../imgs/greencheck.png" style="display:none;"/>
         
@@ -188,5 +182,4 @@
 
 </body>
 
-<!-- <div>Icons made by <a href="https://www.freepik.com" title="Freepik">Freepik</a> from <a href="https://www.flaticon.com/" title="Flaticon">www.flaticon.com</a></div> -->
 </html>

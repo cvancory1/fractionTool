@@ -1,20 +1,18 @@
 .content{
-    margin-left: 100px;
-    margin-right: 100px;
-    margin-top: 100px;
-    margin-bottom: 100px;
-    /* background-color: pink; */
-
+    margin-left: 2%;
+    margin-top: 2%;
 }
 
 
- h1 {
+h1{
     font-size: medium;
     font-size: xx-large;
     color: black;
     text-align: center;
 
   }
+  
+  
   .problemContainer{
     display: flex;
     align-items: center;
@@ -23,17 +21,38 @@
     margin-bottom: 10px;
     margin-left: 10px;
     margin-right: 10px;
-    /* background-color: green; */
+   
 
 }  
 .toolbar{
-    margin-left: 100px;
-    margin-right: 100px;
-    /* background-color: red; */
+ 
+    align-items: center;
+    margin-left: 20%;
+    margin-right: 20%;
+}
+
+.paletteContainer {
+    background-image: url(../imgs/palette.png);
+    background-repeat: no-repeat;
+    width: 200;
+    height: 200px;
+    background-size: contain;
+    position: relative;
+    display: inline-flex;
+    margin-left: 5%;
 }
 
 
- 
+#home{
+    float: left;
+
+}
+
+#questionMark{
+    float: right;
+ }
+
+
 #rightNum,
 #rightDenom{
     margin-left: 25px;
@@ -72,34 +91,26 @@
 } 
 
 
-.paletteContainer {
-    background-image: url(../imgs/palette.png);
-    background-repeat: no-repeat;
-    width: 200;
-    height: 200px;
-    background-size: contain;
-    position: relative;
-}
 
-#colorBlot1{
+#pinkblot{
     position: relative;
     top: 108px;
     left: 3px;
 }
 
-#colorBlot2{
+#blueblot{
     position: relative;
     top: 126px;
     left: -40px;
 }
 
-#colorBlot3{
+#orangeblot{
     position: relative;
     top: 114px;
     left: -74px;
 }
 
-#colorBlot4{
+#purpleblot{
     position: relative;
     top: 53px;
     left: -259px;
@@ -163,7 +174,7 @@ input[type = "image"] {
     display: flex;
     align-items: center;
     justify-content: center;
-    background-color: pink;
+    background-color: #C8BFC7;
   
 
 }
@@ -173,56 +184,52 @@ input[type = "image"] {
 #palletImg,
 #moveImg,
 #answToolImg,
+#horizCross,
+#vertCross,
 #resetImg{
-    border: 1px solid pink;
-
+    border: 1px solid #C8BFC7;
 }
 
-/* on hover grey border appears  */
-#vertcutImg:hover,
-#horizCutimg:hover,
-#palletImg:hover,
-#moveImg:hover,
-#answToolImg:hover,
-#resetImg:hover{
+
+
+.toolbarbutton:hover{
     background: #e1e1e1;
     border: 1px solid #d0d0d0;
 
-}
+} 
 
-#vertcutImg:checked {
+/* #vertcutImg:checked {
     border-color: green;
     background: green;
 
-}
+} */
 
 #additionCanvas
 {
-    background-color: yellow;
-    margin: -150px 100px 100px 100px;
+    margin-right: 20%;
+    margin-left: 13%;
 
 }
 #subtractionCanvas{
-    background-color: yellow;
-    margin: -200px 0px 0px 0px;
+    margin-right: 20%;
+    margin-left: 13%;
 
 }
 #multplicationCanvas{
-    margin: 0px 200px 200px 300px;
+    margin-right: 20%;
+    margin-left: 27%;
 
 }
 
 #divisionCanvas{
-    background-color: yellow;
-    margin: -200px 0px 0px 0px;
+    margin-right: 20%;
+    margin-left: 11%;
 
-}
+} 
 
 #checkImg_visual{
-    /* background-color: green; */
      margin-left: 1000px;
      margin-top: 10px;
-    
 }
 
 
@@ -234,5 +241,5 @@ input[type = "image"] {
 .selected {
     border-radius: 10px;
     border-width: 10px;
-    background-color: green;
+    background-color: #837280;
 }

@@ -1,5 +1,9 @@
-document.body.style.backgroundColor = "#366677";
-        
+
+
+//START 
+
+document.body.style.backgroundColor = "#ADBCA5";
+     
 // get url string and parse
 queryString = window.location.search;
 console.log(queryString);
@@ -13,25 +17,22 @@ denom1 = urlParams.get('leftDenom');
 num2 = urlParams.get('rightNum');
 denom2 = urlParams.get('rightDenom');
 
-console.log(num1 + num2 + denom1 +denom2)
-
 //Global Variable Definition
 var vertCutFlag = false;
 var horizCutFlag = false;
-var paintFlag = false;
 var isMovable = false;
+var rowFlag = false;
+var colFlag = false;
 var paintColor = 'white';
-var eraseFlag = false;
-var hasMoved = false;
-
 var prevGroup = new Group();
+
 
 //unitSquare variable definition
 var unitSquare = new Group();
 unitSquare.data.type = "work";
 unitSquare.data.MAX_CUTS = 6;
-unitSquare.data.WIDTH = 300;
-unitSquare.data.HEIGHT = 300;
+unitSquare.data.WIDTH = 400;
+unitSquare.data.HEIGHT = 400;
 unitSquare.data.CENTER_X = 100;
 unitSquare.data.CENTER_Y = 200;
 unitSquare.data.fillNumX = 1;
@@ -41,63 +42,9 @@ unitSquare.data.offset = 1;
 unitSquare.data.isCuttableHoriz = true;
 unitSquare.data.isCuttableVert = true; 
 
-//answerSquare variable definition
-var answerSquare = new Group();
-answerSquare.data.type = "answ";
-answerSquare.data.MAX_CUTS = 6;
-answerSquare.data.WIDTH = 300;
-answerSquare.data.HEIGHT = 300;
-answerSquare.data.CENTER_X = 600;
-answerSquare.data.CENTER_Y = 200;
-answerSquare.data.fillNumX = 1;
-answerSquare.data.fillNumY = 1;
-answerSquare.data.totalCuts = (unitSquare.data.MAX_CUTS - 1) * unitSquare.data.MAX_CUTS / 2;
-answerSquare.data.offset = 1;
-answerSquare.data.isCuttableHoriz = true;
-answerSquare.data.isCuttableVert = true;
-
-
-var answerSquare2 = new Group();
-groupArray = [unitSquare, answerSquare, answerSquare2];
-function create2ndSquare(){
-    if(((num2/denom2) * 2) > 1 && (num1/denom1) > (num2/denom2)){
-            
-            //var answerSquare2 = new Group();
-            answerSquare2.data.type = "answ";
-            answerSquare2.data.MAX_CUTS = 6;
-            answerSquare2.data.WIDTH = 300;
-            answerSquare2.data.HEIGHT = 300;
-            answerSquare2.data.CENTER_X = 600;
-            answerSquare2.data.CENTER_Y = 600;
-            answerSquare2.data.fillNumX = 1;
-            answerSquare2.data.fillNumY = 1;
-            answerSquare2.data.totalCuts = (unitSquare.data.MAX_CUTS - 1) * unitSquare.data.MAX_CUTS / 2;
-            answerSquare2.data.offset = 1;
-            answerSquare2.data.isCuttableHoriz = true;
-            answerSquare2.data.isCuttableVert = true;
-          
-          
-            addBackdrop(answerSquare2);
-            
-            answerSquare2.data.totalCuts = answerSquare.data.totalCuts
-            answerSquare2.data.fillNumX = answerSquare.data.fillNumX
-            answerSquare2.data.fillNumY = answerSquare.data.fillNumY
-            answerSquare2.data.offset = answerSquare.data.offset
-            addSquares(answerSquare2);
-            prevGroup.removeChildren();
-            
-            
-            addVertLines(answerSquare2);
-            
-            
-            addHorizLines(answerSquare2);
-           
-    }
-}
-//create2ndSquare()
-//create2ndSquare()
-// groupArray = [unitSquare, answerSquare, answerSquare2];
+groupArray = [unitSquare];
 var origPos;
+var lineGroup = new Group()
 
 function doOverlap(l1,  r1,  l2,  r2) {
     // To check if either rectangle is actually a line
@@ -123,91 +70,6 @@ function savePrev(group){
         //add if to filter out white
         var temp = group.children[group.data.offset+i].clone();
         prevGroup.addChild(temp);    
-    }
-};
-
-function bringToFront(event){
-    if(isMovable){
-        this.data.movingSquare = true;
-        /*for(var i = 0; i < unitSquare.children.length; i++){
-            console.log(unitSquare.children[i].exportJSON(this));
-        }*/
-        var hitResult = project.hitTest(event.point);
-        //console.log(origPos);
-        origPos = this.position;
-        //console.log(origPos);
-        //Adding something to the active layer removes it from its origonal group
-        //console.log(project.activeLayer.children[0].exportJSON(this));
-        //console.log(hitResult.item.exportJSON(this));
-        //console.log(project.activeLayer.children.length);
-        project.activeLayer.addChild(hitResult.item);
-        //console.log(project.activeLayer.children[0].exportJSON(this));
-        //console.log(project.activeLayer.children.length);
-        //console.log(project.activeLayer.lastChild.exportJSON(this));
-        /*for(var i = 0; i < unitSquare.children.length; i++){
-            console.log(unitSquare.children[i].exportJSON(this));
-        }*/
-    }
-};
-
-function moveActive(event){
-    if(this.fillColor != 'grey' && isMovable == true && this.fillColor != 'white'){
-        //console.log(event.delta);
-        this.position += event.delta
-    }
-};
-
-function endMove(event){
-    if(isMovable){
-        if(this.data.movingSquare && this.fillColor != 'white' && this.fillColor != 'grey'){
-             hits = [];
-             var square = 1
-            var ogIndex;
-            for(var i = 0; i < answerSquare.data.fillNumX * answerSquare.data.fillNumY; i++){
-                for(var j = 0; j < test; j++){
-                    if(answerSquare.children[answerSquare.data.offset+i].bounds.contains(event.point) && answerAreas[j].bounds.contains(event.point) && answerAreas[j].visible == true && (Math.trunc(answerSquare.children[answerSquare.data.offset+i].bounds.width) == Math.trunc(this.bounds.width) && Math.trunc(answerSquare.children[answerSquare.data.offset+i].bounds.height) == Math.trunc(this.bounds.height) || Math.trunc(answerSquare.children[answerSquare.data.offset+i].bounds.height) == Math.trunc(this.bounds.width) && Math.trunc(answerSquare.children[answerSquare.data.offset+i].bounds.width) == Math.trunc(this.bounds.height)) && answerSquare.children[answerSquare.data.offset+i].fillColor != 'aquamarine'){
-                        hits.push(answerSquare.data.offset+i);
-                        //answerSquare.children[answerSquare.data.offset+i].fillColor = 'grey';
-                        this.fillColor = 'grey';
-                        this.position = origPos;
-                    }
-                    else{
-                        this.position = origPos;
-                    }
-                    if(answerSquare2.children.length != 0){
-                        if(answerSquare2.children[answerSquare2.data.offset+i].bounds.contains(event.point) && answerAreas[j].bounds.contains(event.point) && answerAreas[j].visible == true && (Math.trunc(answerSquare2.children[answerSquare2.data.offset+i].bounds.width) == Math.trunc(this.bounds.width) && Math.trunc(answerSquare2.children[answerSquare2.data.offset+i].bounds.height) == Math.trunc(this.bounds.height) || Math.trunc(answerSquare2.children[answerSquare2.data.offset+i].bounds.height) == Math.trunc(this.bounds.width) && Math.trunc(answerSquare2.children[answerSquare2.data.offset+i].bounds.width) == Math.trunc(this.bounds.height)) && answerSquare2.children[answerSquare2.data.offset+i].fillColor != 'aquamarine'){
-                            hits.push(answerSquare2.data.offset+i);
-                            //answerSquare.children[answerSquare.data.offset+i].fillColor = 'grey';
-                            this.fillColor = 'grey';
-                            this.position = origPos;
-                            square = 2
-                        }
-                        else{
-                            this.position = origPos;
-                        }
-                    }
-                }
-            }
-            
-            if(hits.length > 0){
-                if(square == 1){
-                answerSquare.children[hits[0]].fillColor = 'aquamarine';
-                }
-                else{
-                 answerSquare2.children[hits[0]].fillColor = 'aquamarine';   
-                }
-                checkAnswerArea(answerSquare)
-            }
-            
-            for(var i = 0; i < groupArray.length; i++){
-            		groupArray[i].data.isCuttableHoriz = false;
-            		groupArray[i].data.isCuttableVert = false;
-            }
-        }
-        this.data.movingSquare = false;
-        for(var i = 0; i < test; i++){
-        project.activeLayer.addChild(answerAreas[i])
-        }
     }
 };
 
@@ -348,7 +210,7 @@ function hideHorizCutLines(group){
 };
 
 function horizCutSelect(event, group){
-    if(horizCutFlag && !hasMoved && group.data.isCuttableHoriz){
+    if(horizCutFlag && group.data.isCuttableHoriz){
         savePrev(group);
         if(event.point.y > (group.data.HEIGHT/3)+group.data.CENTER_Y && event.point.y < 2*(group.data.HEIGHT/3)+group.data.CENTER_Y){
             removeSquares(group);
@@ -388,10 +250,10 @@ function horizCutSelect(event, group){
 function showHorizCutLines(event, group) {
     if(group != undefined){
         if(!group.data.isCuttableHoriz){
-            //console.log("Erase Before Cutting!")
-            //horizCutFlag = false;
+            console.log("Reset to Recut!")
+            horizCutFlag = false;
         }
-        else if(horizCutFlag && !hasMoved){
+        else if(horizCutFlag){
             //console.log(event.point.x);
             hideHorizCutLines(group);
             if(event.point.y > (group.data.HEIGHT/3)+group.data.CENTER_Y && event.point.y < 2*(group.data.HEIGHT/3)+group.data.CENTER_Y){
@@ -435,7 +297,7 @@ function hideVertCutLines(group){
 };
 
 function vertCutSelect(event, group){
-    if(vertCutFlag && !hasMoved && group.data.isCuttableVert){
+    if(vertCutFlag && group.data.isCuttableVert){
         savePrev(group);
         if(event.point.x > (group.data.WIDTH/3)+group.data.CENTER_X && event.point.x < 2*(group.data.WIDTH/3)+group.data.CENTER_X){
             removeSquares(group);
@@ -475,10 +337,10 @@ function vertCutSelect(event, group){
 function showVertCutLines(event, group) {
     if(group != undefined){
         if(!group.data.isCuttableVert){
-            //console.log("Erase Before Cutting!")
-            //vertCutFlag = false;
+            console.log("Reset to Recut!")
+            vertCutFlag = false;
         }
-        else if(vertCutFlag && !hasMoved){
+        else if(vertCutFlag){
             //console.log(event.point.x);
             hideVertCutLines(group);
             if(event.point.x > (group.data.WIDTH/3)+group.data.CENTER_X && event.point.x < 2*(group.data.WIDTH/3)+group.data.CENTER_X){
@@ -511,38 +373,12 @@ function showVertCutLines(event, group) {
     }
 };
 
-function eraseFunc(event, group){
-    if(eraseFlag && !hasMoved){
-        if(group != undefined){
-            paintColor = 'white';
-            group.data.fillNumX = 1;
-            group.data.fillNumY = 1;
-            group.data.isCuttableVert = true;
-            group.data.isCuttableHoriz = true;
-            group.removeChildren();
-            addBackdrop(group);
-            addSquares(group);
-            prevGroup.removeChildren();
-            addVertLines(group);
-            addHorizLines(group);
-        }
-    }
-};
-
 function cutSelect(event, group){
     if(vertCutFlag){
         vertCutSelect(event, group);
     }
     if (horizCutFlag){
         horizCutSelect(event, group);
-    }
-    if (paintFlag){
-        if(this.fillColor == paintColor){
-            this.fillColor = 'white'
-        }
-        else{
-            this.fillColor = paintColor;
-        }
     }
 };
 
@@ -583,20 +419,40 @@ function addSquares(group){
                 if(vertCutFlag){
                     vertCutSelect(event, group);
                 }
-                if(eraseFlag){
-                    eraseFunc(event, group);
-                }
                 if (horizCutFlag){
                     horizCutSelect(event, group);
                 }
-                if (paintFlag){
-                    if(this.fillColor == paintColor){
-                        this.fillColor = 'white'
+                var row = Math.ceil(this.index/unitSquare.data.fillNumY)
+                console.log(row)
+                if (DiagisMovable == true){
+                    var row = Math.ceil(this.index/unitSquare.data.fillNumY)
+                    for(var i = 1; i <= (unitSquare.data.fillNumX * unitSquare.data.fillNumY); i++){
+                        if(Math.ceil(i/unitSquare.data.fillNumY) == row){  
+                            if(unitSquare.children[i].fillColor == '#feffff'){
+                                unitSquare.children[i].fillColor = '#fffeff'
+                            }
+                            else if(unitSquare.children[i].fillColor == 'white'){
+                                unitSquare.children[i].fillColor = '#fffffe'
+                            }
+                        }    
                     }
-                    else{
-                        this.fillColor = paintColor;
-                    }
+                    linesUpdate()
                 }
+                if(revDiagisMovable == true){
+                    var column = this.index % unitSquare.data.fillNumY
+                    for(var i = 1; i <= (unitSquare.data.fillNumX * unitSquare.data.fillNumY); i++){
+                        if((i % unitSquare.data.fillNumY) == column){
+                            if(unitSquare.children[i].fillColor == '#fffffe'){
+                                unitSquare.children[i].fillColor = '#fffeff'
+                            }
+                            else if(unitSquare.children[i].fillColor == 'white'){
+                                unitSquare.children[i].fillColor = '#feffff'  
+                            }
+                        }
+                    }
+                    linesUpdate()
+                }
+                //revDiagonalDraw(this)
             };
             temp.onMouseMove = function(event){
                 var group;
@@ -620,10 +476,9 @@ function addSquares(group){
                 }
             };
             if(group.data.type != "answ"){
-                temp.onMouseDown = bringToFront;
-                temp.onMouseDrag = moveActive;
-                temp.onMouseUp = endMove;
-                //  project.activeLayer.addChild(answerArea);
+                //temp.onMouseDown = bringToFront;
+                //temp.onMouseDrag = moveActive;
+               // temp.onMouseUp = endMove;
             }
             group.insertChild(1,temp);
             local_Center_Y += group.data.WIDTH/group.data.fillNumY;
@@ -634,11 +489,15 @@ function addSquares(group){
     hideHorizCutLines(group);
     vertCutFlag = false;
     horizCutFlag = false;
+    linesUpdate()
 };
 
 function removeSquares(group){
     group.removeChildren(group.data.offset, group.data.fillNumX * group.data.fillNumY + 1);
 };
+
+
+
 
 
 // tool indicator highlight
@@ -660,61 +519,26 @@ document.getElementById("content").addEventListener("click", function(){
 
     }
 
-    if (isMovable){
-        moveTool.classList.add('selected');
+   //HERE!
+    if (DiagisMovable){
+        Diagonal.classList.add('selected');
     }else{
-        moveTool.classList.remove('selected');
+        Diagonal.classList.remove('selected');
+
     }
 
-
-    if (eraseFlag){
-        eraseTool.classList.add('selected');
+    if (revDiagisMovable){
+        revDiagonal.classList.add('selected');
     }else{
-        eraseTool.classList.remove('selected');
-    }
-
-    if (paintFlag){
-        if (paintColor == "#DC267F"){
-            colorBlot1.classList.add('selected');
-
-        }else{
-            colorBlot1.classList.remove('selected');
-        }
-
-        if (paintColor == "#648FFF"){
-            colorBlot2.classList.add('selected');
-
-        }else{
-            colorBlot2.classList.remove('selected');
-        }
-
-        if (paintColor == "#FE6100"){
-            colorBlot3.classList.add('selected');
-
-        }else{
-            colorBlot3.classList.remove('selected');
-        }
-
-        if (paintColor == "#785EF0"){
-            colorBlot4.classList.add('selected');
-
-        }else{
-            colorBlot4.classList.remove('selected');
-        }
-
-
-    }else{
-        colorBlot1.classList.remove('selected');
-        colorBlot2.classList.remove('selected');
-        colorBlot3.classList.remove('selected');
-        colorBlot4.classList.remove('selected');
+        revDiagonal.classList.remove('selected');
 
     }
-    
 
 })
+
 // Vertical Toggle Button
 var verticalcut = document.getElementById("vertcutImg");
+
 //Vertical Cut toggle
 verticalcut.addEventListener("click",function(){
     if(!vertCutFlag){
@@ -724,9 +548,9 @@ verticalcut.addEventListener("click",function(){
         }
         vertCutFlag = true;
         horizCutFlag = false;
-        paintFlag = false;
         isMovable = false;
-        eraseFlag = false;
+        DiagisMovable = false;
+        revDiagisMovable = false
         paintColor = 'white';
     } else {
         //hide any other groups with vert lines here
@@ -737,6 +561,7 @@ verticalcut.addEventListener("click",function(){
 
 // Horizontal Toggle Button
 var horizCutTool = document.getElementById("horizCutimg");
+
 //Horizontal Cut toggle
 horizCutTool.addEventListener("click",function(){
     if(!horizCutFlag){
@@ -746,9 +571,10 @@ horizCutTool.addEventListener("click",function(){
         }
         horizCutFlag = true;
         vertCutFlag = false;
-        paintFlag = false;
         isMovable = false;
-        eraseFlag = false;
+        DiagisMovable = false;
+        revDiagisMovable = false
+        //paletteGroup.removeChildren();
         paintColor = 'white';
     } else {
         //hide any other groups with horiz lines here
@@ -757,355 +583,187 @@ horizCutTool.addEventListener("click",function(){
     }
 })
 
-//Color Toggle Button
-var paintTool = document.getElementById("palletImg");
-
-//Palette Set Up
-var paintTool = document.getElementById("palletImg");
-            
-var colorBlot1 = document.getElementById("pinkblot");
-var colorBlot2 = document.getElementById("blueblot");
-var colorBlot3 = document.getElementById("orangeblot");
-var colorBlot4 = document.getElementById("purpleblot");
-
-
-colorBlot1.addEventListener("click",function(){
-    if(!hasMoved){
-        paintColor = "#DC267F"; // Pink 
-        for(var i = 0; i < groupArray.length; i++){
-            hideHorizCutLines(groupArray[i]);
-            hideVertCutLines(groupArray[i]);
-        }
-        paintFlag = true;
-        vertCutFlag = false;
-        horizCutFlag = false;
-        isMovable = false;
-        eraseFlag = false;
-
-    }
-   
-    
-})
-
-colorBlot2.addEventListener("click",function(){
-    if(!hasMoved){
-
-        paintColor = "#648FFF"; // purple
-        for(var i = 0; i < groupArray.length; i++){
-            hideHorizCutLines(groupArray[i]);
-            hideVertCutLines(groupArray[i]);
-        }
-        paintFlag = true;
-        vertCutFlag = false;
-        horizCutFlag = false;
-        isMovable = false;
-        eraseFlag = false;
-    }
-   
-
-    
-})
-
-colorBlot3.addEventListener("click",function(){
-    if(!hasMoved){
-
-        paintColor = "#FE6100"; //pink
-        for(var i = 0; i < groupArray.length; i++){
-            hideHorizCutLines(groupArray[i]);
-            hideVertCutLines(groupArray[i]);
-        }
-        paintFlag = true;
-        vertCutFlag = false;
-        horizCutFlag = false;
-        isMovable = false;
-        eraseFlag = false;
-    }
-   
-
-})
-
-colorBlot4.addEventListener("click",function(){
-    if(!hasMoved){
-
-        paintColor = "#785EF0"; //  
-        for(var i = 0; i < groupArray.length; i++){
-            hideHorizCutLines(groupArray[i]);
-            hideVertCutLines(groupArray[i]);
-        }
-        paintFlag = true;
-        vertCutFlag = false;
-        horizCutFlag = false;
-        isMovable = false;
-        eraseFlag = false;
-    }
- 
-})
-
-// Move Toggle Button
-var moveTool = document.getElementById("moveImg")
-//Horizontal Cut toggle
-moveTool.addEventListener("mousedown",function(){
-    if(!isMovable){
-        createAnswerArea()
-        for(var i = 0; i < groupArray.length; i++){
-            hideHorizCutLines(groupArray[i]);
-            hideVertCutLines(groupArray[i]);
-        }
-        isMovable = true;
-        horizCutFlag = false;
-        vertCutFlag = false;
-        paintFlag = false;
-        eraseFlag = false;
-        paintColor = 'white';
-        hasMoved = true;
-        answerAreas[0].visible = true
-        areaFilled = 1;
-        for(var i = answerSquare.data.offset; i < answerSquare.children.length; i++){
-            answerSquare.children[i].fillColor = 'white'
-        }
-    } else {
-        isMovable = false;
-    }
-})
-
-
-var answ = (num1 / denom1) / (num2 / denom2);
-var test = Math.ceil(answ)
-var answerAreas = [test]
-var areaSize
-if(denom1 * num2 == denom2){
-    areaSize = 1
-}
-else{
-    areaSize = denom1 * num2
-}
-var areaFilled = 0   
-console.log(areaFilled)  
-
-var total = 0
-var other = 0
 
 
 
-function createAnswerArea(){
-    var xFill = 0
-    for(var i = 0; i < answerSquare.children.length; i++){
-        if(answerSquare.children[i].fillColor == '#648FFF' || answerSquare.children[i].fillColor == '#785EF0' || answerSquare.children[i].fillColor == '#DC267F'|| answerSquare.children[i].fillColor == '#FE6100'){
-            xFill++;
-        }
-    }
-    var yVal = xFill / answerSquare.data.fillNumY
-    var xVal = xFill / yVal
-    
-    areaSize = xFill
-    console.log("ENTER AREA")
-    console.log(xVal)
-    console.log(yVal)
-    console.log(answerSquare.data.fillNumY)
-    console.log("EXIT AREA")
-    for(var i = 0; i < test; i++){
-        console.log(answerSquare.data.fillNumX)
-        console.log(answerSquare.data.fillNumY)
-        if(answerSquare.data.fillNumX != denom2){
-            total += (num2/1)
-
-            if(total <= denom2){
-                other += 1
-                answerAreas[i] = new Path.Rectangle(new Point( 600, 200 + ((answerSquare.data.HEIGHT / answerSquare.data.fillNumX * yVal) * i)),answerSquare.data.HEIGHT, answerSquare.data.WIDTH / answerSquare.data.fillNumX * yVal )
-                answerAreas[i].strokeColor = 'gold'
-                answerAreas[i].strokeWidth = '4'
-                answerAreas[i].visible = false
-            }
-            else{
-                console.log('ASDFDSFSDFSDF')
-                console.log(answerSquare)
-                answerAreas[i] = new Path.Rectangle(new Point( 600 , 600 + ((answerSquare.data.HEIGHT / answerSquare.data.fillNumX * yVal) * (i-other))),answerSquare.data.HEIGHT , answerSquare.data.WIDTH / answerSquare.data.fillNumX * yVal)
-                answerAreas[i].strokeColor = 'gold'
-                answerAreas[i].strokeWidth = '4'
-                answerAreas[i].visible = false
-            }
-        }
-        else{
-            total += (num2/1)
-            if(total <= denom2){
-                other += 1
-                answerAreas[i] = new Path.Rectangle(new Point( 600 + ((answerSquare.data.HEIGHT / answerSquare.data.fillNumX * yVal) * i), 200 ),answerSquare.data.HEIGHT / answerSquare.data.fillNumX * yVal, answerSquare.data.WIDTH )
-                answerAreas[i].strokeColor = 'gold'
-                answerAreas[i].strokeWidth = '4'
-                answerAreas[i].visible = false
-            }
-            else{
-                console.log('ASDFDSFSDFSDF')
-                console.log(answerSquare)
-                answerAreas[i] = new Path.Rectangle(new Point( 600 + ((answerSquare.data.HEIGHT / answerSquare.data.fillNumX * yVal) * (i-other)), 600 ),answerSquare.data.HEIGHT / answerSquare.data.fillNumX * yVal, answerSquare.data.WIDTH )
-                answerAreas[i].strokeColor = 'gold'
-                answerAreas[i].strokeWidth = '4'
-                answerAreas[i].visible = false
-            }
-        }
-    }
-}
-
-
-
-/*
-function createAnswerArea(){
-    for(var i = 0; i < test; i++){
-        console.log(answerSquare.data.fillNumX)
-        console.log(answerSquare.data.fillNumY)
-        if(answerSquare.data.fillNumX != denom2){
-            total += num2
-            if(total <= denom2){
-                other += 1
-                answerAreas[i] = new Path.Rectangle(new Point( 600, 200 + ((answerSquare.data.HEIGHT / denom2 * num2) * i)),answerSquare.data.HEIGHT, answerSquare.data.WIDTH / denom2 * num2 )
-                answerAreas[i].strokeColor = 'gold'
-                answerAreas[i].strokeWidth = '4'
-                answerAreas[i].visible = false
-            }
-            else{
-                console.log('ASDFDSFSDFSDF')
-                console.log(answerSquare)
-                answerAreas[i] = new Path.Rectangle(new Point( 600 , 600 + ((answerSquare.data.HEIGHT / denom2 * num2) * (i-other))),answerSquare.data.HEIGHT , answerSquare.data.WIDTH / denom2 * num2)
-                answerAreas[i].strokeColor = 'gold'
-                answerAreas[i].strokeWidth = '4'
-                answerAreas[i].visible = false
-            }
-        }
-        else{
-            total += num2
-            if(total <= denom2){
-                other += 1
-                answerAreas[i] = new Path.Rectangle(new Point( 600 + ((answerSquare.data.HEIGHT / denom2 * num2) * i), 200 ),answerSquare.data.HEIGHT / denom2 * num2, answerSquare.data.WIDTH )
-                answerAreas[i].strokeColor = 'gold'
-                answerAreas[i].strokeWidth = '4'
-                answerAreas[i].visible = false
-            }
-            else{
-                console.log('ASDFDSFSDFSDF')
-                console.log(answerSquare)
-                answerAreas[i] = new Path.Rectangle(new Point( 600 + ((answerSquare.data.HEIGHT / denom2 * num2) * (i-other)), 600 ),answerSquare.data.HEIGHT / denom2 * num2, answerSquare.data.WIDTH )
-                answerAreas[i].strokeColor = 'gold'
-                answerAreas[i].strokeWidth = '4'
-                answerAreas[i].visible = false
-            }
-        }
-    }
-}
-*/
-
-function checkAnswerArea(group){
-    var areaCount = 0
-    for(var i = 0; i < group.children.length; i++){
-        if(group.children[i].fillColor == 'aquamarine'){
-            areaCount++
-        }
-    }
-    if(areaCount % areaSize == 0 && areaFilled != test){
-        create2ndSquare()
-        console.log('isgood')
-            answerAreas[areaFilled].visible = true 
-            areaFilled++
-    }
-}
-
-// Answer Check Button
+//answer check
 var answTool = document.getElementById("answToolImg");
 
-console.log(answTool.className)
-//Answer Check Function
 answTool.addEventListener("click",function(){
-    var numCounter = 0;
-    var denomCounter = 0;
-    var answ = (num1 / denom1) / (num2 / denom2);
-    for(var i = 0 ; i < answerSquare.children.length; i++){
-        if(answerSquare.children[i].fillColor == '#648FFF' || answerSquare.children[i].fillColor == '#785EF0' || answerSquare.children[i].fillColor == '#DC267F'|| answerSquare.children[i].fillColor == '#FE6100' || answerSquare.children[i].fillColor == 'aquamarine'){
-        // if(answerSquare.children[i].fillColor == 'red' || answerSquare.children[i].fillColor == 'blue' || answerSquare.children[i].fillColor == 'green' || answerSquare.children[i].fillColor == 'aquamarine' ){
-            denomCounter++
-            if(answerSquare.children[i].fillColor == 'aquamarine'){
-                numCounter++;
-            }
+    DiagisMovable = false
+    revDiagisMovable = false
+    dimLines()
+    var answ = (num1 / denom1) * (num2 / denom2);
+    //var count = 0
+    var ansCount = 0
+    //console.log(unitSquare.children.length)
+    for(var i = 0; i < unitSquare.children.length; i++){
+        if(unitSquare.children[i].fillColor == '#fffeff'){
+            ansCount++
         }
     }
-    for(var i = 0 ; i < answerSquare2.children.length; i++){
-        if(answerSquare.children[i].fillColor == '#648FFF' || answerSquare.children[i].fillColor == '#785EF0' || answerSquare.children[i].fillColor == '#DC267F'|| answerSquare.children[i].fillColor == '#FE6100' || answerSquare.children[i].fillColor == 'aquamarine'){
-
-        // if(answerSquare2.children[i].fillColor == 'red' || answerSquare2.children[i].fillColor == 'blue' || answerSquare2.children[i].fillColor == 'green' || answerSquare2.children[i].fillColor == 'aquamarine' ){
-            denomCounter++
-            if(answerSquare2.children[i].fillColor == 'aquamarine'){
-                numCounter++;
-            }
+    //console.log(ansCount)
+    //console.log()
+        var userAnsw = ansCount / (unitSquare.data.fillNumX * unitSquare.data.fillNumY);
+        console.log(userAnsw.toFixed(2))
+        console.log(answ.toFixed(2))
+        if(answ.toFixed(2) == userAnsw.toFixed(2)){
+            console.log(true);
+            document.getElementById('checkImg_visual').style.display='inline-block';
+            alert("Correct");
+        
+        } else {
+            console.log(false);
+            alert("Try again - reset the problem to start over");
+        
         }
-    }
-    bottom = denom2/ denom1
-    Math.trunc(bottom)
-    userAnsw = numCounter / areaSize;
-    if(answ.toFixed(6) == userAnsw.toFixed(6)){
-        document.getElementById('checkImg_visual').style.display='inline-block';
-        alert("Correct");
-
-    } else {
-        console.log(false);
-        alert("Try again - reset the problem to start over");
-
-    }
-    console.log(denomCounter)
-    console.log(numCounter)
-    console.log(userAnsw)
-    console.log(answ)
 })
 
-// Erase Button
-var eraseTool = document.getElementById("eraseImg");
-
-//Erase Function
-eraseTool.addEventListener("click",function(){
-    if(!eraseFlag){
-        for(var i = 0; i < groupArray.length; i++){
-            hideHorizCutLines(groupArray[i]);
-            hideVertCutLines(groupArray[i]);
+function dimLines(){
+    for(var i = 0; i < lineGroup.children.length ; i++){
+        if(lineGroup.children[i].strokeColor == 'orange'){
+            lineGroup.children[i].strokeColor = '#996666'
         }
-        isMovable = false;
-        horizCutFlag = false;
-        vertCutFlag = false;
-        paintFlag = false;
-        eraseFlag = true;
-        paintColor = 'white';
-    } else {
-        eraseFlag = false;
+        else if(lineGroup.children[i].strokeColor == 'blue'){
+            lineGroup.children[i].strokeColor = '#5959a6'
+        }
     }
+}
+//CROSSHATCH IMPLEMENTATION
+var isDiag = false
+//var test = new Path.Rectangle(new Point( 300, 300), 400, 400)
+//test.strokeColor = 'black'
+//test.fillColor = 'white'
+function diagonalDraw(object){
+    console.log(unitSquare.data.fillNumX)
+    console.log(unitSquare.data.fillNumY)
+    var color
+    if(object.fillColor == '#fffeff'){
+        color = 'purple'
+    }
+    else{
+        color = 'orange'
+    }
+    if(isDiag == false){
+        var vertemp = object.bounds.width / 5;
+        var hortemp = object.bounds.height / 5;
+        var myPath = new Path();
+        myPath.strokeColor = color
+        myPath.strokeWidth = 4
+        myPath.add(new Point(object.bounds.x + object.bounds.width , object.bounds.y ));
+        myPath.add(new Point(object.bounds.x , object.bounds.y + object.bounds.height ));
+        lineGroup.addChild(myPath)
+        for(var i = 0; i < 5; i++){
+            var myPath = new Path()
+            myPath.strokeColor = color
+            myPath.strokeWidth = 4
+            myPath.add(new Point(object.bounds.x + object.bounds.width - (i * vertemp), object.bounds.y ));
+            myPath.add(new Point(object.bounds.x , object.bounds.y + object.bounds.height - (i * hortemp) ));
+            lineGroup.addChild(myPath)
+        }
+        for(var j = 0; j < 5; j++){
+            var myPath = new Path()
+            myPath.strokeColor = color
+            myPath.strokeWidth = 4
+            myPath.add(new Point(object.bounds.x + object.bounds.width , object.bounds.y + (j * hortemp) ));
+            myPath.add(new Point(object.bounds.x + (j * vertemp) , object.bounds.y + object.bounds.height ));
+            lineGroup.addChild(myPath)
+        }
+    //isDiag = true
+    }
+}
+
+function revDiagonalDraw(object){
+    var color
+    if(object.fillColor == '#fffeff'){
+        color = 'purple'
+    }
+    else{
+        color = 'blue'
+    }
+    var vertemp = object.bounds.width / 5;
+    var hortemp = object.bounds.height / 5;
+    var myPath = new Path();
+    myPath.strokeColor = color
+    myPath.strokeWidth = 4
+    myPath.add(new Point(object.bounds.x , object.bounds.y ));
+    myPath.add(new Point(object.bounds.x + object.bounds.width , object.bounds.y + object.bounds.height ));
+    lineGroup.addChild(myPath)
+    for(var i = 0; i < 5; i++){
+        var myPath = new Path()
+        myPath.strokeColor = color
+        myPath.strokeWidth = 4
+        myPath.add(new Point(object.bounds.x + object.bounds.width - (i * vertemp), object.bounds.y ));
+        myPath.add(new Point(object.bounds.x + object.bounds.width  , object.bounds.y +  (i * hortemp) ));
+        lineGroup.addChild(myPath)
+    }
+    for(var i = 0; i < 5; i++){
+        var myPath = new Path()
+        myPath.strokeColor = color
+        myPath.strokeWidth = 4
+        myPath.add(new Point(object.bounds.x , object.bounds.y + object.bounds.height - (i * hortemp)));
+        myPath.add(new Point(object.bounds.x + (i * vertemp), object.bounds.y + object.bounds.height ));
+        lineGroup.addChild(myPath)
+    }
+}
+
+//column fill button
+var DiagisMovable = false
+var revDiagisMovable = false
+var Diagonal = document.getElementById("vertCross");
+
+Diagonal.addEventListener("click",function(){
+
+    revDiagisMovable = false
+    DiagisMovable = !DiagisMovable
+    
 })
+//row fill button
+var revDiagonal = document.getElementById("horizCross");
+
+revDiagonal.addEventListener("click",function(){
+
+    DiagisMovable = false
+    revDiagisMovable = !revDiagisMovable
+    
+})
+
+//line update helper function
+function linesUpdate(){
+    lineGroup.removeChildren()
+    for(var i = 0; i < unitSquare.children.length; i++){
+        if(unitSquare.children[i].fillColor == '#fffffe'){
+            diagonalDraw(unitSquare.children[i])
+        }
+        else if(unitSquare.children[i].fillColor == '#feffff'){
+            revDiagonalDraw(unitSquare.children[i])
+        }
+        else if(unitSquare.children[i].fillColor == '#fffeff'){
+            diagonalDraw(unitSquare.children[i])
+            revDiagonalDraw(unitSquare.children[i])
+        }
+    }
+}
 
 addBackdrop(unitSquare);
-addBackdrop(answerSquare);
-
 addSquares(unitSquare);
-prevGroup.removeChildren();
-addSquares(answerSquare);
+
 prevGroup.removeChildren();
 
 addVertLines(unitSquare);
-addVertLines(answerSquare);
-
 addHorizLines(unitSquare);
-addHorizLines(answerSquare);
 
 var resetTool = document.getElementById("resetImg");
 resetTool.addEventListener("click",function(){
 	location.reload();
 })
 
-
-//start 
-//Global Variable Definition
-// var vertCutFlag = false;
-// var horizCutFlag = false;
-// var paintFlag = false;
-// var isMovable = false;
-// var paintColor = 'white';
-// var eraseFlag = false;
-// var prevGroup = new Group();
+// END 
 
 
+
+// document.body.style.backgroundColor = "#ADBCA5";
+     
 // // get url string and parse
 // queryString = window.location.search;
 // console.log(queryString);
@@ -1121,12 +779,21 @@ resetTool.addEventListener("click",function(){
 
 // console.log(num1 + num2 + denom1 +denom2)
 
+// //Global Variable Definition
+// var vertCutFlag = false;
+// var horizCutFlag = false;
+// var isMovable = false;
+// var rowFlag = false;
+// var colFlag = false;
+// var paintColor = 'white';
+// var prevGroup = new Group();
+
 // //unitSquare variable definition
 // var unitSquare = new Group();
 // unitSquare.data.type = "work";
 // unitSquare.data.MAX_CUTS = 6;
-// unitSquare.data.WIDTH = 300;
-// unitSquare.data.HEIGHT = 300;
+// unitSquare.data.WIDTH = 400;
+// unitSquare.data.HEIGHT = 400;
 // unitSquare.data.CENTER_X = 100;
 // unitSquare.data.CENTER_Y = 200;
 // unitSquare.data.fillNumX = 1;
@@ -1136,63 +803,9 @@ resetTool.addEventListener("click",function(){
 // unitSquare.data.isCuttableHoriz = true;
 // unitSquare.data.isCuttableVert = true; 
 
-// //answerSquare variable definition
-// var answerSquare = new Group();
-// answerSquare.data.type = "answ";
-// answerSquare.data.MAX_CUTS = 6;
-// answerSquare.data.WIDTH = 300;
-// answerSquare.data.HEIGHT = 300;
-// answerSquare.data.CENTER_X = 600;
-// answerSquare.data.CENTER_Y = 200;
-// answerSquare.data.fillNumX = 1;
-// answerSquare.data.fillNumY = 1;
-// answerSquare.data.totalCuts = (unitSquare.data.MAX_CUTS - 1) * unitSquare.data.MAX_CUTS / 2;
-// answerSquare.data.offset = 1;
-// answerSquare.data.isCuttableHoriz = true;
-// answerSquare.data.isCuttableVert = true;
-
-
-// var answerSquare2 = new Group();
-// groupArray = [unitSquare, answerSquare, answerSquare2];
-// function create2ndSquare(){
-//     if(((num2/denom2) * 2) > 1 && (num1/denom1) > (num2/denom2)){
-            
-//             //var answerSquare2 = new Group();
-//             answerSquare2.data.type = "answ";
-//             answerSquare2.data.MAX_CUTS = 6;
-//             answerSquare2.data.WIDTH = 300;
-//             answerSquare2.data.HEIGHT = 300;
-//             answerSquare2.data.CENTER_X = 600;
-//             answerSquare2.data.CENTER_Y = 600;
-//             answerSquare2.data.fillNumX = 1;
-//             answerSquare2.data.fillNumY = 1;
-//             answerSquare2.data.totalCuts = (unitSquare.data.MAX_CUTS - 1) * unitSquare.data.MAX_CUTS / 2;
-//             answerSquare2.data.offset = 1;
-//             answerSquare2.data.isCuttableHoriz = true;
-//             answerSquare2.data.isCuttableVert = true;
-          
-          
-//             addBackdrop(answerSquare2);
-            
-//             answerSquare2.data.totalCuts = answerSquare.data.totalCuts
-//             answerSquare2.data.fillNumX = answerSquare.data.fillNumX
-//             answerSquare2.data.fillNumY = answerSquare.data.fillNumY
-//             answerSquare2.data.offset = answerSquare.data.offset
-//             addSquares(answerSquare2);
-//             prevGroup.removeChildren();
-            
-            
-//             addVertLines(answerSquare2);
-            
-            
-//             addHorizLines(answerSquare2);
-           
-//     }
-// }
-// //create2ndSquare()
-// //create2ndSquare()
-// // groupArray = [unitSquare, answerSquare, answerSquare2];
+// groupArray = [unitSquare];
 // var origPos;
+// var lineGroup = new Group()
 
 // function doOverlap(l1,  r1,  l2,  r2) {
 //     // To check if either rectangle is actually a line
@@ -1221,91 +834,6 @@ resetTool.addEventListener("click",function(){
 //     }
 // };
 
-// function bringToFront(event){
-//     if(isMovable){
-//         this.data.movingSquare = true;
-//         /*for(var i = 0; i < unitSquare.children.length; i++){
-//             console.log(unitSquare.children[i].exportJSON(this));
-//         }*/
-//         var hitResult = project.hitTest(event.point);
-//         //console.log(origPos);
-//         origPos = this.position;
-//         //console.log(origPos);
-//         //Adding something to the active layer removes it from its origonal group
-//         //console.log(project.activeLayer.children[0].exportJSON(this));
-//         //console.log(hitResult.item.exportJSON(this));
-//         //console.log(project.activeLayer.children.length);
-//         project.activeLayer.addChild(hitResult.item);
-//         //console.log(project.activeLayer.children[0].exportJSON(this));
-//         //console.log(project.activeLayer.children.length);
-//         //console.log(project.activeLayer.lastChild.exportJSON(this));
-//         /*for(var i = 0; i < unitSquare.children.length; i++){
-//             console.log(unitSquare.children[i].exportJSON(this));
-//         }*/
-//     }
-// };
-
-// function moveActive(event){
-//     if(this.fillColor != 'grey' && isMovable == true && this.fillColor != 'white'){
-//         //console.log(event.delta);
-//         this.position += event.delta
-//     }
-// };
-
-// function endMove(event){
-//     if(isMovable){
-//         if(this.data.movingSquare && this.fillColor != 'white' && this.fillColor != 'grey'){
-//              hits = [];
-//              var square = 1
-//             var ogIndex;
-//             for(var i = 0; i < answerSquare.data.fillNumX * answerSquare.data.fillNumY; i++){
-//                 for(var j = 0; j < test; j++){
-//                     if(answerSquare.children[answerSquare.data.offset+i].bounds.contains(event.point) && answerAreas[j].bounds.contains(event.point) && answerAreas[j].visible == true && (Math.trunc(answerSquare.children[answerSquare.data.offset+i].bounds.width) == Math.trunc(this.bounds.width) && Math.trunc(answerSquare.children[answerSquare.data.offset+i].bounds.height) == Math.trunc(this.bounds.height) || Math.trunc(answerSquare.children[answerSquare.data.offset+i].bounds.height) == Math.trunc(this.bounds.width) && Math.trunc(answerSquare.children[answerSquare.data.offset+i].bounds.width) == Math.trunc(this.bounds.height)) && answerSquare.children[answerSquare.data.offset+i].fillColor != 'aquamarine'){
-//                         hits.push(answerSquare.data.offset+i);
-//                         //answerSquare.children[answerSquare.data.offset+i].fillColor = 'grey';
-//                         this.fillColor = 'grey';
-//                         this.position = origPos;
-//                     }
-//                     else{
-//                         this.position = origPos;
-//                     }
-//                     if(answerSquare2.children.length != 0){
-//                         if(answerSquare2.children[answerSquare2.data.offset+i].bounds.contains(event.point) && answerAreas[j].bounds.contains(event.point) && answerAreas[j].visible == true && (Math.trunc(answerSquare2.children[answerSquare2.data.offset+i].bounds.width) == Math.trunc(this.bounds.width) && Math.trunc(answerSquare2.children[answerSquare2.data.offset+i].bounds.height) == Math.trunc(this.bounds.height) || Math.trunc(answerSquare2.children[answerSquare2.data.offset+i].bounds.height) == Math.trunc(this.bounds.width) && Math.trunc(answerSquare2.children[answerSquare2.data.offset+i].bounds.width) == Math.trunc(this.bounds.height)) && answerSquare2.children[answerSquare2.data.offset+i].fillColor != 'aquamarine'){
-//                             hits.push(answerSquare2.data.offset+i);
-//                             //answerSquare.children[answerSquare.data.offset+i].fillColor = 'grey';
-//                             this.fillColor = 'grey';
-//                             this.position = origPos;
-//                             square = 2
-//                         }
-//                         else{
-//                             this.position = origPos;
-//                         }
-//                     }
-//                 }
-//             }
-            
-//             if(hits.length > 0){
-//                 if(square == 1){
-//                 answerSquare.children[hits[0]].fillColor = 'aquamarine';
-//                 }
-//                 else{
-//                  answerSquare2.children[hits[0]].fillColor = 'aquamarine';   
-//                 }
-//                 checkAnswerArea(answerSquare)
-//             }
-            
-//             for(var i = 0; i < groupArray.length; i++){
-//             		groupArray[i].data.isCuttableHoriz = false;
-//             		groupArray[i].data.isCuttableVert = false;
-//             }
-//         }
-//         this.data.movingSquare = false;
-//     }
-//     for(var i = 0; i < test; i++){
-//         project.activeLayer.addChild(answerAreas[i])
-//     }
-// };
-
 // function addBackdrop(group){
 //     var backdrop = new Path.Rectangle(new Point(group.data.CENTER_X, group.data.CENTER_Y), group.data.WIDTH, group.data.HEIGHT);
 //     backdrop.strokeColor = 'black';
@@ -1321,7 +849,7 @@ resetTool.addEventListener("click",function(){
 //             var line = new Path.Line({
 //                 from: [j*(group.data.WIDTH/i)+group.data.CENTER_X, group.data.CENTER_Y], 
 //                 to: [j*(group.data.WIDTH/i)+group.data.CENTER_X, group.data.HEIGHT + group.data.CENTER_Y],
-//                 strokeColor: 'blue',
+//                 strokeColor: 'gold',
 //                 strokeWidth: 10,
 //                 visible: false
 //             });
@@ -1380,7 +908,7 @@ resetTool.addEventListener("click",function(){
 //             var line = new Path.Line({
 //                 from: [group.data.CENTER_X, j*(group.data.HEIGHT/i)+group.data.CENTER_Y], 
 //                 to: [group.data.WIDTH + group.data.CENTER_X, j*(group.data.HEIGHT/i)+group.data.CENTER_Y],
-//                 strokeColor: 'green',
+//                 strokeColor: 'gold',
 //                 strokeWidth: 10,
 //                 visible: false
 //             });
@@ -1483,7 +1011,7 @@ resetTool.addEventListener("click",function(){
 // function showHorizCutLines(event, group) {
 //     if(group != undefined){
 //         if(!group.data.isCuttableHoriz){
-//             console.log("Erase Before Cutting!")
+//             console.log("Reset to Recut!")
 //             horizCutFlag = false;
 //         }
 //         else if(horizCutFlag){
@@ -1570,7 +1098,7 @@ resetTool.addEventListener("click",function(){
 // function showVertCutLines(event, group) {
 //     if(group != undefined){
 //         if(!group.data.isCuttableVert){
-//             console.log("Erase Before Cutting!")
+//             console.log("Reset to Recut!")
 //             vertCutFlag = false;
 //         }
 //         else if(vertCutFlag){
@@ -1606,38 +1134,12 @@ resetTool.addEventListener("click",function(){
 //     }
 // };
 
-// function eraseFunc(event, group){
-//     if(eraseFlag){
-//         if(group != undefined){
-//             paintColor = 'white';
-//             group.data.fillNumX = 1;
-//             group.data.fillNumY = 1;
-//             group.data.isCuttableVert = true;
-//             group.data.isCuttableHoriz = true;
-//             group.removeChildren();
-//             addBackdrop(group);
-//             addSquares(group);
-//             prevGroup.removeChildren();
-//             addVertLines(group);
-//             addHorizLines(group);
-//         }
-//     }
-// };
-
 // function cutSelect(event, group){
 //     if(vertCutFlag){
 //         vertCutSelect(event, group);
 //     }
 //     if (horizCutFlag){
 //         horizCutSelect(event, group);
-//     }
-//     if (paintFlag){
-//         if(this.fillColor == paintColor){
-//             this.fillColor = 'white'
-//         }
-//         else{
-//             this.fillColor = paintColor;
-//         }
 //     }
 // };
 
@@ -1678,20 +1180,40 @@ resetTool.addEventListener("click",function(){
 //                 if(vertCutFlag){
 //                     vertCutSelect(event, group);
 //                 }
-//                 if(eraseFlag){
-//                     eraseFunc(event, group);
-//                 }
 //                 if (horizCutFlag){
 //                     horizCutSelect(event, group);
 //                 }
-//                 if (paintFlag){
-//                     if(this.fillColor == paintColor){
-//                         this.fillColor = 'white'
+//                 var row = Math.ceil(this.index/unitSquare.data.fillNumY)
+//                 console.log(row)
+//                 if (DiagisMovable == true){
+//                     var row = Math.ceil(this.index/unitSquare.data.fillNumY)
+//                     for(var i = 1; i <= (unitSquare.data.fillNumX * unitSquare.data.fillNumY); i++){
+//                         if(Math.ceil(i/unitSquare.data.fillNumY) == row){  
+//                             if(unitSquare.children[i].fillColor == '#feffff'){
+//                                 unitSquare.children[i].fillColor = '#fffeff'
+//                             }
+//                             else if(unitSquare.children[i].fillColor == 'white'){
+//                                 unitSquare.children[i].fillColor = '#fffffe'
+//                             }
+//                         }    
 //                     }
-//                     else{
-//                         this.fillColor = paintColor;
-//                     }
+//                     linesUpdate()
 //                 }
+//                 if(revDiagisMovable == true){
+//                     var column = this.index % unitSquare.data.fillNumY
+//                     for(var i = 1; i <= (unitSquare.data.fillNumX * unitSquare.data.fillNumY); i++){
+//                         if((i % unitSquare.data.fillNumY) == column){
+//                             if(unitSquare.children[i].fillColor == '#fffffe'){
+//                                 unitSquare.children[i].fillColor = '#fffeff'
+//                             }
+//                             else if(unitSquare.children[i].fillColor == 'white'){
+//                                 unitSquare.children[i].fillColor = '#feffff'  
+//                             }
+//                         }
+//                     }
+//                     linesUpdate()
+//                 }
+//                 //revDiagonalDraw(this)
 //             };
 //             temp.onMouseMove = function(event){
 //                 var group;
@@ -1715,10 +1237,9 @@ resetTool.addEventListener("click",function(){
 //                 }
 //             };
 //             if(group.data.type != "answ"){
-//                 temp.onMouseDown = bringToFront;
-//                 temp.onMouseDrag = moveActive;
-//                 temp.onMouseUp = endMove;
-//                 //  project.activeLayer.addChild(answerArea);
+//                 //temp.onMouseDown = bringToFront;
+//                 //temp.onMouseDrag = moveActive;
+//                 // temp.onMouseUp = endMove;
 //             }
 //             group.insertChild(1,temp);
 //             local_Center_Y += group.data.WIDTH/group.data.fillNumY;
@@ -1729,11 +1250,30 @@ resetTool.addEventListener("click",function(){
 //     hideHorizCutLines(group);
 //     vertCutFlag = false;
 //     horizCutFlag = false;
+//     linesUpdate()
 // };
 
 // function removeSquares(group){
 //     group.removeChildren(group.data.offset, group.data.fillNumX * group.data.fillNumY + 1);
 // };
+
+
+
+
+
+// // ______ HERE1
+// var activeButton = null;
+// function updateSelectedClass(){
+//     verticalcut.classList.remove('selected');
+//     horizCutTool.classList.remove('selected');
+//     Diagonal.classList.remove('selected');
+//     revDiagonal.classList.remove('selected');
+//     document.getElementById("numeric_answToolimg").classList.remove('selected');
+//     answTool.classList.remove('selected');
+
+//     // activeButton.classList.add('selected');
+    
+// }
 
 
 
@@ -1756,65 +1296,55 @@ resetTool.addEventListener("click",function(){
 
 //     }
 
-//     if (isMovable){
-//         moveTool.classList.add('selected');
-//     }else{
-//         moveTool.classList.remove('selected');
-//     }
+
+//     // if (paintFlag){
+//     //     if (paintColor == "#DC267F"){
+//     //         colorBlot1.classList.add('selected');
+
+//     //     }else{
+//     //         colorBlot1.classList.remove('selected');
+//     //     }
+
+//     //     if (paintColor == "#648FFF"){
+//     //         colorBlot2.classList.add('selected');
+
+//     //     }else{
+//     //         colorBlot2.classList.remove('selected');
+//     //     }
+
+//     //     if (paintColor == "#FE6100"){
+//     //         colorBlot3.classList.add('selected');
+
+//     //     }else{
+//     //         colorBlot3.classList.remove('selected');
+//     //     }
+
+//     //     if (paintColor == "#785EF0"){
+//     //         colorBlot4.classList.add('selected');
+
+//     //     }else{
+//     //         colorBlot4.classList.remove('selected');
+//     //     }
 
 
-//     if (eraseFlag){
-//         eraseTool.classList.add('selected');
-//     }else{
-//         eraseTool.classList.remove('selected');
-//     }
+//     // }else{
+//     //     colorBlot1.classList.remove('selected');
+//     //     colorBlot2.classList.remove('selected');
+//     //     colorBlot3.classList.remove('selected');
+//     //     colorBlot4.classList.remove('selected');
 
-//     if (paintFlag){
-//         if (paintColor == "#DC267F"){
-//             colorBlot1.classList.add('selected');
-
-//         }else{
-//             colorBlot1.classList.remove('selected');
-//         }
-
-//         if (paintColor == "#648FFF"){
-//             colorBlot2.classList.add('selected');
-
-//         }else{
-//             colorBlot2.classList.remove('selected');
-//         }
-
-//         if (paintColor == "#FE6100"){
-//             colorBlot3.classList.add('selected');
-
-//         }else{
-//             colorBlot3.classList.remove('selected');
-//         }
-
-//         if (paintColor == "#785EF0"){
-//             colorBlot4.classList.add('selected');
-
-//         }else{
-//             colorBlot4.classList.remove('selected');
-//         }
-
-
-//     }else{
-//         colorBlot1.classList.remove('selected');
-//         colorBlot2.classList.remove('selected');
-//         colorBlot3.classList.remove('selected');
-//         colorBlot4.classList.remove('selected');
-
-//     }
+//     // }
     
 
 // })
 
-
 // // Vertical Toggle Button
 // var verticalcut = document.getElementById("vertcutImg");
+
 // //Vertical Cut toggle
 // verticalcut.addEventListener("click",function(){
+//     activeButton = this;
+//     updateSelectedClass();
 //     if(!vertCutFlag){
 //         for(var i = 0; i < groupArray.length; i++){
 //             hideHorizCutLines(groupArray[i]);
@@ -1822,9 +1352,9 @@ resetTool.addEventListener("click",function(){
 //         }
 //         vertCutFlag = true;
 //         horizCutFlag = false;
-//         paintFlag = false;
 //         isMovable = false;
-//         eraseFlag = false;
+//         DiagisMovable = false;
+//         revDiagisMovable = false
 //         paintColor = 'white';
 //     } else {
 //         //hide any other groups with vert lines here
@@ -1835,8 +1365,12 @@ resetTool.addEventListener("click",function(){
 
 // // Horizontal Toggle Button
 // var horizCutTool = document.getElementById("horizCutimg");
+
 // //Horizontal Cut toggle
 // horizCutTool.addEventListener("click",function(){
+//     activeButton = this;
+//     updateSelectedClass();
+
 //     if(!horizCutFlag){
 //         for(var i = 0; i < groupArray.length; i++){
 //             hideHorizCutLines(groupArray[i]);
@@ -1844,9 +1378,10 @@ resetTool.addEventListener("click",function(){
 //         }
 //         horizCutFlag = true;
 //         vertCutFlag = false;
-//         paintFlag = false;
 //         isMovable = false;
-//         eraseFlag = false;
+//         DiagisMovable = false;
+//         revDiagisMovable = false
+//         //paletteGroup.removeChildren();
 //         paintColor = 'white';
 //     } else {
 //         //hide any other groups with horiz lines here
@@ -1855,257 +1390,181 @@ resetTool.addEventListener("click",function(){
 //     }
 // })
 
-// //Color Toggle Button
-// var paintTool = document.getElementById("palletImg");
-
-// //Palette Set Up
-// var paintTool = document.getElementById("palletImg");
-            
-// var colorBlot1 = document.getElementById("pinkblot");
-// var colorBlot2 = document.getElementById("blueblot");
-// var colorBlot3 = document.getElementById("orangeblot");
-// var colorBlot4 = document.getElementById("purpleblot");
 
 
-// colorBlot1.addEventListener("click",function(){
-//     if(!hasMoved){
-//         paintColor = "#DC267F"; // Pink 
-//         for(var i = 0; i < groupArray.length; i++){
-//             hideHorizCutLines(groupArray[i]);
-//             hideVertCutLines(groupArray[i]);
-//         }
-//         paintFlag = true;
-//         vertCutFlag = false;
-//         horizCutFlag = false;
-//         isMovable = false;
-//         eraseFlag = false;
 
-//     }
-   
+// //answer check
+// var answTool = document.getElementById("answToolImg");
+
+// answTool.addEventListener("click",function(){
+//     activeButton = this;
+//     updateSelectedClass();
     
-// })
-
-// colorBlot2.addEventListener("click",function(){
-//     if(!hasMoved){
-
-//         paintColor = "#648FFF"; // purple
-//         for(var i = 0; i < groupArray.length; i++){
-//             hideHorizCutLines(groupArray[i]);
-//             hideVertCutLines(groupArray[i]);
+//     DiagisMovable = false
+//     revDiagisMovable = false
+//     dimLines()
+//     var answ = (num1 / denom1) * (num2 / denom2);
+//     //var count = 0
+//     var ansCount = 0
+//     //console.log(unitSquare.children.length)
+//     for(var i = 0; i < unitSquare.children.length; i++){
+//         if(unitSquare.children[i].fillColor == '#fffeff'){
+//             ansCount++
 //         }
-//         paintFlag = true;
-//         vertCutFlag = false;
-//         horizCutFlag = false;
-//         isMovable = false;
-//         eraseFlag = false;
 //     }
-   
-
-    
+//     //console.log(ansCount)
+//     //console.log()
+//         var userAnsw = ansCount / (unitSquare.data.fillNumX * unitSquare.data.fillNumY);
+//         console.log(userAnsw.toFixed(2))
+//         console.log(answ.toFixed(2))
+//         if(answ.toFixed(2) == userAnsw.toFixed(2)){
+//             console.log(true);
+//             document.getElementById('checkImg_visual').style.display='inline-block';
+//             alert("Correct");
+        
+//         } else {
+//             console.log(false);
+//             alert("Try again - reset the problem to start over");
+        
+//         }
 // })
 
-// colorBlot3.addEventListener("click",function(){
-//     if(!hasMoved){
-
-//         paintColor = "#FE6100"; //pink
-//         for(var i = 0; i < groupArray.length; i++){
-//             hideHorizCutLines(groupArray[i]);
-//             hideVertCutLines(groupArray[i]);
+// function dimLines(){
+//     for(var i = 0; i < lineGroup.children.length ; i++){
+//         if(lineGroup.children[i].strokeColor == 'red'){
+//             lineGroup.children[i].strokeColor = '#996666'
 //         }
-//         paintFlag = true;
-//         vertCutFlag = false;
-//         horizCutFlag = false;
-//         isMovable = false;
-//         eraseFlag = false;
+//         else if(lineGroup.children[i].strokeColor == 'blue'){
+//             lineGroup.children[i].strokeColor = '#5959a6'
+//         }
 //     }
-   
-
-// })
-
-// colorBlot4.addEventListener("click",function(){
-//     if(!hasMoved){
-
-//         paintColor = "#785EF0"; //  
-//         for(var i = 0; i < groupArray.length; i++){
-//             hideHorizCutLines(groupArray[i]);
-//             hideVertCutLines(groupArray[i]);
-//         }
-//         paintFlag = true;
-//         vertCutFlag = false;
-//         horizCutFlag = false;
-//         isMovable = false;
-//         eraseFlag = false;
-//     }
- 
-// })
-
-
-// // Move Toggle Button
-// var moveTool = document.getElementById("moveImg")
-// //Horizontal Cut toggle
-// moveTool.addEventListener("mousedown",function(){
-//     if(!isMovable){
-//         //create2ndSquare()
-//         for(var i = 0; i < groupArray.length; i++){
-//             hideHorizCutLines(groupArray[i]);
-//             hideVertCutLines(groupArray[i]);
-//         }
-//         isMovable = true;
-//         horizCutFlag = false;
-//         vertCutFlag = false;
-//         paintFlag = false;
-//         eraseFlag = false;
-//         paintColor = 'white';
-//         answerAreas[0].visible = true
-//         areaFilled = 1;
-//         for(var i = answerSquare.data.offset; i < answerSquare.children.length; i++){
-//             answerSquare.children[i].fillColor = 'white'
-//         }
-//     } else {
-//         isMovable = false;
-//     }
-// })
-
-
-// // HERE 
-// var answ = (num1 / denom1) / (num2 / denom2);
-// console.log("DEBUG - "+ num1 + " " + num2 + " "+ denom1 +"  "+ denom2);
-
-
-// var test = Math.ceil(answ)
-// var answerAreas = [test]
-// var areaSize
-// if(denom1 * num2 == denom2){
-//     areaSize = 1
 // }
-// else{
-//     areaSize = denom1 * num2
-// }
-// var areaFilled = 0   
-// console.log(areaFilled)  
-
-// var total = 0
-// var other = 0
-// for(var i = 0; i < test; i++){
-    
-//     total += (num2 /1 )
-//     console.log("DEBUG - total "+ total + "  "+ denom2);
-
-//     if(total <= denom2){
-//         other += 1
-//         answerAreas[i] = new Path.Rectangle(new Point( 600 + ((answerSquare.data.HEIGHT / denom2 * num2) * i), 200 ),answerSquare.data.HEIGHT / denom2 * num2, answerSquare.data.WIDTH )
-//         answerAreas[i].strokeColor = 'gold'
-//         answerAreas[i].strokeWidth = '4'
-//         answerAreas[i].visible = false
+// //CROSSHATCH IMPLEMENTATION
+// var isDiag = false
+// //var test = new Path.Rectangle(new Point( 300, 300), 400, 400)
+// //test.strokeColor = 'black'
+// //test.fillColor = 'white'
+// function diagonalDraw(object){
+//     console.log(unitSquare.data.fillNumX)
+//     console.log(unitSquare.data.fillNumY)
+//     var color
+//     if(object.fillColor == '#fffeff'){
+//         color = 'purple'
 //     }
 //     else{
-//         console.log('ASDFDSFSDFSDF')
-//         console.log(answerSquare)
-//         answerAreas[i] = new Path.Rectangle(new Point( 600 + ((answerSquare.data.HEIGHT / denom2 * num2) * (i-other)), 600 ),answerSquare.data.HEIGHT / denom2 * num2, answerSquare.data.WIDTH )
-//         answerAreas[i].strokeColor = 'gold'
-//         answerAreas[i].strokeWidth = '4'
-//         answerAreas[i].visible = false
+//         color = 'red'
+//     }
+//     if(isDiag == false){
+//         var vertemp = object.bounds.width / 5;
+//         var hortemp = object.bounds.height / 5;
+//         var myPath = new Path();
+//         myPath.strokeColor = color
+//         myPath.strokeWidth = 4
+//         myPath.add(new Point(object.bounds.x + object.bounds.width , object.bounds.y ));
+//         myPath.add(new Point(object.bounds.x , object.bounds.y + object.bounds.height ));
+//         lineGroup.addChild(myPath)
+//         for(var i = 0; i < 5; i++){
+//             var myPath = new Path()
+//             myPath.strokeColor = color
+//             myPath.strokeWidth = 4
+//             myPath.add(new Point(object.bounds.x + object.bounds.width - (i * vertemp), object.bounds.y ));
+//             myPath.add(new Point(object.bounds.x , object.bounds.y + object.bounds.height - (i * hortemp) ));
+//             lineGroup.addChild(myPath)
+//         }
+//         for(var j = 0; j < 5; j++){
+//             var myPath = new Path()
+//             myPath.strokeColor = color
+//             myPath.strokeWidth = 4
+//             myPath.add(new Point(object.bounds.x + object.bounds.width , object.bounds.y + (j * hortemp) ));
+//             myPath.add(new Point(object.bounds.x + (j * vertemp) , object.bounds.y + object.bounds.height ));
+//             lineGroup.addChild(myPath)
+//         }
+//     //isDiag = true
 //     }
 // }
 
-// function checkAnswerArea(group){
-//     var areaCount = 0
-//     for(var i = 0; i < group.children.length; i++){
-//         if(group.children[i].fillColor == 'aquamarine'){
-//             areaCount++
-//         }
+// function revDiagonalDraw(object){
+//     var color
+//     if(object.fillColor == '#fffeff'){
+//         color = 'purple'
 //     }
-//     if(areaCount % areaSize == 0 && areaFilled != test){
-//         create2ndSquare()
-//         console.log('isgood')
-//             answerAreas[areaFilled].visible = true 
-//             areaFilled++
+//     else{
+//         color = 'blue'
+//     }
+//     var vertemp = object.bounds.width / 5;
+//     var hortemp = object.bounds.height / 5;
+//     var myPath = new Path();
+//     myPath.strokeColor = color
+//     myPath.strokeWidth = 4
+//     myPath.add(new Point(object.bounds.x , object.bounds.y ));
+//     myPath.add(new Point(object.bounds.x + object.bounds.width , object.bounds.y + object.bounds.height ));
+//     lineGroup.addChild(myPath)
+//     for(var i = 0; i < 5; i++){
+//         var myPath = new Path()
+//         myPath.strokeColor = color
+//         myPath.strokeWidth = 4
+//         myPath.add(new Point(object.bounds.x + object.bounds.width - (i * vertemp), object.bounds.y ));
+//         myPath.add(new Point(object.bounds.x + object.bounds.width  , object.bounds.y +  (i * hortemp) ));
+//         lineGroup.addChild(myPath)
+//     }
+//     for(var i = 0; i < 5; i++){
+//         var myPath = new Path()
+//         myPath.strokeColor = color
+//         myPath.strokeWidth = 4
+//         myPath.add(new Point(object.bounds.x , object.bounds.y + object.bounds.height - (i * hortemp)));
+//         myPath.add(new Point(object.bounds.x + (i * vertemp), object.bounds.y + object.bounds.height ));
+//         lineGroup.addChild(myPath)
 //     }
 // }
 
-// // Answer Check Button
-// var answTool = document.getElementById("answToolImg");
-// console.log(answTool.className)
+// //column fill button
+// var DiagisMovable = false
+// var revDiagisMovable = false
+// var Diagonal = document.getElementById("vertCross");
 
+// Diagonal.addEventListener("click",function(){
 
-// //Answer Check Function
-// answTool.addEventListener("click",function(){
-//     var numCounter = 0;
-//     var denomCounter = 0;
-//     var answ = (num1 / denom1) / (num2 / denom2);
-//     for(var i = 0 ; i < answerSquare.children.length; i++){
-//         if(answerSquare.children[i].fillColor == 'red' || answerSquare.children[i].fillColor == 'blue' || answerSquare.children[i].fillColor == 'green' || answerSquare.children[i].fillColor == 'aquamarine' ){
-//             denomCounter++
-//             if(answerSquare.children[i].fillColor == 'aquamarine'){
-//                 numCounter++;
-//             }
-//         }
-//     }
-//     for(var i = 0 ; i < answerSquare2.children.length; i++){
-//         if(answerSquare2.children[i].fillColor == 'red' || answerSquare2.children[i].fillColor == 'blue' || answerSquare2.children[i].fillColor == 'green' || answerSquare2.children[i].fillColor == 'aquamarine' ){
-//             denomCounter++
-//             if(answerSquare2.children[i].fillColor == 'aquamarine'){
-//                 numCounter++;
-//             }
-//         }
-//     }
-//     bottom = denom2/ denom1
-//     Math.trunc(bottom)
-//     userAnsw = numCounter / areaSize;
-//     if(answ.toFixed(6) == userAnsw.toFixed(6)){
-//         document.getElementById('checkImg_visual').style.display='inline-block';
-//         alert("Correct");
+//     revDiagisMovable = false
+//     DiagisMovable = !DiagisMovable
+    
+// })
+// //row fill button
+// var revDiagonal = document.getElementById("horizCross");
 
-//     } else {
-//         console.log(false);
-//         alert("Try again - reset the problem to start over");
+// revDiagonal.addEventListener("click",function(){
 
-//     }
-//     console.log(denomCounter)
-//     console.log(numCounter)
-//     console.log(userAnsw)
-//     console.log(answ)
+//     DiagisMovable = false
+//     revDiagisMovable = !revDiagisMovable
+    
 // })
 
-// // Erase Button
-// var eraseTool = document.getElementById("eraseImg");
-
-// //Erase Function
-// eraseTool.addEventListener("click",function(){
-//     if(!eraseFlag){
-//         for(var i = 0; i < groupArray.length; i++){
-//             hideHorizCutLines(groupArray[i]);
-//             hideVertCutLines(groupArray[i]);
+// //line update helper function
+// function linesUpdate(){
+//     lineGroup.removeChildren()
+//     for(var i = 0; i < unitSquare.children.length; i++){
+//         if(unitSquare.children[i].fillColor == '#fffffe'){
+//             diagonalDraw(unitSquare.children[i])
 //         }
-//         isMovable = false;
-//         horizCutFlag = false;
-//         vertCutFlag = false;
-//         paintFlag = false;
-//         eraseFlag = true;
-//         paintColor = 'white';
-//     } else {
-//         eraseFlag = false;
+//         else if(unitSquare.children[i].fillColor == '#feffff'){
+//             revDiagonalDraw(unitSquare.children[i])
+//         }
+//         else if(unitSquare.children[i].fillColor == '#fffeff'){
+//             diagonalDraw(unitSquare.children[i])
+//             revDiagonalDraw(unitSquare.children[i])
+//         }
 //     }
-// })
+// }
 
+// addBackdrop(unitSquare);
+// addSquares(unitSquare);
+
+// prevGroup.removeChildren();
+
+// addVertLines(unitSquare);
+// addHorizLines(unitSquare);
 
 // var resetTool = document.getElementById("resetImg");
 // resetTool.addEventListener("click",function(){
 // 	location.reload();
 // })
-
-
-// addBackdrop(unitSquare);
-// addBackdrop(answerSquare);
-
-// addSquares(unitSquare);
-// prevGroup.removeChildren();
-// addSquares(answerSquare);
-// prevGroup.removeChildren();
-
-// addVertLines(unitSquare);
-// addVertLines(answerSquare);
-
-// addHorizLines(unitSquare);
-// addHorizLines(answerSquare);
 

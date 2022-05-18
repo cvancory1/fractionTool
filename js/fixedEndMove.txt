@@ -1,0 +1,32 @@
+function endMove(event){
+    if(isMovable){
+        const hits = [];
+        for(var i = 0; i < answerSquare.data.fillNumX * answerSquare.data.fillNumY; i++){
+            if(answerSquare.children[answerSquare.data.offset+i].bounds.contains(event.point) && (Math.trunc(answerSquare.children[answerSquare.data.offset+i].bounds.width) == Math.trunc(this.bounds.width) && Math.trunc(answerSquare.children[answerSquare.data.offset+i].bounds.height) == Math.trunc(this.bounds.height) || Math.trunc(answerSquare.children[answerSquare.data.offset+i].bounds.height) == Math.trunc(this.bounds.width) && Math.trunc(answerSquare.children[answerSquare.data.offset+i].bounds.width) == Math.trunc(this.bounds.height)) && answerSquare.children[answerSquare.data.offset+i].fillColor != 'grey'){
+                hits.push(answerSquare.data.offset+i);
+                //answerSquare.children[answerSquare.data.offset+i].fillColor = 'grey';
+                this.fillColor = 'grey';
+                this.position = origPos;
+            }
+            else{
+                this.position = origPos;
+            }
+        }
+        
+        if(hits.length > 0){
+            answerSquare.children[hits[0]].fillColor = 'grey';
+        }
+        
+        for(var i = 0; i < groupArray.length; i++){
+            //console.log(groupArray[i].children.length);
+            //console.log(groupArray[i].data.offset + groupArray[i].data.fillNumX * groupArray[i].data.fillNumX + groupArray[i].data.totalCuts * 2);
+            if(groupArray[i].children.length < groupArray[i].data.offset + groupArray[i].data.fillNumX * groupArray[i].data.fillNumX + groupArray[i].data.totalCuts * 2){
+                //console.log(project.activeLayer.children.length);
+                //console.log(project.activeLayer.children[0].exportJSON(this));
+                var activeTemp = project.activeLayer.lastChild;
+                groupArray[i].insertChild(1,activeTemp);
+            }
+            
+        }
+    }
+};

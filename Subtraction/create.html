@@ -13,10 +13,10 @@
     var leftD = document.getElementById("leftDenominator").value;
     var rightN = document.getElementById("rightNumerator").value;
     var rightD = document.getElementById("rightDenominator").value;
-    var leftN = parseInt(leftN);
-    var leftD = parseInt(leftD);
-    var rightN = parseInt(rightN);
-    var rightD = parseInt(rightD);
+    leftN = parseInt(leftN);
+    leftD = parseInt(leftD);
+    rightN = parseInt(rightN);
+    rightD = parseInt(rightD);
 
     if (isNaN(leftN)|| isNaN(leftD) ||  isNaN(rightN) ||  isNaN(rightD) ){
       alert("You must enter in a number ");
@@ -54,7 +54,7 @@
     }
 
     if( (rightN/ rightD) > ( leftN / leftD)  ){
-      alert("Left side cannot be greater than the right");
+      alert("Left side must be greater than the right");
       e.preventDefault();// stop 
 
     }
