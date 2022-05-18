@@ -80,12 +80,10 @@ input[type="radio"]:checked + label {
 
 
 
-
-
 .typeContainer{
     text-align: center;
     margin-top: 100px;
-    margin-right: 10px;
+    margin-right: 120px;
     margin-left: 95px;
     margin-bottom: 25px;
 }

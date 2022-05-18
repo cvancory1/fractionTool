@@ -838,10 +838,16 @@ answTool.addEventListener("click",function(){
     userAnsw = counter / (answerSquare.data.fillNumX * answerSquare.data.fillNumY);
     console.log('userAnsw');
     console.log(userAnsw);
+    
     if(answ.toFixed(6) == userAnsw.toFixed(6)){
         console.log(true);
+        document.getElementById('checkImg_visual').style.display='inline-block';
+        alert("Correct");
+    
     } else {
         console.log(false);
+        alert("Try again - reset the problem to start over");
+    
     }
 })
 

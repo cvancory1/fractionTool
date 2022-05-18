@@ -124,44 +124,45 @@
  
  function moveActive(event){
      console.log("moveActive");
-     if(this.fillColor != 'grey' && isMovable == true){
+     if(this.fillColor != 'grey' && isMovable == true && this.fillColor != 'grey'){
          //console.log(event.delta);
          this.position += event.delta
      }
  };
  
  function endMove(event){
-     console.log("endMove");
-     //console.log(this.exportJSON(this));
-     if(isMovable){
-         console.log("Here0");
-         console.log(answerSquare.children.length);
-         for(var i = 0; i < answerSquare.data.fillNumX * answerSquare.data.fillNumY; i++){
-             if(answerSquare.children[answerSquare.data.offset+i].bounds.contains(event.point) && (Math.trunc(answerSquare.children[answerSquare.data.offset+i].bounds.width) == Math.trunc(this.bounds.width) && Math.trunc(answerSquare.children[answerSquare.data.offset+i].bounds.height) == Math.trunc(this.bounds.height) || Math.trunc(answerSquare.children[answerSquare.data.offset+i].bounds.height) == Math.trunc(this.bounds.width) && Math.trunc(answerSquare.children[answerSquare.data.offset+i].bounds.width) == Math.trunc(this.bounds.height)) && answerSquare.children[answerSquare.data.offset+i].fillColor != 'aquamarine'){
-                 console.log("Here1");
-                 console.log(answerSquare.children.length);
-                 answerSquare.children[answerSquare.data.offset+i].fillColor = 'aquamarine';
-                 console.log("Here2");
-                 console.log(answerSquare.children.length);
-                 this.fillColor = 'grey';
-                 this.position = origPos;
+    if(isMovable){
+        hits = [];
+        for(var i = 0; i < answerSquare.data.fillNumX * answerSquare.data.fillNumY; i++){
+            if(answerSquare.children[answerSquare.data.offset+i].bounds.contains(event.point) && (Math.trunc(answerSquare.children[answerSquare.data.offset+i].bounds.width) == Math.trunc(this.bounds.width) && Math.trunc(answerSquare.children[answerSquare.data.offset+i].bounds.height) == Math.trunc(this.bounds.height) || Math.trunc(answerSquare.children[answerSquare.data.offset+i].bounds.height) == Math.trunc(this.bounds.width) && Math.trunc(answerSquare.children[answerSquare.data.offset+i].bounds.width) == Math.trunc(this.bounds.height)) && answerSquare.children[answerSquare.data.offset+i].fillColor != 'aquamarine'){
+                hits.push(answerSquare.data.offset+i);
 
-
-             }
-             else{
-                 this.position = origPos;
-             }
-         }
-         
-         for(var i = 0; i < groupArray.length; i++){
-             if(groupArray[i].children.length < groupArray[i].data.offset + groupArray[i].data.fillNumX * groupArray[i].data.fillNumY + (groupArray[i].data.totalCuts * 2)){
-                 var activeTemp = project.activeLayer.lastChild;
-                 groupArray[i].insertChild(groupArray[i].data.offset,activeTemp);
-             }
-             
-         }
-     }
- };
+                //answerSquare.children[answerSquare.data.offset+i].fillColor = 'grey';
+                this.fillColor = 'grey';
+                this.position = origPos;
+            }
+            else{
+                this.position = origPos;
+            }
+        }
+        
+        if(hits.length > 0){
+            answerSquare.children[hits[0]].fillColor = 'grey';
+        }
+        
+        for(var i = 0; i < groupArray.length; i++){
+            //console.log(groupArray[i].children.length);
+            //console.log(groupArray[i].data.offset + groupArray[i].data.fillNumX * groupArray[i].data.fillNumX + groupArray[i].data.totalCuts * 2);
+            if(groupArray[i].children.length < groupArray[i].data.offset + groupArray[i].data.fillNumX * groupArray[i].data.fillNumX + groupArray[i].data.totalCuts * 2){
+                //console.log(project.activeLayer.children.length);
+                //console.log(project.activeLayer.children[0].exportJSON(this));
+                var activeTemp = project.activeLayer.lastChild;
+                groupArray[i].insertChild(1,activeTemp);
+            }
+            
+        }
+    }
+};
  
  function addBackdrop(group){
      console.log("addBackdrop");
@@ -620,7 +621,6 @@
  
  // Horizontal Toggle Button
  var horizCutTool = document.getElementById("horizCutimg");
-
  
  //Horizontal Cut toggle
  horizCutTool.addEventListener("click",function(){
@@ -712,7 +712,7 @@
  
  
  //Move toggle
- moveTool.addEventListener("mousedown",function(){
+ moveTool.addEventListener("mousedown", function(){
 
      if(!isMovable){
          for(var i = 0; i < groupArray.length; i++){
